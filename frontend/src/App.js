@@ -9,22 +9,23 @@ import Register from "./pages/register";
 import Questions from "./pages/questionairre";
 import Login from "./pages/sigin";
 import Profile from "./pages/user-profile";
+import Home from "./pages/home";
  
-function App() {
+export default function App() {
     return (
         <Router>
             <Navbar />
             <Routes>
-                <Route exact path="/" element={<Register />} />
-                <Route path="/questions" element={<Questions />} />
-                <Route
-                    path="/Login"
-                    element={<Login />}
+                <Route path ="/" element={<Navbar />} />
+                <Route index 
+                    element={<Home />}
                 />
+                <Route path="/sigin" element={<Login />} />
+                <Route path="/Register" element={<Register />} />
+                <Route path="/questions" element={<Questions />} />
                 <Route path="/Profile" element={<Profile />} />
             </Routes>
         </Router>
     );
 }
  
-export default App;

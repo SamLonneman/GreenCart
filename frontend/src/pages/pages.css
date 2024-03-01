@@ -1,0 +1,26 @@
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #000000cb;
+}
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: azure;
+}
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: rgb(91, 91, 91);
+}
+.green {
+    color: #00ff00;
+}
+.white {
+    color: white;
+}
