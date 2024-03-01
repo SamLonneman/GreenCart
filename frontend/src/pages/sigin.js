@@ -1,7 +1,7 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 
-import OutlinedInput from '@mui/material/OutlinedInput';
+import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -9,8 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Button from '@mui/material/Button';
-import { Box, Fab } from '@mui/material';
+import { Box, Fab, FormHelperText } from '@mui/material';
 import './pages.css';
 import { createTheme } from '@mui/material/styles';
 import { green, grey} from '@mui/material/colors';
@@ -24,8 +23,32 @@ const theme = createTheme({
 
 
 export default function Sigin() {
+    const passRegex = new RegExp(/^(?=.*?[A-Za-z])(?=.*?[0-9]).{6,}$/);
     const [showPassword, setShowPassword] = React.useState(false);
-  
+    const [formData, setFormData] = React.useState({userquery: "", passquery: ""});
+    const [isFormInvalid, setIsFormInvalid] = React.useState(false);
+    const validate = values => {
+      //alert(passRegex.test(values.passquery));  
+      if (passRegex.test(values.passquery)) {
+        setIsFormInvalid(false);
+        return true;
+      } else { 
+        setIsFormInvalid(true);
+        return false;
+      }
+    };
+    function handleFormChange(event) {
+      let data = formData;
+      data[event.target.name] = event.target.value;
+      setFormData(data);
+    }
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      if (validate(formData)) {
+        alert("Form is valid");
+        // submission logic
+      } 
+    }
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
     const handleMouseDownPassword = (event) => {
@@ -39,18 +62,19 @@ export default function Sigin() {
     }
 
     return (<Box class = "center">
-    <h1 class = "green "> Green<span class = "white">Cart</span> </h1>
+    <h1 class = "green ">Green<span class = "white">Cart</span> </h1>
     <h2> Please Log In</h2>
-    <form action = {login}>
+    <form onSubmit={handleSubmit}>
     <div>
-         <TextField name = "userquery" sx={{ m: 1, width: '25ch' }}  id="outlined-basic" label="Username" variant="outlined" margin = "dense"  />
+         <TextField required name = "userquery" sx={{ m: 1, width: '25ch' }}  id="standard-basic" label="Username" variant="standard" margin = "dense" />
     </div>
     <div>
-    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
+    <FormControl sx={{ m: 1, width: '25ch' }} variant="standard" required   error = {isFormInvalid}    onChange = {handleFormChange} >
+          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <Input
             name = "passquery"
-            id="outlined-adornment-password"
+            helperText = {isFormInvalid ? "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character" : ""}
+            id="standard-adornment-password"
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
@@ -66,11 +90,12 @@ export default function Sigin() {
             }
             label="Password"
           />
+          {isFormInvalid ? <FormHelperText id="standard-weight-helper-text">Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character</FormHelperText> : ""}
         </FormControl>
     </div>
     <div>
       
-    <Fab sx={{ m: 1, width: '25ch' }} variant="extended" color="secondary" theme = {theme}
+    <Fab sx={{ m: 1, width: '27.5ch' }} variant="extended" color="secondary" theme = {theme}
       type = "submit">
         Sign In
     </Fab>
