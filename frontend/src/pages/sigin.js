@@ -31,17 +31,25 @@ export default function Sigin() {
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
+    function login(formData){
+      const query = formData.get('userquery');
+      alert(query);
+      const pass = formData.get('passquery');
+      alert(pass);
+    }
 
     return (<Box class = "center">
     <h1 class = "green "> Green<span class = "white">Cart</span> </h1>
     <h2> Please Log In</h2>
+    <form action = {login}>
     <div>
-         <TextField sx={{ m: 1, width: '25ch' }}  id="outlined-basic" label="Username" variant="outlined" margin = "dense"  />
+         <TextField name = "userquery" sx={{ m: 1, width: '25ch' }}  id="outlined-basic" label="Username" variant="outlined" margin = "dense"  />
     </div>
     <div>
     <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
+            name = "passquery"
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
             endAdornment={
@@ -61,10 +69,14 @@ export default function Sigin() {
         </FormControl>
     </div>
     <div>
-    <Fab sx={{ m: 1, width: '25ch' }} variant="extended" color="secondary" theme = {theme}>
+      
+    <Fab sx={{ m: 1, width: '25ch' }} variant="extended" color="secondary" theme = {theme}
+      type = "submit">
         Sign In
     </Fab>
     </div>
+    </form>
+
     </Box>
 
     );
