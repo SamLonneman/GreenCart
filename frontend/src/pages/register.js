@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom'
 import '../App.css';
 import { Container, Row, Button, Form, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -16,7 +17,6 @@ export default function Register() {
 
     setValidated(true);
   };
-
 
   return (
     <div className="register">
@@ -65,6 +65,9 @@ export default function Register() {
               </Col>
               <div>
                 <Button type="submit">Register</Button>
+              </div>
+              <div>
+                Already have an account? <Link to="/sigin"><Button variant="link" type="submit">Sign In</Button></Link>
               </div>
             </Row>
           </Form>
