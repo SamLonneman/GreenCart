@@ -10,8 +10,13 @@ import Questions from "./pages/questionairre";
 import Login from "./pages/sigin";
 import Profile from "./pages/user-profile";
 import Home from "./pages/home";
+import { useEffect } from "react";
  
 export default function App() {
+    useEffect(() => {
+        document.title = "GreenCart"
+     }, []);
+
     return (
         <Router>
             <Navbar />
