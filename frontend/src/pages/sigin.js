@@ -11,18 +11,72 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Box, Fab, FormHelperText } from '@mui/material';
 import './pages.css';
-import { createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { green, grey} from '@mui/material/colors';
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 const theme = createTheme({
   palette: {
     primary: green,
     secondary: grey,
   },
 });
+const customTheme = (outerTheme) =>
+  createTheme({
+    palette: {
+      mode: outerTheme.palette.mode,
+    },
+    components: {
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            '--TextField-brandBorderColor': '#E0E3E7',
+            '--TextField-brandBorderHoverColor': '#B2BAC2',
+            '--TextField-brandBorderFocusedColor': '#6F7E8C',
+            '& label.Mui-focused': {
+              color: 'var(--TextField-brandBorderFocusedColor)',
+            },
+          },
+        },
+      },
+      MuiInput: {
+        styleOverrides: {
+          root: {
+            '&::before': {
+              borderBottom: '2px solid var(--TextField-brandBorderColor)',
+            },
+            '&:hover:not(.Mui-disabled, .Mui-error):before': {
+              borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
+            },
+            '&.Mui-focused:after': {
+              borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
+            },
+            '&MuiInputBase-root': {
+              color: 'white',
+            },
+          },
+        },
+      },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            '--TextField-brandBorderColor': '#E0E3E7',
+            '--TextField-brandBorderHoverColor': '#B2BAC2',
+            '--TextField-brandBorderFocusedColor': '#6F7E8C',
+            '& label.Mui-focused': {
+              color: 'var(--TextField-brandBorderFocusedColor)',
+            },
+          },
+        },
+      },
+    },
+  });
 
 
 
 export default function Sigin() {
+   
+    const outerTheme = createTheme();
     const passRegex = new RegExp(/^(?=.*?[A-Za-z])(?=.*?[0-9]).{6,}$/);
     const [showPassword, setShowPassword] = React.useState(false);
     const [formData, setFormData] = React.useState({userquery: "", passquery: ""});
@@ -61,21 +115,23 @@ export default function Sigin() {
       alert(pass);
     }
 
-    return (<Box class = "center">
+    return (<Box class = "center grey">
     <h1 class = "green ">Green<span class = "white">Cart</span> </h1>
     <h2> Please Log In</h2>
     <form onSubmit={handleSubmit}>
+    <ThemeProvider theme={customTheme(outerTheme)}>
     <div>
-         <TextField required name = "userquery" sx={{ m: 1, width: '25ch' }}  id="standard-basic" label="Username" variant="standard" margin = "dense" />
+         <TextField required userquery InputLabelProps={{sx: {color: 'white'},}} InputProps={{style: {color: 'white'},}} sx={{ m: 1, width: '25ch'}}  id="standard-basic" label="Username" variant="standard" margin = "dense" />
     </div>
     <div>
-    <FormControl sx={{ m: 1, width: '25ch' }} variant="standard" required   error = {isFormInvalid}    onChange = {handleFormChange} >
-          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+    <FormControl sx={{ m: 1, width: '25ch'}} variant="standard" required   error = {isFormInvalid}    onChange = {handleFormChange}  >
+          <InputLabel htmlFor="standard-adornment-password" sx = {{color: 'white'}} >Password</InputLabel >
           <Input
             name = "passquery"
             helperText = {isFormInvalid ? "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character" : ""}
             id="standard-adornment-password"
             type={showPassword ? 'text' : 'password'}
+            sx = {{color: 'white'}}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -83,6 +139,7 @@ export default function Sigin() {
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
+                  sx = {{color: 'white'}}
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
@@ -93,6 +150,7 @@ export default function Sigin() {
           {isFormInvalid ? <FormHelperText id="standard-weight-helper-text">Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character</FormHelperText> : ""}
         </FormControl>
     </div>
+    </ThemeProvider>
     <div>
       
     <Fab sx={{ m: 1, width: '27.5ch' }} variant="extended" color="secondary" theme = {theme}
@@ -101,7 +159,9 @@ export default function Sigin() {
     </Fab>
     </div>
     </form>
-
+    <div>
+    <p class = "smalltext">Don't have an account? <a href = "/register" class = "green">Sign Up</a></p>
+    </div>
     </Box>
 
     );
