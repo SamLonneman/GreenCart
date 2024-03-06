@@ -1,6 +1,9 @@
-from django.urls import path
-from .views import ProductView
+from django.urls import path, include
+from .views import ViewAllProducts, ReactAppView, serve_file
 
 urlpatterns = [
-    path('', ProductView.as_view())
+    path('', ReactAppView.as_view()),
+    path('<str:file>', serve_file),
+    path('auth/', include('rest_framework.urls')),
+    path('api/products/', ViewAllProducts.as_view()),
 ]
