@@ -6,16 +6,16 @@
     justify-content: center;
     height: 100vh;
     width: 100%;
-    background-color: #202020;
+    background-color: #f0f0f0;
 }
 h1 {
-    font-size: 2.5rem;
+    font-size: 5rem;
     margin-bottom: 1rem;
     color: azure;
 }
 h2 {
     font-size: 2rem;
-    margin-bottom: 1rem;
+    margin: 1rem;
     color: rgb(91, 91, 91);
 }
 .green {
@@ -26,16 +26,29 @@ h2 {
 }
 .grey {
     color: grey;
-    background: rgb(25,25,25);
-    background: linear-gradient(0deg, rgba(25,25,25,0.9585084033613446) 0%, rgba(54,54,54,1) 80%);
+    background: rgb(255,255,255);
+    background: radial-gradient(circle, rgba(255,255,255,1) 9%, rgba(236,236,236,1) 89%);
+}
+.largetext {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 .smalltext {
     font-size: 0.75rem;
     margin-top: 0.25rem;
+    margin-bottom: 0.025rem;
 }
 .textfield{
     color : white;
 }
 .textfield__label{
     color : white !important;
+}
+.minimummargin{
+    font-size: 0.75rem;
+    margin-top: 0.01rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0.01rem;
+
 }

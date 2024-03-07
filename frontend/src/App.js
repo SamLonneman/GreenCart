@@ -10,6 +10,7 @@ import Questions from "./pages/questionairre";
 import Login from "./pages/sigin";
 import Profile from "./pages/user-profile";
 import Home from "./pages/home";
+import Forgotpassword from "./pages/forgotpassword";
  
 export default function App() {
     return (
@@ -24,6 +25,8 @@ export default function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/Profile" element={<Profile />} />
+                <Route path="/forgotpassword" element={<Forgotpassword/>} />
+                <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
         </Router>
     );

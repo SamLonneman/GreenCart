@@ -116,22 +116,22 @@ export default function Sigin() {
     }
 
     return (<Box class = "center grey">
-    <h1 class = "green ">Green<span class = "white">Cart</span> </h1>
-    <h2> Please Log In</h2>
+    <h1 class = "green">Green<span>Cart</span> </h1>
+    <h2 class ="largetext"> Please Log In</h2>
     <form onSubmit={handleSubmit}>
     <ThemeProvider theme={customTheme(outerTheme)}>
     <div>
-         <TextField required userquery InputLabelProps={{sx: {color: 'white'},}} InputProps={{style: {color: 'white'},}} sx={{ m: 1, width: '25ch'}}  id="standard-basic" label="Username" variant="standard" margin = "dense" />
+         <TextField required userquery InputLabelProps={{sx: {color: 'grey'},}} InputProps={{style: {color: 'grey'},}} sx={{ marginLeft: 1, width: '25ch', marginTop: 0}}  id="standard-basic" label="Username" variant="standard" margin = "dense" />
     </div>
     <div>
-    <FormControl sx={{ m: 1, width: '25ch'}} variant="standard" required   error = {isFormInvalid}    onChange = {handleFormChange}  >
-          <InputLabel htmlFor="standard-adornment-password" sx = {{color: 'white'}} >Password</InputLabel >
+    <FormControl sx={{ marginLeft: 1, width: '25ch'}} variant="standard" required   error = {isFormInvalid}    onChange = {handleFormChange}  >
+          <InputLabel htmlFor="standard-adornment-password" sx = {{color: 'grey'}} >Password</InputLabel >
           <Input
             name = "passquery"
             helperText = {isFormInvalid ? "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character" : ""}
             id="standard-adornment-password"
             type={showPassword ? 'text' : 'password'}
-            sx = {{color: 'white'}}
+            sx = {{color: 'grey'}}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -152,6 +152,9 @@ export default function Sigin() {
     </div>
     </ThemeProvider>
     <div>
+    <div>
+    <p class = "minimummargin"><a href = "/forgotpassword" class = "green">Forgot Password?</a></p>
+    </div>
       
     <Fab sx={{ m: 1, width: '27.5ch' }} variant="extended" color="secondary" theme = {theme}
       type = "submit">
