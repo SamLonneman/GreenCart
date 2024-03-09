@@ -10,7 +10,8 @@ import Questions from "./pages/questionairre";
 import Login from "./pages/sigin";
 import Profile from "./pages/user-profile";
 import Home from "./pages/home";
- 
+import ProductSearch from "./pages/product-search";
+
 export default function App() {
     return (
         <Router>
@@ -24,8 +25,8 @@ export default function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/Profile" element={<Profile />} />
+                <Route path="/product-search" element={<ProductSearch />} />
             </Routes>
         </Router>
     );
 }
- 

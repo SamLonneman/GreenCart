@@ -11,7 +11,7 @@ class ViewAllProducts(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     queryset = Products.objects.all()
 
-class UserProfile(generics.ListCreateAPIView):
+class ViewUsers(generics.ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
