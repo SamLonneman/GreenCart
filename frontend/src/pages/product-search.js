@@ -1,7 +1,8 @@
+import './pages.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const ProductSearch = () => {
+export default function ProductSearch() {
     const [products, setProducts] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -10,29 +11,31 @@ const ProductSearch = () => {
         };
         fetchData();
     }, []);
+    const columns = ['ID', 'Name', 'Description', 'Category', 'Sustainability Factor', 'Image'];
+    const productProperties = ['id', 'name', 'description', 'category', 'sustainability_factor'];
     return (
         <div>
-            {/* TODO: Clean this up. This was just proof of concept for retreival from database */}
             <table>
                 <thead>
                     <tr>
-                        <th style = {{ padding: '10px', textAlign: 'center' }}>ID</th>
-                        <th style = {{ padding: '10px', textAlign: 'center' }}>Name</th>
-                        <th style = {{ padding: '10px', textAlign: 'center' }}>Description</th>
-                        <th style = {{ padding: '10px', textAlign: 'center' }}>Category</th>
-                        <th style = {{ padding: '10px', textAlign: 'center' }}>Sustainability Factor</th>
-                        <th style = {{ padding: '10px', textAlign: 'center' }}>Image</th>
+                        {columns.map((column) => (
+                            <th key={column} className="tablecell">
+                                {column}
+                            </th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
                     {products.map((product) => (
                         <tr key={product.id}>
-                            <td style={{ padding: '10px', textAlign: 'center' }}>{product.id}</td>
-                            <td style={{ padding: '10px', textAlign: 'center' }}>{product.name}</td>
-                            <td style={{ padding: '10px', textAlign: 'center' }}>{product.description}</td>
-                            <td style={{ padding: '10px', textAlign: 'center' }}>{product.category}</td>
-                            <td style={{ padding: '10px', textAlign: 'center' }}>{product.sustainability_factor}</td>
-                            <td style={{ padding: '10px', textAlign: 'center' }}><img src={product.image_link} alt={product.name} width="100" /></td>
+                            {productProperties.map((property) => (
+                                <td className="tablecell" key={property}>
+                                    {product[property]}
+                                </td>
+                            ))}
+                            <td className="tablecell">
+                                <img src={product.image_link} alt={product.name} width="100" />
+                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -40,4 +43,3 @@ const ProductSearch = () => {
         </div>
     );
 }
-export default ProductSearch;
