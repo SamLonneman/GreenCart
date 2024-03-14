@@ -1,24 +1,33 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import '../App.css';
 import { Card, Container, Row, Button, Form, Col } from 'react-bootstrap';
-import { useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form';
 import { object, string, ref } from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Register() {
+
+  // Yup schema for register page.
   const RegisterSchema = object().shape({
-    email: string().email().required("Please enter an email address."),
+    email: string().label('Email Address').email('Invalid Email Address').required("Please enter an email address."),
 
-    username: string().required("Username is required.").max(16, "Username is too long."),
+    username: string().label('Username').required("Username is required.").max(16, "Username is too long."),
 
-    password: string().required("Please enter a password.").min(8, "Password is too short, should be at least 8 characters."),
+    password: string().label('Password').required("Please enter a password.").min(8, "Password is too short, should be at least 8 characters."),
 
-    confirmPassword: string().oneOf([ref('password'), null], "Passwords must match.")
+    confirmPassword: string().label('Confirm Password').oneOf([ref('password'), null], "Passwords must match.")
   });
 
-  const { register, handleSubmit } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(RegisterSchema)
+  });
+
   const onSubmit = (data) => console.log(data)
 
   return (
@@ -26,20 +35,24 @@ export default function Register() {
       <header className="register-header">
         <Container>
           <Card>
+            <Form onSubmit={handleSubmit((data) => onSubmit(data))}>
             <Row>
               <Col>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <input {...register("email")} placeholder="email" type="email" required/>
-                  <input
-                    {...register("password")}
-                    placeholder="password"
-                    type="password"
-                    required
-                  />
-                  <button type="submit">Sign In</button>
-                </form>
+              <Form.Group controlId="formEmail">
+                    <Form.Label>Email Address</Form.Label>
+                    <Form.Control 
+                    required type="email" 
+                    placeholder="gatoralbert@ufl.edu"
+                    isInvalid={errors.email}
+                    {...register('email')}
+                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.email?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
               </Col>
             </Row>
+            </Form>
           </Card>
           {/* <Form>
             <Card>
