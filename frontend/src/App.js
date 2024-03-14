@@ -10,8 +10,9 @@ import Questions from "./pages/questionairre";
 import Login from "./pages/sigin";
 import Profile from "./pages/user-profile";
 import Home from "./pages/home";
-import { useEffect } from "react";
- 
+import ProductSearch from "./pages/product-search";
+import Forgotpassword from "./pages/forgotpassword";
+
 export default function App() {
     useEffect(() => {
         document.title = "GreenCart"
@@ -29,8 +30,10 @@ export default function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/Profile" element={<Profile />} />
+                <Route path="/product-search" element={<ProductSearch />} />
+                <Route path="/forgotpassword" element={<Forgotpassword/>} />
+                <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
         </Router>
     );
 }
- 
