@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom'
 import '../App.css';
-import { Card, Container, Row, Button, Form, Col } from 'react-bootstrap';
+import { Container, Row, Button, Form, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-export const PASSWORD_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,20}$/);
+export const PASSWORD_COMPLEX_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,20}$/);
 
 const messages = {
   missingEmail: "Please enter an email address",
   missingUsername: "Please enter a username.",
-  invalidPassword: "Password is not strong enough.",
+  invalidPassword: "Invalid Password",
+  invalidPassword2: "Password must be between 8 and 20 characters.",
   noMatchPassword: "Passwords must match."
 };
 
@@ -23,21 +24,21 @@ const RegisterSchema = Yup.object().shape({
     .string()
     .email('Invalid Email Address.')
     .required(messages.missingEmail),
-  
+
   username: Yup
     .string()
     .required(messages.missingUsername)
     .max(16, "Username is too long."),
-  
+
   password: Yup
     .string()
     .required("Please enter a password.")
-    .matches(PASSWORD_REGEX, messages.invalidPassword)
+    .matches(PASSWORD_COMPLEX_REGEX, messages.invalidPassword)
     .min(8, "Password is too short, should be at least 8 characters."),
 
   confirmPassword: Yup
     .string()
-    //.oneOf([Yup.ref('password'), null], messages.noMatchPassword)
+  //.oneOf([Yup.ref('password'), null], messages.noMatchPassword)
 });
 
 export default function Register() {
@@ -56,77 +57,83 @@ export default function Register() {
     <div className="register">
       <header className="register-header">
         <Container>
-          <Card>
-            <Card.Header>Create a new user</Card.Header><Card.Body>
-            <Form onSubmit={handleSubmit((data) => onSubmit(data))}>
-            <Row>
-              <Col>
-              <Form.Group controlId="formEmail">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control 
-                    required type="email" 
-                    placeholder="name@example.com"
-                    isInvalid={errors.email}
-                    {...register('email')}
-                     />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.email?.message}
-                    </Form.Control.Feedback>
-              </Form.Group>
-              </Col>
-              <Col>
-              <Form.Group controlId="formUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control 
-                    required type="username" 
-                    placeholder="name"
-                    isInvalid={errors.username}
-                    {...register('username')}
-                     />
+          <h1 className='green'>Create Account</h1>
+          <Form onSubmit={handleSubmit((data) => onSubmit(data))}>
+            <Container>
+              <Row>
+                <Col>
+                  <Form.Group controlId="formUsername">
+                    <Form.Control
+                      className="custom-input"
+                      required type="username"
+                      placeholder="Name"
+                      isInvalid={errors.username}
+                      {...register('username')}
+                    />
                     <Form.Control.Feedback type="invalid">
                       {errors.username?.message}
                     </Form.Control.Feedback>
-              </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-              <Form.Group controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control 
-                    required type="password" 
-                    placeholder="********"
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Container>
+            <Container>
+              <Row>
+                <Form.Group controlId="formEmail">
+                  <Form.Control
+                    className="custom-input"
+                    required type="email"
+                    placeholder="Email"
+                    isInvalid={errors.email}
+                    {...register('email')}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.email?.message}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Row>
+            </Container>
+            <Container>
+              <Row>
+                <Form.Group controlId="formPassword">
+                  <Form.Control
+                    className="custom-input"
+                    required type="password"
+                    placeholder="Password"
                     isInvalid={errors.password}
                     {...register('password')}
-                     />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.password?.message}
-                    </Form.Control.Feedback>
-              </Form.Group>
-              </Col>
-              <Col>
-              <Form.Group controlId="formConfirmPass">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control 
-                    required type="password" 
-                    placeholder="********"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password?.message}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Row>
+            </Container>
+            <Container>
+              <Row>
+                <Form.Group controlId="formConfirmPass">
+                  <Form.Control
+                    className="custom-input"
+                    required type="password"
+                    placeholder="Confirm Password"
                     isInvalid={errors.confirmPassword}
                     {...register('confirmPassword')}
-                     />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.confirmPassword?.message}
-                    </Form.Control.Feedback>
-              </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <div>
-                <Button type="submit">Register</Button>
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.confirmPassword?.message}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Row>
+            </Container>
+              <div class="flex items-center">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                  Sign Up
+                </button>
               </div>
-            </Row>
-            </Form>
-            </Card.Body>
-          </Card>
+              <div>
+                <p>Already have an account? <Link to="/sigin"><Button variant="link" type="submit">Sign In</Button></Link></p>
+              </div>
+          </Form>
           {/* <Form>
             <Card>
                 Welcome to GreenCart, please Sign Up.
