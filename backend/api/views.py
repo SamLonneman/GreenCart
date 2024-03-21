@@ -1,33 +1,19 @@
-import os
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.views.generic import View
-from rest_framework import generics
-from .serializers import ProductSerializer, UserSerializer
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
+
 from .models import Products
+from .serializers import ProductSerializer
 
-class ViewAllProducts(generics.ListCreateAPIView):
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+    
+class ProductList(ListAPIView):
     serializer_class = ProductSerializer
-    queryset = Products.objects.all()
+    pagination_class = StandardResultsSetPagination
 
-class ViewUsers(generics.ListCreateAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-
-class ReactAppView(View):
-    def get(self, request):
-        try:
-            with open(os.path.join(settings.REACT_APP_DIR, 'build', 'index.html')) as f:
-                return HttpResponse(f.read())
-        except FileNotFoundError:
-            return HttpResponse(
-                """
-                You need to build the React app before you can serve it.
-                """,
-                status=501,
-            )
-
-def serve_file(request, file):
-    with open(os.path.join(settings.REACT_APP_DIR, 'build', file), 'rb') as f:
-        return HttpResponse(f)
+    def get_queryset(self):
+        query = self.request.GET.get('contains', '')
+        return Products.objects.filter(name__icontains=query).order_by('id')
