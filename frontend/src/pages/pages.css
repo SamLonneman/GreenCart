@@ -63,4 +63,18 @@ h2 {
     margin: 0.5em 0.5em !important;
     width: 15% !important;
     color: white !important;
+=======
+.tablecell{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+tr:hover {
+    background-color: #ddd;
 }
