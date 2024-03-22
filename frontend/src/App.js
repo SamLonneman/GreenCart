@@ -7,11 +7,12 @@ import {
 } from "react-router-dom";
 import Register from "./pages/register";
 import Questions from "./pages/questionairre";
-import Login from "./pages/sigin";
+import Login from "./pages/login";
 import Profile from "./pages/user-profile";
 import Home from "./pages/home";
 import ProductSearch from "./pages/product-search";
 import Forgotpassword from "./pages/forgotpassword";
+import { useEffect } from 'react';
 
 export default function App() {
     useEffect(() => {
@@ -26,7 +27,7 @@ export default function App() {
                 <Route index 
                     element={<Home />}
                 />
-                <Route path="/sigin" element={<Login />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/Profile" element={<Profile />} />
