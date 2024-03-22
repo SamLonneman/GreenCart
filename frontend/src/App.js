@@ -12,6 +12,7 @@ import Profile from "./pages/user-profile";
 import Home from "./pages/home";
 import ProductSearch from "./pages/product-search";
 import Forgotpassword from "./pages/forgotpassword";
+import { useEffect } from 'react';
 
 export default function App() {
     useEffect(() => {
