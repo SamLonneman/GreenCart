@@ -150,6 +150,9 @@ export default function Signin(){
                   Sign Up
                 </button>
               </div>
+              <div>
+                <p>Don't have an account? <Link to="/register"><Button variant="link" type="submit">Sign Up</Button></Link></p>
+              </div>
           </Form>
         </Container>
       </header>
