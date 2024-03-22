@@ -34,7 +34,7 @@ const Navbar = () => {
                     {/* <NavBtnLink to='/sign-in'>Sign In</NavBtnLink> */}
                 </NavMenu>
                 <NavBtn>
-                    <NavBtnLink to="/sigin">
+                    <NavBtnLink to="/login">
                         Sign In
                     </NavBtnLink>
                 </NavBtn>
