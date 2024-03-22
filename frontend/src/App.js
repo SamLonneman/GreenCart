@@ -14,6 +14,10 @@ import ProductSearch from "./pages/product-search";
 import Forgotpassword from "./pages/forgotpassword";
 
 export default function App() {
+    useEffect(() => {
+        document.title = "GreenCart"
+     }, []);
+
     return (
         <Router>
             <Navbar />

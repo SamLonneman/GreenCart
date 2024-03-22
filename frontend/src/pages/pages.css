@@ -52,6 +52,18 @@ h2 {
     margin-bottom: 0.01rem;
 
 }
+.custom-input{
+    font-size: 16px !important;
+    margin: 0.5em 0em !important;
+    width: 45% !important;
+    color: black !important;
+}
+.button{
+    font-size: 16px !important;
+    margin: 0.5em 0.5em !important;
+    width: 15% !important;
+    color: white !important;
+=======
 .tablecell{
     padding: 10px;
     text-align: center;
