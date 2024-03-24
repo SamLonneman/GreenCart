@@ -10,73 +10,77 @@
 // import Visibility from '@mui/icons-material/Visibility';
 // import VisibilityOff from '@mui/icons-material/VisibilityOff';
 // import { Box, Fab, FormHelperText } from '@mui/material';
-import * as React from 'react';
+import React, {useState} from 'react';
+import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Container, Row, Button, Form, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import './pages.css';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { green, grey} from '@mui/material/colors';
+import {connect } from 'react-redux';
+import {login} from '../actions/auth';
+// import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import { green, grey} from '@mui/material/colors';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import CSRFToken from '../components/CSRFToken';
 
-const theme = createTheme({
-  palette: {
-    primary: green,
-    secondary: grey,
-  },
-});
-const customTheme = (outerTheme) =>
-  createTheme({
-    palette: {
-      mode: outerTheme.palette.mode,
-    },
-    components: {
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            '--TextField-brandBorderColor': '#E0E3E7',
-            '--TextField-brandBorderHoverColor': '#B2BAC2',
-            '--TextField-brandBorderFocusedColor': '#6F7E8C',
-            '& label.Mui-focused': {
-              color: 'var(--TextField-brandBorderFocusedColor)',
-            },
-          },
-        },
-      },
-      MuiInput: {
-        styleOverrides: {
-          root: {
-            '&::before': {
-              borderBottom: '2px solid var(--TextField-brandBorderColor)',
-            },
-            '&:hover:not(.Mui-disabled, .Mui-error):before': {
-              borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
-            },
-            '&.Mui-focused:after': {
-              borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
-            },
-            '&MuiInputBase-root': {
-              color: 'white',
-            },
-          },
-        },
-      },
-      MuiFormControl: {
-        styleOverrides: {
-          root: {
-            '--TextField-brandBorderColor': '#E0E3E7',
-            '--TextField-brandBorderHoverColor': '#B2BAC2',
-            '--TextField-brandBorderFocusedColor': '#6F7E8C',
-            '& label.Mui-focused': {
-              color: 'var(--TextField-brandBorderFocusedColor)',
-            },
-          },
-        },
-      },
-    },
-  });
+// const theme = createTheme({
+//   palette: {
+//     primary: green,
+//     secondary: grey,
+//   },
+// });
+// const customTheme = (outerTheme) =>
+//   createTheme({
+//     palette: {
+//       mode: outerTheme.palette.mode,
+//     },
+//     components: {
+//       MuiTextField: {
+//         styleOverrides: {
+//           root: {
+//             '--TextField-brandBorderColor': '#E0E3E7',
+//             '--TextField-brandBorderHoverColor': '#B2BAC2',
+//             '--TextField-brandBorderFocusedColor': '#6F7E8C',
+//             '& label.Mui-focused': {
+//               color: 'var(--TextField-brandBorderFocusedColor)',
+//             },
+//           },
+//         },
+//       },
+//       MuiInput: {
+//         styleOverrides: {
+//           root: {
+//             '&::before': {
+//               borderBottom: '2px solid var(--TextField-brandBorderColor)',
+//             },
+//             '&:hover:not(.Mui-disabled, .Mui-error):before': {
+//               borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
+//             },
+//             '&.Mui-focused:after': {
+//               borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
+//             },
+//             '&MuiInputBase-root': {
+//               color: 'white',
+//             },
+//           },
+//         },
+//       },
+//       MuiFormControl: {
+//         styleOverrides: {
+//           root: {
+//             '--TextField-brandBorderColor': '#E0E3E7',
+//             '--TextField-brandBorderHoverColor': '#B2BAC2',
+//             '--TextField-brandBorderFocusedColor': '#6F7E8C',
+//             '& label.Mui-focused': {
+//               color: 'var(--TextField-brandBorderFocusedColor)',
+//             },
+//           },
+//         },
+//       },
+//     },
+//   });
 
 const messages = {
   missingEmail: "Please enter an email address.",
@@ -96,24 +100,37 @@ const LoginSchema = Yup.object().shape({
     .required()
 })
 
-export default function Signin(){
-  
+const Login = ({login, isAuthenticated}) => {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+
+  const { username, password } = formData;
+
+  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(LoginSchema)
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = e => {
+    e.preventDefault();
+    login(username, password);
+  };
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace = {true}/>;
+  }
 
   return(
     <div className="signin">
       <header className="signin-header">
         <Container>
           <h1 className='green'>Login</h1>
-          <Form onSubmit={handleSubmit((data) => onSubmit(data))}>
+          <Form onSubmit={e => onSubmit(e)}>
+            <CSRFToken />
             <Container>
               <Row>
                 <Col>
@@ -122,8 +139,10 @@ export default function Signin(){
                       className="custom-input"
                       required type="username"
                       placeholder="Name"
+                      name = 'username'
+                      onChange={e => onChange(e)}
+                      value = {username}
                       isInvalid={errors.username}
-                      {...register('username')}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.username?.message}
@@ -139,19 +158,21 @@ export default function Signin(){
                     className="custom-input"
                     required type="password"
                     placeholder="Password"
+                    name = 'password'
+                    onChange={e => onChange(e)}
+                    value = {password}
                     isInvalid={errors.password}
-                    {...register('password')}
                   />
                 </Form.Group>
               </Row>
             </Container>
             <div class="flex items-center">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type = 'submit'>
                   Sign Up
                 </button>
               </div>
               <div>
-                <p>Don't have an account? <Link to="/register"><Button variant="link" type="submit">Sign Up</Button></Link></p>
+                <p>Don't have an account? <Link to="/register"><Button variant="link">Sign Up</Button></Link></p>
               </div>
           </Form>
         </Container>
@@ -159,7 +180,10 @@ export default function Signin(){
     </div>
   )
 };
-
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+export default connect(mapStateToProps, {login})(Login);
 // export default function Sigin() {
    
 //     const outerTheme = createTheme();

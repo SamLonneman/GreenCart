@@ -1,0 +1,14 @@
+// Auth Dispatch states
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAIL = "LOGOUT_FAIL";
+export const AUTHENTICATED_SUCCESS = "AUTHENTICATED_SUCCESS";
+export const AUTHENTICATED_FAIL = "AUTHENTICATED_FAIL";
+
+
+// Profile Dispatch states
+export const LOAD_USER_PROFILE_SUCCESS = "USER_LOADED_SUCCESS";
+export const LOAD_USER_PROFILE_FAIL = "USER_LOADED_FAIL";

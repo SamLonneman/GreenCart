@@ -4,16 +4,16 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from user_profile.models import UserProfile
 from .serializers import UserSerializer
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib import auth
 
-@method_decorator(csrf_protect, name='dispatch')
 class CheckAuthenticatedView(APIView):
 
     def get(self, request, format = None):
+        user = self.request.user
         try:
-            isAuthenticated = User.is_authenticated
+            isAuthenticated = user.is_authenticated
             if isAuthenticated:
                 return Response({'isAuthenticated': 'success'})
             else:
@@ -30,6 +30,7 @@ class SignupView(APIView):
         username = data['username']
         password = data['password']
         re_password = data['re_password']
+        email_ = data['email']
 
         try:
             if password == re_password:
@@ -40,10 +41,8 @@ class SignupView(APIView):
                         return Response({'error': 'Password must be at least 6 characters'})
                     else:
                         user = User.objects.create_user(username = username, password = password)
-                        user.save()
                         user = User.objects.get(id = user.id)
-                        user_profile = UserProfile(user = user, name = '', email = '')
-                        user_profile.save()
+                        user_profile = UserProfile.objects.create(user = user, name = '', email = email_)
                         return Response({'success': 'User created successfully'})
             else:
                 return Response({'error': 'Passwords do not match'})
@@ -61,7 +60,7 @@ class LoginView(APIView):
           user = auth.authenticate(username = username, password = password)
           if user is not None:
               auth.login(request, user)
-              return Response({'success': 'User authenticated', 'username': username})
+              return Response({'success': 'User authenticated'})
           else:
               return Response({'error': 'Error Authenticating'})
        except:
@@ -74,12 +73,16 @@ class LogoutView(APIView):
             return Response({'success': 'User logged out'})
         except:
             return Response({'error': 'Error logging out'})
+        
+
 @method_decorator(ensure_csrf_cookie, name='dispatch')     
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request, format = None):
         return Response({'success': 'CSRF cookie set'})
+    
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class DeleteAccountView(APIView):
     def delete(self, request, format = None):
         user = self.request.user

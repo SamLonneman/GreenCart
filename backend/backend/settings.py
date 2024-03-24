@@ -32,6 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://localhost:8000']
+
 
 # Application definition
 
@@ -46,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'accounts',
-    'user_profile'
+    'user_profile',
+    'backend'
 ]
 
 MIDDLEWARE = [
@@ -133,7 +136,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 REACT_APP_DIR = os.path.join(BASE_DIR.parent, 'frontend')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build\static')
+    os.path.join(BASE_DIR, 'build\\static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -152,3 +155,7 @@ REST_FRAMEWORK = {
     ]
 }
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = False
+SESSION_COOKIE_HTTPONLY = False

@@ -1,10 +1,15 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import {connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import '../App.css';
 import { Container, Row, Button, Form, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
+import { register }  from '../actions/auth';
+import CSRFToken from '../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -36,29 +41,48 @@ const RegisterSchema = Yup.object().shape({
     .matches(PASSWORD_COMPLEX_REGEX, messages.invalidPassword)
     .min(8, "Password is too short, should be at least 8 characters."),
 
-  confirmPassword: Yup
+  re_password: Yup
     .string()
   //.oneOf([Yup.ref('password'), null], messages.noMatchPassword)
 });
-
-export default function Register() {
+const Register = ({ register, isAuthenticated }) => {
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(RegisterSchema)
   });
-
-  const onSubmit = (data) => console.log(data);
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    re_password: '',
+    email: ''
+  });
+  const [accountCreated, setAccountCreated] = useState(false);
+  const { username, password, re_password, email } = formData;
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onSubmit = e => {
+    e.preventDefault();
+    if (password === re_password) {
+      register(username, password, re_password, email);
+      setAccountCreated(true);
+    }
+  }
+  if (accountCreated) {
+    return <Navigate to="/login" replace = {true}/>;
+  }
+  if (isAuthenticated) {
+    return <Navigate to="/" replace = {true}/>;
+  }
 
   return (
     <div className="register">
       <header className="register-header">
         <Container>
           <h1 className='green'>Create Account</h1>
-          <Form onSubmit={handleSubmit((data) => onSubmit(data))}>
+          <Form onSubmit={e => onSubmit(e)}>
+            <CSRFToken />
             <Container>
               <Row>
                 <Col>
@@ -66,9 +90,11 @@ export default function Register() {
                     <Form.Control
                       className="custom-input"
                       required type="username"
-                      placeholder="Name"
+                      placeholder="Username"
+                      name = 'username'
+                      onChange={e => onChange(e)}
+                      value = {username}
                       isInvalid={errors.username}
-                      {...register('username')}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.username?.message}
@@ -84,8 +110,10 @@ export default function Register() {
                     className="custom-input"
                     required type="email"
                     placeholder="Email"
+                    name = 'email'
+                    onChange={e => onChange(e)}
+                    value = {email}
                     isInvalid={errors.email}
-                    {...register('email')}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.email?.message}
@@ -100,8 +128,10 @@ export default function Register() {
                     className="custom-input"
                     required type="password"
                     placeholder="Password"
+                    name = 'password'
+                    onChange={e => onChange(e)}
+                    value = {password}
                     isInvalid={errors.password}
-                    {...register('password')}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.password?.message}
@@ -116,22 +146,24 @@ export default function Register() {
                     className="custom-input"
                     required type="password"
                     placeholder="Confirm Password"
-                    isInvalid={errors.confirmPassword}
-                    {...register('confirmPassword')}
+                    name = 're_password'
+                    onChange={e => onChange(e)}
+                    value = {re_password}
+                    isInvalid={errors.re_password}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.confirmPassword?.message}
+                    {errors.re_password?.message}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Row>
             </Container>
               <div class="flex items-center">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type = "submit">
                   Sign Up
                 </button>
               </div>
               <div>
-                <p>Already have an account? <Link to="/login"><Button variant="link" type="submit">Sign In</Button></Link></p>
+                <p>Already have an account? <Link to="/login"><Button variant="link">Sign In</Button></Link></p>
               </div>
           </Form>
           {/* <Form>
@@ -171,7 +203,7 @@ export default function Register() {
             <Row>
               <Col>
                 <div>
-                  <Form.Group controlId="confirmPassword">
+                  <Form.Group controlId="re_password">
                     <Form.Label>Confirm password</Form.Label>
                     <Form.Control required type="password" placeholder="" />
                     <Form.Control.Feedback type="invalid">Please re-enter your password.</Form.Control.Feedback>
@@ -194,3 +226,8 @@ export default function Register() {
     </div>
   )
 };
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+export default connect(mapStateToProps, { register })(Register);
