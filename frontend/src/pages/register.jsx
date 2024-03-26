@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import {connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import '../App.css';
 import { Container, Row, Button, Form, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { register }  from '../actions/auth';
+import { register } from '../actions/auth';
 import CSRFToken from '../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -70,160 +70,116 @@ const Register = ({ register, isAuthenticated }) => {
     }
   }
   if (accountCreated) {
-    return <Navigate to="/login" replace = {true}/>;
+    return <Navigate to="/login" replace={true} />;
   }
   if (isAuthenticated) {
-    return <Navigate to="/" replace = {true}/>;
+    return <Navigate to="/" replace={true} />;
   }
 
   return (
-    <div className="register">
-      <header className="register-header">
-        <Container>
-          <h1 className='green'>Create Account</h1>
-          <Form onSubmit={e => onSubmit(e)}>
-            <CSRFToken />
-            <Container>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formUsername">
+    <section class="bg-gray-50 min-h-screen flex items-center justify-center">
+      {/* <div className="flex w-full">
+      
+        <div className="divider divider-horizontal"></div>
+        <div className="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">About</div>
+      </div> */}
+      <div classNem="flex w-full">
+        <header className="register-header">
+        <div className="grid h-100 flex-grow card bg-base-500 rounded-box place-items-center">
+          <Container>
+            <h1 className>Create Account</h1>
+            
+            <Form onSubmit={e => onSubmit(e)}>
+              <CSRFToken />
+              <Container className="d-flex flex-column justify-content-center">
+                <Row className="justify-content-center">
+                  <Col>
+                    <Form.Group controlId="formUsername">
+                      <Form.Control
+                        className="custom-input"
+                        required type="username"
+                        placeholder="Username"
+                        name='username'
+                        onChange={e => onChange(e)}
+                        value={username}
+                        isInvalid={errors.username}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.username?.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Container>
+              <Container>
+                <Row>
+                  <Form.Group controlId="formEmail">
                     <Form.Control
                       className="custom-input"
-                      required type="username"
-                      placeholder="Username"
-                      name = 'username'
+                      required type="email"
+                      placeholder="Email"
+                      name='email'
                       onChange={e => onChange(e)}
-                      value = {username}
-                      isInvalid={errors.username}
+                      value={email}
+                      isInvalid={errors.email}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {errors.username?.message}
+                      {errors.email?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
-                </Col>
-              </Row>
-            </Container>
-            <Container>
-              <Row>
-                <Form.Group controlId="formEmail">
-                  <Form.Control
-                    className="custom-input"
-                    required type="email"
-                    placeholder="Email"
-                    name = 'email'
-                    onChange={e => onChange(e)}
-                    value = {email}
-                    isInvalid={errors.email}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.email?.message}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Row>
-            </Container>
-            <Container>
-              <Row>
-                <Form.Group controlId="formPassword">
-                  <Form.Control
-                    className="custom-input"
-                    required type="password"
-                    placeholder="Password"
-                    name = 'password'
-                    onChange={e => onChange(e)}
-                    value = {password}
-                    isInvalid={errors.password}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.password?.message}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Row>
-            </Container>
-            <Container>
-              <Row>
-                <Form.Group controlId="formConfirmPass">
-                  <Form.Control
-                    className="custom-input"
-                    required type="password"
-                    placeholder="Confirm Password"
-                    name = 're_password'
-                    onChange={e => onChange(e)}
-                    value = {re_password}
-                    isInvalid={errors.re_password}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.re_password?.message}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Row>
-            </Container>
+                </Row>
+              </Container>
+              <Container>
+                <Row>
+                  <Form.Group controlId="formPassword">
+                    <Form.Control
+                      className="custom-input"
+                      required type="password"
+                      placeholder="Password"
+                      name='password'
+                      onChange={e => onChange(e)}
+                      value={password}
+                      isInvalid={errors.password}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.password?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+              </Container>
+              <Container>
+                <Row>
+                  <Form.Group controlId="formConfirmPass">
+                    <Form.Control
+                      className="custom-input"
+                      required type="password"
+                      placeholder="Confirm Password"
+                      name='re_password'
+                      onChange={e => onChange(e)}
+                      value={re_password}
+                      isInvalid={errors.re_password}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.re_password?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+              </Container>
               <div class="flex items-center">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type = "submit">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit">
                   Sign Up
                 </button>
               </div>
               <div>
                 <p>Already have an account? <Link to="/login"><Button variant="link">Sign In</Button></Link></p>
               </div>
-          </Form>
-          {/* <Form>
-            <Card>
-                Welcome to GreenCart, please Sign Up.
-            <Row>
-              <Col>
-                <div className="form-group">
-                  <Form.Group controlId="formEmail">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control required type="email" placeholder="gatoralbert@ufl.edu" />
-                    <Form.Control.Feedback type="invalid">Please enter your email.</Form.Control.Feedback>
-                  </Form.Group>
-                </div>
-              </Col>
-              <Col>
-                <div>
-                  <Form.Group controlId="formName">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control required type="text" placeholder="greencart_1" />
-                    <Form.Control.Feedback type="invalid">Please enter a username.</Form.Control.Feedback>
-                  </Form.Group>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <div>
-                  <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control required type="password" placeholder="" />
-                    <Form.Control.Feedback type="invalid">Please enter a password.</Form.Control.Feedback>
-                  </Form.Group>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <div>
-                  <Form.Group controlId="re_password">
-                    <Form.Label>Confirm password</Form.Label>
-                    <Form.Control required type="password" placeholder="" />
-                    <Form.Control.Feedback type="invalid">Please re-enter your password.</Form.Control.Feedback>
-                  </Form.Group>
-                </div>
-              </Col>
-              </Row>
-              </Card>
-              <Row>
-              <div>
-                <Button type="submit">Register</Button>
-              </div>
-              <div>
-                <p>Already have an account? <Link to="/sigin"><Button variant="link" type="submit">Sign In</Button></Link></p>
-              </div>
-            </Row>
-          </Form> */}
-        </Container>
-      </header>
-    </div>
+            </Form>
+          </Container>
+        </div>
+        </header>
+      </div>
+    </section>
+    
   )
 };
 
