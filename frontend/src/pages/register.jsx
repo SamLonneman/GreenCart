@@ -40,10 +40,6 @@ const RegisterSchema = Yup.object().shape({
     .required("Please enter a password.")
     .matches(PASSWORD_COMPLEX_REGEX, messages.invalidPassword)
     .min(8, "Password is too short, should be at least 8 characters."),
-
-  re_password: Yup
-    .string()
-  //.oneOf([Yup.ref('password'), null], messages.noMatchPassword)
 });
 const Register = ({ register, isAuthenticated }) => {
 
@@ -147,7 +143,7 @@ const Register = ({ register, isAuthenticated }) => {
                   </Form.Group>
                 </Row>
               </Container>
-              <Container>
+              {/* <Container>
                 <Row>
                   <Form.Group controlId="formConfirmPass">
                     <Form.Control
@@ -164,7 +160,7 @@ const Register = ({ register, isAuthenticated }) => {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
-              </Container>
+              </Container> */}
               <div class="flex items-center">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit">
                   Sign Up
