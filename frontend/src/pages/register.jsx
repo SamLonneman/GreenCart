@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -11,7 +11,7 @@ import Footer from './footer';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { register } from '../actions/auth';
+import { register as registerAction} from '../actions/auth';
 import CSRFToken from '../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,7 +21,7 @@ export const PASSWORD_COMPLEX_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d
 const messages = {
   missingEmail: "Email is required.",
   missingUsername: "Username is required.",
-  invalidPassword: "Invalid Password",
+  invalidPassword: "Not strong enough.",
   invalidPassword2: "Password must be between 8 and 20 characters.",
   noMatchPassword: "Passwords must match."
 };
@@ -50,61 +50,115 @@ const RegisterSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], messages.noMatchPassword) // Compares with password to ensure those passwords match.
   // Password matching
 });
-const Register = ({ register, isAuthenticated }) => {
+
+
+
+
+// const Register = (/*{ register, isAuthenticated }*/) => {
+
+  
+
+  // const [formData, setFormData] = useState({
+  //   username: '',
+  //   password: '',
+  //   re_password: '',
+  //   email: ''
+  // });
+  // const [accountCreated, setAccountCreated] = useState(false);
+  // const { username, password, re_password, email } = formData;
+  // const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  // const onSubmit = e => {
+  //   e.preventDefault();
+  //   if (password === re_password) {
+  //     register(username, password, re_password, email);
+  //     setAccountCreated(true);
+  //   }
+  // }
+
+  // const onSub = (data) => console.log(data);
+
+  // if (accountCreated) {
+  //   return <Navigate to="/login" replace={true} />;
+  // }
+  // if (isAuthenticated) {
+  //   return <Navigate to="/" replace={true} />;
+  // }
+
+const Register = ({registerAction, isAuthenticated}) => {
 
   const {
+    register,
     handleSubmit,
     formState: { errors },
+    trigger,
+    watch
   } = useForm({
+    mode: 'onChange',
     resolver: yupResolver(RegisterSchema) // pass the rules to the useForm
   });
 
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    re_password: '',
-    email: ''
-  });
-  const [accountCreated, setAccountCreated] = useState(false);
-  const { username, password, re_password, email } = formData;
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onSubmit = e => {
-    e.preventDefault();
-    if (password === re_password) {
-      register(username, password, re_password, email);
-      setAccountCreated(true);
-    }
-  }
-  if (accountCreated) {
-    return <Navigate to="/login" replace={true} />;
-  }
-  if (isAuthenticated) {
-    return <Navigate to="/" replace={true} />;
+  async function onSubmit(data){
+
   }
 
   return (
-
     <div className="register-form">
-      <div className="container">
-
-
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSub)}>
           <h1 className="green">Create Account</h1>
           <div className="form-group">
-            <Icon.Person/>
             <input
               name="username"
               type="text"
               {...register('username')}
-              className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+              className={`form-control form-item-spacing ${errors.username ? 'is-invalid' : ''}`} 
               placeholder="Username"
             />
             <div className="invalid-feedback">{errors.username?.message}</div>
           </div>
+          <div className="form-group">
+            <input
+              name="email"
+              type="text"
+              {...register('email')}
+              className={`form-control form-item-spacing ${errors.email ? 'is-invalid' : ''}`} 
+              placeholder="xample@email.com"
+            />
+            <div className="invalid-feedback">{errors.email?.message}</div>
+          </div>
+          <div className="form-group">
+            <input
+              name="password"
+              type="password"
+              {...register('password')}
+              className={`form-control form-item-spacing ${errors.password ? 'is-invalid' : ''}`} 
+              placeholder="••••••••"
+            />
+            <div className="invalid-feedback">{errors.password?.message}</div>
+          </div>
+          <div className="form-group">
+            <input
+              name="confirm-password"
+              type="password"
+              {...register('re_password')}
+              className={`form-control form-item-spacing ${errors.re_password ? 'is-invalid' : ''}`} 
+              placeholder="••••••••"
+            />
+            <div className="invalid-feedback">{errors.re_password?.message}</div>
+          </div>
+          <div className="form-group">
+          <button type="submit" className="btn">Sign Up</button>
+          </div>
         </form>
       </div>
-    </div>
-    // <section class="bg-gray-75 min-h-screen flex items-center justify-center">
+  )
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+export default connect(mapStateToProps, { registerAction })(Register);
+
+// <section class="bg-gray-75 min-h-screen flex items-center justify-center">
     //     <header className="register-header">
     //         <Container>
     //           <h1 className>Create Account</h1>
@@ -202,12 +256,3 @@ const Register = ({ register, isAuthenticated }) => {
     //         </Container>
     //     </header>
     // </section>
-
-
-  )
-};
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-export default connect(mapStateToProps, { register })(Register);
