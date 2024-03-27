@@ -89,3 +89,7 @@ form{
     justify-content: space-between;
     height: 100%;
 }
+
+.form-item-spacing {
+    margin-bottom: 10px; /* Adjust the value as needed */
+  }
