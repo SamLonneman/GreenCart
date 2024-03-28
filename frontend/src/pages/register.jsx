@@ -17,9 +17,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export const PASSWORD_COMPLEX_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,20}$/);
+export const DOMAIN_REGEX = new RegExp(/@(gmail\.com|yahoo\.com|hotmail\.com|outlook\.com|ufl\.edu|icloud\.com|aol\.com)$/);
 
 const messages = {
   missingEmail: "Email is required.",
+  invalidEmail: "Email not supported.",
   missingUsername: "Username is required.",
   invalidPassword: "Not strong enough.",
   invalidPassword2: "Password must be between 8 and 20 characters.",
@@ -31,7 +33,8 @@ const RegisterSchema = Yup.object().shape({
   email: Yup
     .string()
     .email('Invalid Email Address.')
-    .required(messages.missingEmail),
+    .required(messages.missingEmail)
+    .matches(DOMAIN_REGEX, messages.invalidEmail),
 
   username: Yup
     .string()
@@ -50,9 +53,6 @@ const RegisterSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], messages.noMatchPassword) // Compares with password to ensure those passwords match.
   // Password matching
 });
-
-
-
 
 // const Register = (/*{ register, isAuthenticated }*/) => {
 
@@ -90,32 +90,46 @@ const Register = ({registerAction, isAuthenticated}) => {
     register,
     handleSubmit,
     formState: { errors },
-    trigger,
-    watch
   } = useForm({
     mode: 'onChange',
     resolver: yupResolver(RegisterSchema) // pass the rules to the useForm
   });
 
-  async function onSubmit(data){
+  const [accountCreated, setAccountCreated] = useState(false);
 
+  const onSubmit = data =>{
+    //data.preventDefault;
+    registerAction({...register('username')}, {...register('password')}, {...register('re_password')}, {...register('email')});
+    setAccountCreated(true);
+    console.log(accountCreated);
+    console.log(data);
+  }
+
+  if(accountCreated){
+    return <Navigate to="/login" replace={true} />;
+  }
+  if(isAuthenticated){
+    return <Navigate to="/" replace={true} />;
   }
 
   return (
     <div className="register-form">
-        <form onSubmit={handleSubmit(onSub)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CSRFToken/>
           <h1 className="green">Create Account</h1>
           <div className="form-group">
+            <label>Username</label>
             <input
               name="username"
               type="text"
               {...register('username')}
               className={`form-control form-item-spacing ${errors.username ? 'is-invalid' : ''}`} 
-              placeholder="Username"
+              placeholder="greencart"
             />
             <div className="invalid-feedback">{errors.username?.message}</div>
           </div>
           <div className="form-group">
+            <label>Email</label>
             <input
               name="email"
               type="text"
@@ -126,6 +140,7 @@ const Register = ({registerAction, isAuthenticated}) => {
             <div className="invalid-feedback">{errors.email?.message}</div>
           </div>
           <div className="form-group">
+            <label>Password</label>
             <input
               name="password"
               type="password"
@@ -136,6 +151,7 @@ const Register = ({registerAction, isAuthenticated}) => {
             <div className="invalid-feedback">{errors.password?.message}</div>
           </div>
           <div className="form-group">
+            <label>Confirm Password</label>
             <input
               name="confirm-password"
               type="password"
@@ -157,102 +173,3 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 export default connect(mapStateToProps, { registerAction })(Register);
-
-// <section class="bg-gray-75 min-h-screen flex items-center justify-center">
-    //     <header className="register-header">
-    //         <Container>
-    //           <h1 className>Create Account</h1>
-
-    //           <Form noValidate onSubmit={e => onSubmit(e)}>
-    //             <CSRFToken />
-    //             <Container className="d-flex flex-column justify-content-center">
-    //               <Row className="justify-content-center">
-    //                 <Col>
-    //                   <Form.Group controlId="formUsername">
-    //                     <InputGroup>
-    //                       <InputGroup.Text>
-    //                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
-    //                       </InputGroup.Text>
-    //                       <Form.Control
-    //                         className="custom-input"
-    //                         required type="username"
-    //                         placeholder="Username"
-    //                         name='username'
-    //                         onChange={e => onChange(e)}
-    //                         value={username}
-    //                         isInvalid={errors.username}
-    //                       />
-    //                     </InputGroup>
-    //                     <Form.Control.Feedback type="invalid">
-    //                       {errors.username?.message}
-    //                     </Form.Control.Feedback>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //             </Container>
-    //             <Container>
-    //               <Row>
-    //                 <Form.Group controlId="formEmail">
-    //                   <Form.Control
-    //                     className="custom-input"
-    //                     required type="email"
-    //                     placeholder="Email"
-    //                     name='email'
-    //                     onChange={e => onChange(e)}
-    //                     value={email}
-    //                     isInvalid={errors.email}
-    //                   />
-    //                   <Form.Control.Feedback type="invalid">
-    //                     {errors.email?.message}
-    //                   </Form.Control.Feedback>
-    //                 </Form.Group>
-    //               </Row>
-    //             </Container>
-    //             <Container>
-    //               <Row>
-    //                 <Form.Group controlId="formPassword">
-    //                   <Form.Control
-    //                     className="custom-input"
-    //                     required type="password"
-    //                     placeholder="Password"
-    //                     name='password'
-    //                     onChange={e => onChange(e)}
-    //                     value={password}
-    //                     isInvalid={errors.password}
-    //                   />
-    //                   <Form.Control.Feedback type="invalid">
-    //                     {errors.password?.message}
-    //                   </Form.Control.Feedback>
-    //                 </Form.Group>
-    //               </Row>
-    //             </Container>
-    //             <Container>
-    //               <Row>
-    //                 <Form.Group controlId="formConfirmPass">
-    //                   <Form.Control
-    //                     className="custom-input"
-    //                     required type="password"
-    //                     placeholder="Confirm Password"
-    //                     name='re_password'
-    //                     onChange={e => onChange(e)}
-    //                     value={re_password}
-    //                     isInvalid={errors.re_password}
-    //                   />
-    //                   <Form.Control.Feedback type="invalid">
-    //                     {errors.re_password?.message}
-    //                   </Form.Control.Feedback>
-    //                 </Form.Group>
-    //               </Row>
-    //             </Container>
-    //             <div class="flex items-center">
-    //               <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit">
-    //                 Sign Up
-    //               </button>
-    //             </div>
-    //             <div>
-    //               <p>Already have an account? <Link to="/login"><Button variant="link">Sign In</Button></Link></p>
-    //             </div>
-    //           </Form>
-    //         </Container>
-    //     </header>
-    // </section>
