@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import * as Icon from 'react-bootstrap-icons';
+import Cart from '../icons/cart.png';
 import '../App.css';
 import { Container, Row, Button, Form, Col } from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -11,7 +12,7 @@ import Footer from './footer';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { register as registerAction} from '../actions/auth';
+import { register as registerAction } from '../actions/auth';
 import CSRFToken from '../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -56,35 +57,35 @@ const RegisterSchema = Yup.object().shape({
 
 // const Register = (/*{ register, isAuthenticated }*/) => {
 
-  
 
-  // const [formData, setFormData] = useState({
-  //   username: '',
-  //   password: '',
-  //   re_password: '',
-  //   email: ''
-  // });
-  // const [accountCreated, setAccountCreated] = useState(false);
-  // const { username, password, re_password, email } = formData;
-  // const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-  // const onSubmit = e => {
-  //   e.preventDefault();
-  //   if (password === re_password) {
-  //     register(username, password, re_password, email);
-  //     setAccountCreated(true);
-  //   }
-  // }
 
-  // const onSub = (data) => console.log(data);
+// const [formData, setFormData] = useState({
+//   username: '',
+//   password: '',
+//   re_password: '',
+//   email: ''
+// });
+// const [accountCreated, setAccountCreated] = useState(false);
+// const { username, password, re_password, email } = formData;
+// const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+// const onSubmit = e => {
+//   e.preventDefault();
+//   if (password === re_password) {
+//     register(username, password, re_password, email);
+//     setAccountCreated(true);
+//   }
+// }
 
-  // if (accountCreated) {
-  //   return <Navigate to="/login" replace={true} />;
-  // }
-  // if (isAuthenticated) {
-  //   return <Navigate to="/" replace={true} />;
-  // }
+// const onSub = (data) => console.log(data);
 
-const Register = ({registerAction, isAuthenticated}) => {
+// if (accountCreated) {
+//   return <Navigate to="/login" replace={true} />;
+// }
+// if (isAuthenticated) {
+//   return <Navigate to="/" replace={true} />;
+// }
+
+const Register = ({ registerAction, isAuthenticated }) => {
 
   const {
     register,
@@ -97,75 +98,87 @@ const Register = ({registerAction, isAuthenticated}) => {
 
   const [accountCreated, setAccountCreated] = useState(false);
 
-  const onSubmit = data =>{
+  const onSubmit = data => {
     //data.preventDefault;
-    registerAction({...register('username')}, {...register('password')}, {...register('re_password')}, {...register('email')});
+    registerAction({ ...register('username') }, { ...register('password') }, { ...register('re_password') }, { ...register('email') });
     setAccountCreated(true);
     console.log(accountCreated);
     console.log(data);
   }
 
-  if(accountCreated){
+  if (accountCreated) {
     return <Navigate to="/login" replace={true} />;
   }
-  if(isAuthenticated){
+  if (isAuthenticated) {
     return <Navigate to="/" replace={true} />;
   }
 
   return (
     <div className="register-form">
+      <div className="center">
+      <div className="custom-box center">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <CSRFToken/>
-          <h1 className="green">Create Account</h1>
+          <CSRFToken />
+          <img src={Cart} alt="GreenCart"/>
+          <h1 className="center-text">GreenCart</h1>
+          <h2 className="sh center-text">Reimagining sustainability, 1 goal at a time.</h2>
           <div className="form-group">
-            <label>Username</label>
+            <label className="custom-text"> Username</label>
             <input
               name="username"
               type="text"
               {...register('username')}
-              className={`form-control form-item-spacing ${errors.username ? 'is-invalid' : ''}`} 
+              className={`form-control form-item-spacing ${errors.username ? 'is-invalid' : ''}`}
               placeholder="greencart"
             />
             <div className="invalid-feedback">{errors.username?.message}</div>
           </div>
           <div className="form-group">
-            <label>Email</label>
+            <label className="custom-text">Email</label>
             <input
               name="email"
               type="text"
               {...register('email')}
-              className={`form-control form-item-spacing ${errors.email ? 'is-invalid' : ''}`} 
+              className={`form-control form-item-spacing ${errors.email ? 'is-invalid' : ''}`}
               placeholder="xample@email.com"
             />
             <div className="invalid-feedback">{errors.email?.message}</div>
           </div>
           <div className="form-group">
-            <label>Password</label>
+            <label className="custom-text">Password</label>
             <input
               name="password"
               type="password"
               {...register('password')}
-              className={`form-control form-item-spacing ${errors.password ? 'is-invalid' : ''}`} 
+              className={`form-control form-item-spacing ${errors.password ? 'is-invalid' : ''}`}
               placeholder="••••••••"
             />
             <div className="invalid-feedback">{errors.password?.message}</div>
           </div>
           <div className="form-group">
-            <label>Confirm Password</label>
+            <label className="custom-text">Confirm Password</label>
             <input
               name="confirm-password"
               type="password"
               {...register('re_password')}
-              className={`form-control form-item-spacing ${errors.re_password ? 'is-invalid' : ''}`} 
+              className={`form-control form-item-spacing ${errors.re_password ? 'is-invalid' : ''}`}
               placeholder="••••••••"
             />
             <div className="invalid-feedback">{errors.re_password?.message}</div>
           </div>
           <div className="form-group">
-          <button type="submit" className="btn">Sign Up</button>
+            <button type="submit" className="custom-text btn button">Register</button>
+          </div>
+          <p className="custom-text">Have an account?</p>
+          <div className="form-group">
+            <Link to="/login"><button className="custom-text link btn btn-link">Log In</button></Link>
           </div>
         </form>
+        </div>
       </div>
+     
+      {/* <Footer/> */}
+    </div>
   )
 };
 
