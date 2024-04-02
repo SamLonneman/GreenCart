@@ -84,7 +84,7 @@ export const register = (username, password, re_password, email) => async dispat
         headers: {
             'Accept' : 'application/json',
             'Content-Type' : 'application/json',
-            'X-CSRF-Token': Cookies.get('csrftoken')
+            'X-CSRFToken': Cookies.get('csrftoken')
         }
         
     };
