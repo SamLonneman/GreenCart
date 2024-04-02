@@ -24,6 +24,7 @@ import {login} from '../actions/auth';
 // import { green, grey} from '@mui/material/colors';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CSRFToken from '../components/CSRFToken';
+import Cart from '../icons/cart.png';
 
 // const theme = createTheme({
 //   palette: {
@@ -83,7 +84,6 @@ import CSRFToken from '../components/CSRFToken';
 //   });
 
 const messages = {
-  missingEmail: "Please enter an email address.",
   missingUsername: "Please enter a username.",
   missingPassword: "Please enter a password.",
   invalidLogin: "Could not login, account does not exist or password is invalid."
@@ -97,10 +97,20 @@ const LoginSchema = Yup.object().shape({
   
   password: Yup
     .string()
-    .required()
+    .required(messages.missingPassword)
 })
 
 const Login = ({login, isAuthenticated}) => {
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(LoginSchema)
+  });
+
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -109,75 +119,61 @@ const Login = ({login, isAuthenticated}) => {
   const { username, password } = formData;
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(LoginSchema)
-  });
+  
 
   const onSubmit = e => {
-    e.preventDefault();
+    //e.preventDefault();
     login(username, password);
+    console.log(e);
   };
   if (isAuthenticated) {
     return <Navigate to="/home" replace = {true}/>;
   }
 
   return(
-    <div className="signin">
-      <header className="signin-header">
-        <Container>
-          <h1 className='green'>Login</h1>
-          <Form onSubmit={e => onSubmit(e)}>
-            <CSRFToken />
-            <Container>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formUsername">
-                    <Form.Control
-                      className="custom-input"
-                      required type="username"
-                      placeholder="Name"
-                      name = 'username'
-                      onChange={e => onChange(e)}
-                      value = {username}
-                      isInvalid={errors.username}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.username?.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Container>
-            <Container>
-              <Row>
-                <Form.Group controlId="formPassword">
-                  <Form.Control
-                    className="custom-input"
-                    required type="password"
-                    placeholder="Password"
-                    name = 'password'
-                    onChange={e => onChange(e)}
-                    value = {password}
-                    isInvalid={errors.password}
-                  />
-                </Form.Group>
-              </Row>
-            </Container>
-            <div class="flex items-center">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type = 'submit'>
-                  Sign Up
-                </button>
+    <div className="sigin-form">
+      <div className="center">
+        <div className="custom-box center">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <CSRFToken />
+              <img src={Cart} alt="GreenCart"/>
+              <h1 className="center-text">GreenCart</h1>
+              <h2 className="sh center-text">Reimagining sustainability, 1 goal at a time.</h2>
+              <div className="form-group">
+                <label className="custom-text"> Username</label>
+                <input 
+                  name="username"
+                  type="text"
+                  {...register('username')}
+                  className={`form-control form-item-spacing ${errors.username ? 'is-inavlid' : ''}`}
+                  placeholder='greencart'
+                />
+                <div className="invalid-feedback">{errors.username?.message}</div>
               </div>
-              <div>
-                <p>Don't have an account? <Link to="/register"><Button variant="link">Sign Up</Button></Link></p>
-              </div>
-          </Form>
-        </Container>
-      </header>
-    </div>
+              <div className="form-group">
+            <label className="custom-text">Password</label>
+            <input
+              name="password"
+              type="password"
+              {...register('password')}
+              className={`form-control form-item-spacing ${errors.password ? 'is-invalid' : ''}`}
+              placeholder="••••••••"
+            />
+            <div className="invalid-feedback">{errors.password?.message}</div>
+          </div>
+          <div className="form-group">
+            <button type="submit" className="custom-text btn button">Sign In</button>
+          </div>
+          <p className="custom-text">Don't have an account?</p>
+          <div className="form-group">
+            <Link to="/register"><button className="custom-text link btn btn-link">Sign Up</button></Link>
+          </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+    
   )
 };
 const mapStateToProps = state => ({
@@ -279,3 +275,56 @@ export default connect(mapStateToProps, {login})(Login);
 
 //     );
 // };
+
+
+/* <header className="signin-header">
+        <Container>
+          <h1 className='green'>Login</h1>
+          <Form onSubmit={e => onSubmit(e)}>
+            <CSRFToken />
+            <Container>
+              <Row>
+                <Col>
+                  <Form.Group controlId="formUsername">
+                    <Form.Control
+                      className="custom-input"
+                      required type="username"
+                      placeholder="Name"
+                      name = 'username'
+                      onChange={e => onChange(e)}
+                      value = {username}
+                      isInvalid={errors.username}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.username?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Container>
+            <Container>
+              <Row>
+                <Form.Group controlId="formPassword">
+                  <Form.Control
+                    className="custom-input"
+                    required type="password"
+                    placeholder="Password"
+                    name = 'password'
+                    onChange={e => onChange(e)}
+                    value = {password}
+                    isInvalid={errors.password}
+                  />
+                </Form.Group>
+              </Row>
+            </Container>
+            <div class="flex items-center">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type = 'submit'>
+                  Sign Up
+                </button>
+              </div>
+              <div>
+                <p>Don't have an account? <Link to="/register"><Button variant="link">Sign Up</Button></Link></p>
+              </div>
+          </Form>
+        </Container>
+      </header> */
