@@ -31,6 +31,7 @@ class SignupView(APIView):
         password = data['password']
         re_password = data['re_password']
         email_ = data['email']
+        print(f"Username: {username} Password: {password}")
 
         try:
             if password == re_password:
@@ -56,6 +57,7 @@ class LoginView(APIView):
        data = self.request.data
        username = data['username']
        password = data['password']
+       print(f"Username: {username} Password: {password}")
        try:
           user = auth.authenticate(username = username, password = password)
           if user is not None:
