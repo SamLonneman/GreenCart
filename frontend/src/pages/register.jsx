@@ -92,14 +92,13 @@ const Register = ({ registerAction, isAuthenticated }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'onChange',
     resolver: yupResolver(RegisterSchema) // pass the rules to the useForm
   });
 
   const [accountCreated, setAccountCreated] = useState(false);
 
   const onSubmit = data => {
-    //data.preventDefault;
+    //data.preventDefault();
     registerAction({ ...register('username') }, { ...register('password') }, { ...register('re_password') }, { ...register('email') });
     setAccountCreated(true);
     console.log(accountCreated);

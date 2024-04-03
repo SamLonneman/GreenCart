@@ -1,87 +1,15 @@
-// import React from 'react';
-// import IconButton from '@mui/material/IconButton';
-
-// import Input from '@mui/material/Input';
-// import InputLabel from '@mui/material/InputLabel';
-// import InputAdornment from '@mui/material/InputAdornment';
-
-// import FormControl from '@mui/material/FormControl';
-// import TextField from '@mui/material/TextField';
-// import Visibility from '@mui/icons-material/Visibility';
-// import VisibilityOff from '@mui/icons-material/VisibilityOff';
-// import { Box, Fab, FormHelperText } from '@mui/material';
 import React, {useState} from 'react';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Container, Row, Button, Form, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import './pages.css';
 import {connect } from 'react-redux';
 import {login} from '../actions/auth';
-// import { ThemeProvider, createTheme } from '@mui/material/styles';
-// import { green, grey} from '@mui/material/colors';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CSRFToken from '../components/CSRFToken';
 import Cart from '../icons/cart.png';
-
-// const theme = createTheme({
-//   palette: {
-//     primary: green,
-//     secondary: grey,
-//   },
-// });
-// const customTheme = (outerTheme) =>
-//   createTheme({
-//     palette: {
-//       mode: outerTheme.palette.mode,
-//     },
-//     components: {
-//       MuiTextField: {
-//         styleOverrides: {
-//           root: {
-//             '--TextField-brandBorderColor': '#E0E3E7',
-//             '--TextField-brandBorderHoverColor': '#B2BAC2',
-//             '--TextField-brandBorderFocusedColor': '#6F7E8C',
-//             '& label.Mui-focused': {
-//               color: 'var(--TextField-brandBorderFocusedColor)',
-//             },
-//           },
-//         },
-//       },
-//       MuiInput: {
-//         styleOverrides: {
-//           root: {
-//             '&::before': {
-//               borderBottom: '2px solid var(--TextField-brandBorderColor)',
-//             },
-//             '&:hover:not(.Mui-disabled, .Mui-error):before': {
-//               borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
-//             },
-//             '&.Mui-focused:after': {
-//               borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
-//             },
-//             '&MuiInputBase-root': {
-//               color: 'white',
-//             },
-//           },
-//         },
-//       },
-//       MuiFormControl: {
-//         styleOverrides: {
-//           root: {
-//             '--TextField-brandBorderColor': '#E0E3E7',
-//             '--TextField-brandBorderHoverColor': '#B2BAC2',
-//             '--TextField-brandBorderFocusedColor': '#6F7E8C',
-//             '& label.Mui-focused': {
-//               color: 'var(--TextField-brandBorderFocusedColor)',
-//             },
-//           },
-//         },
-//       },
-//     },
-//   });
 
 const messages = {
   missingUsername: "Please enter a username.",
@@ -107,23 +35,12 @@ const Login = ({login, isAuthenticated}) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'onChange',
     resolver: yupResolver(LoginSchema)
   });
-
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  });
-
-  const { username, password } = formData;
-
-  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
   
-
-  const onSubmit = e => {
+  const onSubmit = async (e) => {
     //e.preventDefault();
-    login(username, password);
+    login({...register('username')}, {...register('password')});
     console.log(e);
   };
   if (isAuthenticated) {
@@ -131,10 +48,10 @@ const Login = ({login, isAuthenticated}) => {
   }
 
   return(
-    <div className="sigin-form">
+    <div className="signin-form">
       <div className="center">
         <div className="custom-box center">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(e => onSubmit(e))}>
               <CSRFToken />
               <img src={Cart} alt="GreenCart"/>
               <h1 className="center-text">GreenCart</h1>

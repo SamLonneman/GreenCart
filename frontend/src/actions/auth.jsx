@@ -50,6 +50,8 @@ export const checkAuthenticated = () => async dispatch => {
 
 
 export const login = (username, password) => async dispatch => {
+    console.log("Username: ", username, " password: ", password);
+
     const config = {
         headers: {
             'Accept' : 'application/json',
@@ -80,6 +82,7 @@ export const login = (username, password) => async dispatch => {
 };
 
 export const register = (username, password, re_password, email) => async dispatch => {
+    console.log("Username: ", username, " password: ", password);
     const config = {
         headers: {
             'Accept' : 'application/json',
