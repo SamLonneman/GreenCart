@@ -62,6 +62,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    mode: "all",
     resolver: yupResolver(RegisterSchema) // pass the rules to the useForm
   });
 

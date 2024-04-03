@@ -35,6 +35,7 @@ const Login = ({login, isAuthenticated}) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    mode: "all",
     resolver: yupResolver(LoginSchema)
   });
   
