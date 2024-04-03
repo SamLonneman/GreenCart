@@ -55,36 +55,6 @@ const RegisterSchema = Yup.object().shape({
   // Password matching
 });
 
-// const Register = (/*{ register, isAuthenticated }*/) => {
-
-
-
-// const [formData, setFormData] = useState({
-//   username: '',
-//   password: '',
-//   re_password: '',
-//   email: ''
-// });
-// const [accountCreated, setAccountCreated] = useState(false);
-// const { username, password, re_password, email } = formData;
-// const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-// const onSubmit = e => {
-//   e.preventDefault();
-//   if (password === re_password) {
-//     register(username, password, re_password, email);
-//     setAccountCreated(true);
-//   }
-// }
-
-// const onSub = (data) => console.log(data);
-
-// if (accountCreated) {
-//   return <Navigate to="/login" replace={true} />;
-// }
-// if (isAuthenticated) {
-//   return <Navigate to="/" replace={true} />;
-// }
-
 const Register = ({ registerAction, isAuthenticated }) => {
 
   const {
@@ -99,7 +69,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
 
   const onSubmit = data => {
     //data.preventDefault();
-    registerAction({ ...register('username') }, { ...register('password') }, { ...register('re_password') }, { ...register('email') });
+    registerAction(data['username'], data['password'], data['re_password'], data['email']);
     setAccountCreated(true);
     console.log(accountCreated);
     console.log(data);
