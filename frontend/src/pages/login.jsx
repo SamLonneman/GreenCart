@@ -42,7 +42,7 @@ const Login = ({login, isAuthenticated}) => {
   const onSubmit = data => {
     //e.preventDefault();
     login(data['username'], data['password']);
-    console.log(data);
+    //console.log(data);
   };
   if (isAuthenticated) {
     return <Navigate to="/home" replace = {true}/>;
@@ -63,7 +63,7 @@ const Login = ({login, isAuthenticated}) => {
                   name="username"
                   type="text"
                   {...register('username')}
-                  className={`form-control form-item-spacing ${errors.username ? 'is-inavlid' : ''}`}
+                  className={`form-control form-item-spacing ${errors.username ? 'is-invalid' : ''}`}
                   placeholder='greencart'
                 />
                 <div className="invalid-feedback">{errors.username?.message}</div>
