@@ -3,12 +3,8 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import * as Icon from 'react-bootstrap-icons';
 import Cart from '../icons/cart.png';
 import '../App.css';
-import { Container, Row, Button, Form, Col } from 'react-bootstrap';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Footer from './footer';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
