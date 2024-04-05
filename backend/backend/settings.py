@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
     'user_profile',
-    'backend'
+    'backend',
+    'AIapi'
 ]
 
 MIDDLEWARE = [
