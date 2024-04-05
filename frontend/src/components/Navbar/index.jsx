@@ -13,9 +13,6 @@ const navbar = ({ isAuthenticated, logout }) => {
             <li className='nav-item'>
                 <a className='nav-link' onClick={logout} href='#!'><img className="logout" src={logout_icon} alt="Logout Icon" /></a>
             </li>
-            <li className='nav-item'>
-                <NavLink className='nav-link' to='/product-search'>Product Search</NavLink>
-            </li>
         </Fragment>
     );
 
@@ -26,6 +23,9 @@ const navbar = ({ isAuthenticated, logout }) => {
             </li>
             <li className='nav-item'>
                 <NavLink className='nav-link' to='/register'>Register</NavLink>
+            </li>
+            <li className='nav-item'>
+                <NavLink className='nav-link' to='/product-search'>Product Search</NavLink>
             </li>
         </Fragment>
     );
