@@ -6,8 +6,12 @@ import json
 from django.http import JsonResponse
 import google.generativeai as genai
 from .models import AIapi
+import os
+import environ
+env = environ.Env()
+environ.Env.read_env()
 # Create your views here.
-GEMINI_API_KEY= "AIzaSyB0absPY-ad5UaD9Bv6ygZAaUAcf4P0p7Q"
+GEMINI_API_KEY= env('GOOGLE_API_KEY')
 genai.configure(api_key = GEMINI_API_KEY)
 class GenerateTextView(APIView):
     def post(self, request, format=None):
