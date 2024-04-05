@@ -50,6 +50,7 @@ export const checkAuthenticated = () => async dispatch => {
 
 
 export const login = (username, password) => async dispatch => {
+
     const config = {
         headers: {
             'Accept' : 'application/json',
