@@ -28,7 +28,7 @@ const ProductSearch = () => {
     if (event)
       event.preventDefault();
     setIsLoading(true);
-    const response = await axios.get(`/api/products/?contains=${searchTerm}&page_size=10`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/products?contains=${searchTerm}&page_size=10`);
     setProducts(response.data.results);
     setIsLoading(false);
   };

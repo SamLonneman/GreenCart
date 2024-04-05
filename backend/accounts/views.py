@@ -56,6 +56,7 @@ class LoginView(APIView):
        data = self.request.data
        username = data['username']
        password = data['password']
+
        try:
           user = auth.authenticate(username = username, password = password)
           if user is not None:
