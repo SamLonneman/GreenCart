@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -53,7 +53,7 @@ class CompleteTaskView(APIView):
         task.is_completed = True
         task.time_completed = datetime.now()
         task.save()
-        return Response({'message': 'Task updated successfully'})
+        return Response({'message': 'Task completed successfully'})
     
 @permission_classes([IsAuthenticated])
 class DeleteTaskView(APIView):
