@@ -36,6 +36,7 @@ export default function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/user-profile" element={<Profile />} />
                 <Route path="/product-search" element={<ProductSearch />} />
+                <Route path="/questions" element={<Questions />} />
                 <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
             </Layout>
