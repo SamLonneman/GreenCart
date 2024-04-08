@@ -8,8 +8,8 @@ import React from 'react';
 const questions = {
     personal_info: "What is your age?", // Text input, min 18 years old.
     dietary_pref: { // All yes/no questions.
-        first: "Are you a vegetarian?",
-        second: "Are you a vegan?",
+        veg: "Are you a vegetarian?",
+        be: "Are you a vegan?",
         third: "Do you follow a gluten-free diet?",
         fourth: "Are you a pescatarian?"
     },
@@ -51,7 +51,7 @@ const Questions = () => {
 
                     {/* Age */}
                     <label>{questions.personal_info}</label>
-                    <div className="radio-buttons-flex">
+                    <div className="radio-buttons-flex mb-5">
                         <input
                             {...register("q1")}
                             type="radio"
@@ -69,7 +69,7 @@ const Questions = () => {
                     </div>
 
                     {/* Allergens */}
-                    <div className="dropdown mb-72 dropdown-hover">
+                    <div className="dropdown mb-15 dropdown-hover dropdown-right">
                         <label>{questions.allergies}</label>
                         <div tabIndex={0} role="button" className="btn m-1">Allergies</div>
                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
