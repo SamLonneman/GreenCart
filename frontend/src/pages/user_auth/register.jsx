@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import Cart from '../icons/cart.png';
-import '../App.css';
+import Cart from '../../icons/cart.png';
+import '../../App.css';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { register as registerAction } from '../actions/auth';
-import CSRFToken from '../components/CSRFToken';
+import { register as registerAction } from '../../actions/auth';
+import CSRFToken from '../../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 

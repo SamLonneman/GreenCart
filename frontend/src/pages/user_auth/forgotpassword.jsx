@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom'
-import '../App.css';
+import '../../App.css';
 import { Container, Row, Button, Form, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';

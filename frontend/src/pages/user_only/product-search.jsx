@@ -6,8 +6,7 @@ import { green } from '@mui/material/colors';
 import SearchIcon from '@mui/icons-material/SearchRounded';
 import Typography from '@mui/material/Typography';
 
-import './pages.css';
-
+import '../pages.css';
 
 const theme = createTheme({
   palette: {
