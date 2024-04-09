@@ -3,6 +3,8 @@ import Cart from '../../icons/cart.png';
 import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'; // Questions is, guess what, another form!!
 import React from 'react';
+import * as Yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 
 const questions = {
@@ -31,6 +33,15 @@ const questions = {
     }
 };
 
+const QuestionsSchema = Yup.object().shape({
+    age: Yup
+        .number()
+        .required()
+        .min(18)
+        .max(119)
+
+})
+
 const Questions = () => {
 
     const {
@@ -40,47 +51,41 @@ const Questions = () => {
         formState: { errors },
         setValue
     } = useForm({
-        defaultValues: { allergies:[]}
+        mode: "all",
+        resolver: yupResolver(QuestionsSchema),        
+        defaultValues: { allergies: [] }
     });
 
     const selectedAllergies = watch("allergies");
 
     React.useEffect(() => {
         if (selectedAllergies.includes("none") && selectedAllergies.length > 1) {
-          // If 'none' is selected along with other options, keep only 'none'
-          setValue("allergies", ["none"]);
+            // If 'none' is selected along with other options, keep only 'none'
+            setValue("allergies", ["none"]);
         }
-      }, [selectedAllergies, setValue]);
+    }, [selectedAllergies, setValue]);
 
     const onSubmit = data => {
         console.log(data);
     };
 
     return (
-        <div className="center">
-            <div className="center">
+        <div className="questions-container">
+            <div className="center-middle">
                 <form onSubmit={handleSubmit(onSubmit)}>
-
+                    <div className></div>
                     {/* Age */}
                     <label>{questions.personal_info}</label>
-                    <div className="radio-buttons-flex mb-5">
+                    <div className="mb-5">
                         <input
                             {...register("age")}
-                            type="drop-down"
-                            value="yes"
-                            id="field-yes"
-                        />
-                        <label htmlFor="field-yes">Yes</label>
-                        <input
-                            {...register("q1")}
-                            type="radio"
-                            value="no"
-                            id="field-no"
-                        />
-                        <label htmlFor="field-no">No</label>
+                            type="text"
+                            placeholder="Type here"
+                            className="input input-bordered w-full max-w-xs" />
                     </div>
-
-                    {/* Allergens */}
+                    <button type="submit" className="custom-text btn button">Back</button>
+                    <button type="submit" className="custom-text btn button">Next</button>
+                    {/* Allergens
                     <div className="dropdown mb-15 dropdown-hover dropdown-right">
                         <label>{questions.allergies}</label>
                         <div tabIndex={0} role="button" className="btn m-1">Allergies</div>
@@ -92,7 +97,7 @@ const Questions = () => {
                                 className="btn btn-sm btn-block btn-ghost justify-start"
                                 aria-label="None"
                                 value="none"
-                                /></li>
+                            /></li>
                             <li><input
                                 {...register("allergies")}
                                 type="checkbox"
@@ -100,7 +105,7 @@ const Questions = () => {
                                 className="btn btn-sm btn-block btn-ghost justify-start"
                                 aria-label="Fish"
                                 value="fish"
-                                /></li>
+                            /></li>
                             <li><input
                                 {...register("allergies")}
                                 type="checkbox"
@@ -108,7 +113,7 @@ const Questions = () => {
                                 className="btn btn-sm btn-block btn-ghost justify-start"
                                 aria-label="Shellfish"
                                 value="shellfish"
-                                /></li>
+                            /></li>
                             <li><input
                                 {...register("allergies")}
                                 type="checkbox"
@@ -131,8 +136,8 @@ const Questions = () => {
                                 aria-label="Eggs"
                                 value="eggs" /></li>
                         </ul>
-                    </div>
-                    <button type="submit" className="custom-text btn button">Done</button>
+                    </div> */}
+                   
                 </form>
             </div>
         </div>
