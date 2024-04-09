@@ -9,6 +9,21 @@
     padding: 10px;
 }
 
+.center-middle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+}
+
+.questions-container {
+    width: 1052px;
+    width: 766px;
+    flex-shrink: 0;
+    background: #85E458;
+}
+
 .center_text{
     margin: auto;
     width: 50%;
