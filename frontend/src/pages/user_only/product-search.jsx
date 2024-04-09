@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import '../pages.css';
 
+
 const theme = createTheme({
   palette: {
     primary: green
@@ -63,11 +64,15 @@ const ProductSearch = () => {
             <DataGrid
               rows={isLoading ? [] : products}
               columns={[
-                { field: 'price', headerName: 'Price', flex: 1},
+                { field: 'price', headerName: 'Price', flex: 1,
+                  renderCell: (params) => `$${params.value}`
+                },
                 { field: 'name', headerName: 'Name', flex: 2},
                 { field: 'category', headerName: 'Category', flex: 1},
                 { field: 'sustainability_factor', headerName: 'Sustainability Factor', flex: 1},
-                { field: 'image_link', headerName: 'Image', flex: 2},
+                { field: 'image_link', headerName: 'Image', flex: 2, renderCell: (params) => (
+                  <img src={params.value} style={{width: '100px', height: 'auto'}}/>
+                )},
               ]}
               loading={isLoading}
               hideFooter
