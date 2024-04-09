@@ -36,13 +36,25 @@ const Questions = () => {
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
-    } = useForm({});
+        setValue
+    } = useForm({
+        defaultValues: { allergies:[]}
+    });
+
+    const selectedAllergies = watch("allergies");
+
+    React.useEffect(() => {
+        if (selectedAllergies.includes("none") && selectedAllergies.length > 1) {
+          // If 'none' is selected along with other options, keep only 'none'
+          setValue("allergies", ["none"]);
+        }
+      }, [selectedAllergies, setValue]);
 
     const onSubmit = data => {
         console.log(data);
     };
-
 
     return (
         <div className="center">
@@ -53,8 +65,8 @@ const Questions = () => {
                     <label>{questions.personal_info}</label>
                     <div className="radio-buttons-flex mb-5">
                         <input
-                            {...register("q1")}
-                            type="radio"
+                            {...register("age")}
+                            type="drop-down"
                             value="yes"
                             id="field-yes"
                         />
@@ -73,11 +85,51 @@ const Questions = () => {
                         <label>{questions.allergies}</label>
                         <div tabIndex={0} role="button" className="btn m-1">Allergies</div>
                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><input {...register("q2")} type="checkbox" name="allergies" className="btn btn-sm btn-block btn-ghost justify-start" aria-label="Fish" value="fish"/></li>
-                            <li><input {...register("q2")} type="checkbox" name="allergies" className="btn btn-sm btn-block btn-ghost justify-start" aria-label="Shellfish" value="fish"/></li>
-                            <li><input {...register("q2")} type="checkbox" name="allergies" className="btn btn-sm btn-block btn-ghost justify-start" aria-label="Peanuts" value="peanuts"/></li>
-                            <li><input {...register("q2")} type="checkbox" name="allergies" className="btn btn-sm btn-block btn-ghost justify-start" aria-label="Soy" value="soy"/></li>
-                            <li><input {...register("q2")} type="checkbox" name="allergies" className="btn btn-sm btn-block btn-ghost justify-start" aria-label="Eggs" value="eggs"/></li>
+                            <li><input
+                                {...register("allergies")}
+                                type="checkbox"
+                                name="allergies"
+                                className="btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="None"
+                                value="none"
+                                /></li>
+                            <li><input
+                                {...register("allergies")}
+                                type="checkbox"
+                                name="allergies"
+                                className="btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Fish"
+                                value="fish"
+                                /></li>
+                            <li><input
+                                {...register("allergies")}
+                                type="checkbox"
+                                name="allergies"
+                                className="btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Shellfish"
+                                value="shellfish"
+                                /></li>
+                            <li><input
+                                {...register("allergies")}
+                                type="checkbox"
+                                name="allergies"
+                                className="btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Peanuts"
+                                value="peanuts" /></li>
+                            <li><input
+                                {...register("allergies")}
+                                type="checkbox"
+                                name="allergies"
+                                className="btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Soy"
+                                value="soy" /></li>
+                            <li><input
+                                {...register("allergies")}
+                                type="checkbox"
+                                name="allergies"
+                                className="btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Eggs"
+                                value="eggs" /></li>
                         </ul>
                     </div>
                     <button type="submit" className="custom-text btn button">Done</button>
