@@ -5,6 +5,14 @@ import { useForm } from 'react-hook-form'; // Questions is, guess what, another 
 import React from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
+import Button, { ButtonProps } from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import ArrowRight from '@mui/icons-material/ArrowRight';
+import ArrowLeft from '@mui/icons-material/ArrowLeft';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
+import { green } from '@mui/material/colors';
 
 
 const questions = {
@@ -42,6 +50,14 @@ const QuestionsSchema = Yup.object().shape({
 
 })
 
+const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
+  }));
+
 const Questions = () => {
 
     const {
@@ -70,10 +86,9 @@ const Questions = () => {
     };
 
     return (
-        <div className="questions-container">
-            <div className="center-middle">
+        <React.Fragment>
+            <Container maxWidth="lg">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className></div>
                     {/* Age */}
                     <label>{questions.personal_info}</label>
                     <div className="mb-5">
@@ -83,8 +98,10 @@ const Questions = () => {
                             placeholder="Type here"
                             className="input input-bordered w-full max-w-xs" />
                     </div>
-                    <button type="submit" className="custom-text btn button">Back</button>
-                    <button type="submit" className="custom-text btn button">Next</button>
+                    <Stack direction="row" spacing={25}>
+                        <ColorButton variant="contained" startIcon={<ArrowLeft/>}>Back</ColorButton>
+                        <ColorButton variant="contained" endIcon={<ArrowRight/>}>Next</ColorButton>
+                    </Stack>
                     {/* Allergens
                     <div className="dropdown mb-15 dropdown-hover dropdown-right">
                         <label>{questions.allergies}</label>
@@ -139,8 +156,8 @@ const Questions = () => {
                     </div> */}
                    
                 </form>
-            </div>
-        </div>
+            </Container>
+        </React.Fragment>
     )
 };
 
