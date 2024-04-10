@@ -66,15 +66,6 @@ class AcceptTaskView(APIView):
         task.save()
         return Response({'message': 'Task accepted successfully'})
 
-# Reject a task suggested by the AI
-@permission_classes([IsAuthenticated])
-class RejectTaskView(APIView):
-    def post(self, request, format=None):
-        task_id = request.data.get('id')
-        task = Task.objects.get(id=task_id)
-        task.delete()
-        return Response({'message': 'Task rejected successfully'})
-
 # Mark a task as completed
 @permission_classes([IsAuthenticated])
 class CompleteTaskView(APIView):

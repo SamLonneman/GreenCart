@@ -8,7 +8,6 @@ from .views import (
     CompleteTaskView,
     DeleteTaskView,
     AcceptTaskView,
-    RejectTaskView,
 )
 
 
@@ -18,7 +17,7 @@ urlpatterns = [
     path('tasks/completed', GetCompletedTasksView.as_view()),
     path('tasks/all', GetAllTasksView.as_view()),
     path('tasks/accept', AcceptTaskView.as_view()),
-    path('tasks/reject', RejectTaskView.as_view()),
+    path('tasks/reject', DeleteTaskView.as_view()),
     path('tasks/complete', CompleteTaskView.as_view()),
     path('tasks/create', CreateTaskView.as_view()),
     path('tasks/delete', DeleteTaskView.as_view())
