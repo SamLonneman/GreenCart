@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
-from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListAPIView
@@ -13,11 +12,13 @@ from .models import Products, Task
 from .serializers import ProductSerializer, TaskSerializer
 
 
+# Pagination settings for product list
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
+# Get all products, filter by name if query parameter is provided
 @permission_classes([AllowAny])
 class ProductList(ListAPIView):
     serializer_class = ProductSerializer
