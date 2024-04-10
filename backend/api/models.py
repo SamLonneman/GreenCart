@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.db import models
 
+
 class Products(models.Model):
     name = models.CharField(max_length=1000)
     description = models.TextField(null=True, blank=True)

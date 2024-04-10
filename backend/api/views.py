@@ -55,7 +55,7 @@ class GetAllTasksView(APIView):
         tasks = TaskSerializer(tasks, many=True)
         return Response({'tasks': tasks.data})
 
-# Accept a task suggested by the AI (takes unique task id)
+# Accept a task suggested by the AI
 @permission_classes([IsAuthenticated])
 class AcceptTaskView(APIView):
     def post(self, request, format=None):
@@ -66,7 +66,7 @@ class AcceptTaskView(APIView):
         task.save()
         return Response({'message': 'Task accepted successfully'})
 
-# Reject a task suggested by the AI (takes unique task id)
+# Reject a task suggested by the AI
 @permission_classes([IsAuthenticated])
 class RejectTaskView(APIView):
     def post(self, request, format=None):
@@ -75,17 +75,17 @@ class RejectTaskView(APIView):
         task.delete()
         return Response({'message': 'Task rejected successfully'})
 
-# Mark a task as completed (takes unique task id)
+# Mark a task as completed
 @permission_classes([IsAuthenticated])
 class CompleteTaskView(APIView):
     def post(self, request, format=None):
-        # Update task as completed, set completion date
+        # Set task as completed, set completion date
         task_id = request.data.get('id')
         task = Task.objects.get(id=task_id)
         task.is_completed = True
         task.completed_date = datetime.now()
         task.save()
-        # Dynamically update user profile points based on task impact
+        # Dynamically update user profile points based on task attributes
         user_profile = self.request.user.userprofile
         user_profile.timecommitment += task.expected_time_commitment
         if task.is_challenging:
@@ -99,7 +99,7 @@ class CompleteTaskView(APIView):
         user_profile.save()
         return Response({'message': 'Task completed successfully'})
     
-# Manually create a task and assign it to the current user
+# Manually create a task and automatically accept it
 @permission_classes([IsAuthenticated])
 class CreateTaskView(APIView):
     def post(self, request, format=None):
@@ -112,7 +112,7 @@ class CreateTaskView(APIView):
             return Response({"task": serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Delete a task (takes unique task id)
+# Delete a task
 @permission_classes([IsAuthenticated])
 class DeleteTaskView(APIView):
     def post(self, request, format=None):

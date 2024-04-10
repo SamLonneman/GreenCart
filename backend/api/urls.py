@@ -11,6 +11,7 @@ from .views import (
     RejectTaskView,
 )
 
+
 urlpatterns = [
     path('products', ProductList.as_view()),
     path('tasks/pending', GetPendingTasksView.as_view()),
