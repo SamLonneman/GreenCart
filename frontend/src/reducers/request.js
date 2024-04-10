@@ -4,7 +4,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-    response: null,
+    response: ''
 };
 
 export default function(state = initialState, action) {
@@ -12,9 +12,10 @@ export default function(state = initialState, action) {
 
     switch(type){
         case REQUEST_AI_SUCCESS:
+            console.log(payload);
             return {
                 ...state,
-                response: payload.text
+                response: payload
             };
         case REQUEST_AI_FAIL:
         default:

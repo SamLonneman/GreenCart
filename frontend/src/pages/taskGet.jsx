@@ -1,7 +1,7 @@
 // Import necessary dependencies
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTasks } from './actions'; // Import the action creator
+import { getTasks } from '../actions/request'; // Import the action creator
 
 const DisplayText = () => {
     const dispatch = useDispatch();
@@ -10,6 +10,7 @@ const DisplayText = () => {
     useEffect(() => {
         // Dispatch the action to fetch the text when the component mounts
         dispatch(getTasks());
+        console.log(response);
     }, [dispatch]);
     // TODO: Add a loading spinner or some other indicator to show that the API request is in progress
     // also, actually splice the response into the correct text elements. 

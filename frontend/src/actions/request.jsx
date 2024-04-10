@@ -27,20 +27,24 @@ export const getTasks = () => async dispatch => {
            console.error('CSRF Token not found in cookies'); 
         }
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/AIapi/request`, body, config);        
-        if (res.data.success){
+        console.log(res.data);
+        if (res.data){
             dispatch({
                 type: REQUEST_AI_SUCCESS,
-                payload: res.data
+                payload: res.data.text
             });
+            console.log("Success");
         } else {
             dispatch({
                 type: REQUEST_AI_FAIL
             });
+            console.log("Fail: Request failed.");
         }
         // user loading
     } catch (err) {
         dispatch({
             type: REQUEST_AI_FAIL
         });
+        console.log("Fail");
     }
 };
