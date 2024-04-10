@@ -9,6 +9,7 @@ from .models import AIapi
 
 # import /api/models.py to access the Task model
 from api.models import Task
+from user_profile.models import UserProfile
 import os
 import environ
 env = environ.Env()
@@ -19,7 +20,7 @@ genai.configure(api_key = GEMINI_API_KEY)
 class GenerateTextView(APIView):
     def post(self, request, format=None):
             data = self.request.data
-            text = data['text']
+            #text = data['text']
             #print(text)
             text = """ You are recommending a set of distinct tasks to a person.
             These tasks should provide actionable and specific targets/goals that an individual can accomplish within reasonable time (1 month or less). 
@@ -35,9 +36,33 @@ class GenerateTextView(APIView):
             5. Learning: This is whether or not the task is primarily a learning task. 0 represents action tasks, 1 represents learning tasks.
             Each flag should be separated by a comma. 
             Based on the following information, tailor these recommendations. Recommendations do not need to directly reference the user profile, 
-            but the recommendations should not violate any of the user's prefernces: 
+            but the recommendations should not violate any of the user's preferences/allergens. Ignore empty fields in the user profile.: 
             """
             # TODO: Based on the user profile, append the user's preferences to the text variable. not doing this makes the recommendations suck    
+            # Append user data
+            user = self.request.user
+            user_profile = UserProfile.objects.get(user = user)
+            text += f"""User Profile:
+            Age: {user_profile.age}
+            Vegetarian: {user_profile.isVegetarian}
+            Vegan: {user_profile.isVegan}
+            Gluten Free: {user_profile.isGlutenFree}
+            Pescatarian: {user_profile.isPescatarian}
+            Fish Allergen: {user_profile.fishallergen}
+            Dairy Allergen: {user_profile.dairyallergen}
+            Financial Limitation: {user_profile.financiallimitation}
+            Transport Preferences: {user_profile.transportpreferences}
+            Energy Availability: {user_profile.energyavailability}
+            Waste Management: {user_profile.wastemanagement}
+            Shopping Preferences: {user_profile.shoppingpreferences}
+            Water Usage: {user_profile.waterusage}
+            Household Size: {user_profile.householdsize}
+            User Time Commitment (in minutes, daily): {user_profile.timecommitment}
+            User Challenge Preference (Larger = greater desire for challenging tasks): {user_profile.challengepreference}
+            User Community Bias (Larger = greater desire for community tasks): {user_profile.communitybias}
+            User Impact Bias (Larger = greater desire for high impact tasks): {user_profile.impactbias}
+            User Learning Bias (Larger = greater desire for learning): {user_profile.learningbias}
+            """
             model = genai.GenerativeModel("gemini-pro")
             response = model.generate_content(text)
             
