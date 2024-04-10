@@ -5,14 +5,14 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Register from "./pages/register";
+import Register from "./pages/user_auth/register";
 import Layout from "./hocs/layout";
-import Questions from "./pages/questionairre";
-import Login from "./pages/login";
-import Profile from "./pages/user-profile";
+import Questions from "./pages/user_only/questions";
+import Login from "./pages/user_auth/login";
+import Profile from "./pages/user_only/user-profile";
 import Home from "./pages/home";
-import ProductSearch from "./pages/product-search";
-import Forgotpassword from "./pages/forgotpassword";
+import ProductSearch from "./pages/user_only/product-search";
+import Forgotpassword from "./pages/user_auth/forgotpassword";
 import { useEffect } from 'react';
 
 import { Provider } from 'react-redux';
@@ -36,6 +36,7 @@ export default function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/user-profile" element={<Profile />} />
                 <Route path="/product-search" element={<ProductSearch />} />
+                <Route path="/questions" element={<Questions />} />
                 <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
             </Layout>
