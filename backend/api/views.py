@@ -32,7 +32,7 @@ class ProductList(ListAPIView):
 class GetPendingTasksView(APIView):
     def get(self, request, format=None):
         user = self.request.user
-        tasks = Task.objects.filter(user=user, is_completed=False).order_by('due_date')
+        tasks = user.task_set.filter(is_accepted=True, is_completed=False).order_by('due_date')
         tasks = TaskSerializer(tasks, many=True)
         return Response({'tasks': tasks.data})
 
@@ -41,7 +41,7 @@ class GetPendingTasksView(APIView):
 class GetCompletedTasksView(APIView):
     def get(self, request, format=None):
         user = self.request.user
-        tasks = Task.objects.filter(user=user, is_completed=True).order_by('-completed_date')
+        tasks = user.task_set.filter(is_completed=True).order_by('-completed_date')
         tasks = TaskSerializer(tasks, many=True)
         return Response({'tasks': tasks.data})
 
@@ -50,7 +50,7 @@ class GetCompletedTasksView(APIView):
 class GetAllTasksView(APIView):
     def get(self, request, format=None):
         user = self.request.user
-        tasks = Task.objects.filter(user=user).order_by('-accepted_date')
+        tasks = user.task_set.filter(is_accepted=True).order_by('-accepted_date')
         tasks = TaskSerializer(tasks, many=True)
         return Response({'tasks': tasks.data})
 
@@ -58,11 +58,24 @@ class GetAllTasksView(APIView):
 @permission_classes([IsAuthenticated])
 class CreateTaskView(APIView):
     def post(self, request, format=None):
-        task = TaskSerializer(data=request.data)
-        if task.is_valid():
-            task.save(user=self.request.user)
-            return Response({'message': 'Task created successfully'}, status=status.HTTP_201_CREATED)
-        return Response(task.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = TaskSerializer(data=request.data)
+        if serializer.is_valid():
+            task = serializer.save(user=self.request.user)
+            task.is_accepted = True
+            task.accepted_date = datetime.now()
+            task.save()
+            return Response({"task": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# @permission_classes([IsAuthenticated])
+# class AcceptTaskView(APIView):
+#     def post(self, request, format=None):
+#         task_id = request.data.get('id')
+#         task = Task.objects.get(id=task_id)
+#         task.is_accepted = True
+#         task.accepted_date = datetime.now()
+#         task.save()
+#         return Response({'message': 'Task accepted successfully'})
 
 # Mark a task as completed (takes unique task id)
 @permission_classes([IsAuthenticated])
