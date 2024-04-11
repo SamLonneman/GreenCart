@@ -11,6 +11,7 @@ const DisplayText = () => {
     //const dispatch = useDispatch();
     //const response = useSelector(state => state.response); // Assuming your reducer updates state.response with the received text
     const [tasks, setTasks] = useState([]);
+    const [taskID, setTaskID] = useState([]); // This is the ID of the task you want to get from the API
     const [isLoading, setIsLoading] = useState(false);
 
     const handleRequest = async (event) => {
@@ -28,25 +29,24 @@ const DisplayText = () => {
         const body = JSON.stringify({
             'withCredentials': 'true'
         });
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/AIapi/request`, body, config);
-        console.log(response);
-        const taskList = response.data.text.split('#');
-        // the split can be defined as so
-        // Data of Task 1 =  taskList[0]
-        // Flags for Task 1 = taskList[1]
-        // Data of Task 2 =  taskList[2]
-        // Flags for Task 2 = taskList[3]
-        // Data of Task 3 =  taskList[4]
-        // Flags for Task 3 = taskList[5]
-
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/AIapi/generate-task`, body, config);
+        const task1 = response.data.task1;
+        const task2 = response.data.task2;
+        const task3 = response.data.task3;
+        console.log(task1, task2, task3)
+        // get whatever data you need from these guys here. this includes ID! since thats what you need to make a request to the api
+        // you can also get the title, description, etc.
+        const taskList = [task1.title, task2.title, task3.title];
+        const taskIDList = [task1.id, task2.id, task3.id];
         setTasks(taskList);
+        setTaskID(taskIDList);
         setIsLoading(false);
     };
-
-    useEffect(() => {
-        // Dispatch the action to fetch the text when the component mounts
-        handleRequest();
-    }, []);
+    // uncomment this if you want it to run on page load
+    // useEffect(() => {
+    //     // Dispatch the action to fetch the text when the component mounts
+    //     handleRequest();
+    // }, []);
     // TODO: Add a loading spinner or some other indicator to show that the API request is in progress
     // also, actually splice the response into the correct text elements. 
     return (
@@ -58,9 +58,6 @@ const DisplayText = () => {
             {isLoading ? '' : tasks[0]}
             {isLoading ? '' : tasks[1]}
             {isLoading ? '' : tasks[2]}
-            {isLoading ? '' : tasks[3]}
-            {isLoading ? '' : tasks[4]}
-            {isLoading ? '' : tasks[5]}
             </Box>
             {isLoading && (<CircularProgress 
             sx = {{
