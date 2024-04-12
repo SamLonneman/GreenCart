@@ -33,7 +33,7 @@ const questions = {
         fifth: "How many people live in your household?" // Text input between 1 and 10.
     },
     engagement: {
-        first: "How much time are you willing to commit to activities or tasks per week?", // Probably in hours/week, or days/week, or N times/week
+        first: "How much time are you willing to commit to activities or tasks per week?", // Probably in hours/week
         second: "On a scale of 1 to 5, how much do you enjoy a challenge?", // Show labels for each value in the slider, 1 = least likely, 3 = neutral, 5 = most likely
         third: "On a scale of 1 to 5, how important is community involvment to you?",
         fourth: "On a scale of 1 to 5, how important is making an impact to you?",
