@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { register as registerAction } from '../../actions/auth';
 import CSRFToken from '../../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Questions from '../user_only/questions';
 
 
 export const PASSWORD_COMPLEX_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,20}$/);
@@ -73,7 +74,8 @@ const Register = ({ registerAction, isAuthenticated }) => {
   }
 
   if (accountCreated) {
-    return <Navigate to="/login" replace={true} />;
+    return <Questions />;
+    //return <Navigate to="/login" replace={true} />;
   }
   if (isAuthenticated) {
     return <Navigate to="/" replace={true} />;

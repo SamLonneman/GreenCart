@@ -2,7 +2,7 @@ import CSRFToken from "../../components/CSRFToken";
 import Cart from '../../icons/cart.png';
 import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'; // Questions is, guess what, another form!!
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button, { ButtonProps } from '@mui/material/Button';
@@ -21,9 +21,9 @@ const questions = {
         veg: "Are you a vegetarian?",
         be: "Are you a vegan?",
         third: "Do you follow a gluten-free diet?",
-        fourth: "Are you a pescatarian?"
+        fourth: "Are you a pescatarian?",
+        fifth: "Do you have any allergies?"
     },
-    allergies: "What allergies do you have?", // Drop down with maybe text fill in the blank for other.
     financial: "How much do you currently spend on groceries/day to day life per month?",
     lifestyle: {
         first: "What are you preferred methods of transportation?", // Dropdown
@@ -48,17 +48,32 @@ const QuestionsSchema = Yup.object().shape({
         .min(18)
         .max(119)
 
-})
+});
 
 const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText(green[500]),
     backgroundColor: green[500],
     '&:hover': {
-      backgroundColor: green[700],
+        backgroundColor: green[700],
     },
-  }));
+}));
 
-const Questions = () => {
+export default function Questions() {
+
+    const [currentStep, setCurrentStep] = useState(0);
+    const totalSteps = 5;
+
+    const next = () => {
+        if (currentStep < 3) {
+            setCurrentStep(currentStep+1);
+        }
+    }
+
+    const prev = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep-1);
+        }
+    }
 
     const {
         register,
@@ -68,7 +83,7 @@ const Questions = () => {
         setValue
     } = useForm({
         mode: "all",
-        resolver: yupResolver(QuestionsSchema),        
+        resolver: yupResolver(QuestionsSchema),
         defaultValues: { allergies: [] }
     });
 
@@ -85,22 +100,29 @@ const Questions = () => {
         console.log(data);
     };
 
+    const render = () =>{
+        switch(currentStep){
+            case 1:
+                return <div>Part 1</div>;
+            case 2:
+                return <div>Part 2</div>;
+            case 3:
+                return <div>Part 3</div>;
+            default:
+                return <div>Nothing here</div>;
+        }
+
+        console.log(currentStep);
+    };
+
     return (
+
         <React.Fragment>
+            {render()}
             <Container maxWidth="lg">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* Age */}
-                    <label>{questions.personal_info}</label>
-                    <div className="mb-5">
-                        <input
-                            {...register("age")}
-                            type="text"
-                            placeholder="Type here"
-                            className="input input-bordered w-full max-w-xs" />
-                    </div>
                     <Stack direction="row" spacing={25}>
-                        <ColorButton variant="contained" startIcon={<ArrowLeft/>}>Back</ColorButton>
-                        <ColorButton variant="contained" endIcon={<ArrowRight/>}>Next</ColorButton>
+                        {currentStep > 1 && <ColorButton onClick={prev} variant="contained" startIcon={<ArrowLeft />}>Back</ColorButton>}
+                        {currentStep < 3 && <ColorButton onClick={next} variant="contained" endIcon={<ArrowRight />}>Next</ColorButton>}
                     </Stack>
                     {/* Allergens
                     <div className="dropdown mb-15 dropdown-hover dropdown-right">
@@ -154,11 +176,8 @@ const Questions = () => {
                                 value="eggs" /></li>
                         </ul>
                     </div> */}
-                   
-                </form>
+
             </Container>
         </React.Fragment>
     )
 };
-
-export default Questions;
