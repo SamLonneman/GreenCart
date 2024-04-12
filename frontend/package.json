@@ -31,6 +31,7 @@
     "redux-thunk": "^3.1.0",
     "styled-components": "^6.1.8",
     "web-vitals": "^2.1.4",
+    "yarn": "^1.22.22",
     "yup": "^1.4.0"
   },
   "peerDependencies": {
@@ -41,7 +42,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "backend": "cd .. && ./venv/Scripts/activate && cd backend && python manage.py runserver",
+    "migrate": "cd .. && ./venv/Scripts/activate && cd backend && python manage.py makemigrations && python manage.py migrate"
   },
   "eslintConfig": {
     "extends": [
@@ -65,5 +68,8 @@
   "devDependencies": {
     "daisyui": "^4.9.0",
     "tailwindcss": "^3.4.1"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/SamLonneman/SWE-S24.git",
+  "license": "MIT"
 }
