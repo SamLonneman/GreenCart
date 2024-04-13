@@ -18,6 +18,8 @@ import { Col, Row } from 'antd';
 import { Space } from 'antd';
 import { Dropdown } from 'antd';
 
+const { Option } = Select;
+
 const questions = {
     age: "What is your age?", // Text input, min 18 years old.
     dietary_pref: { // All yes/no questions.
@@ -126,8 +128,8 @@ const allergens = [
     { key: '10', label: 'Soy' },
     { key: '11', label: 'Sesame' },
     { key: '12', label: 'Pollen' }
-  ];
-  
+];
+
 
 export default function Questions() {
 
@@ -229,13 +231,13 @@ export default function Questions() {
                         <h1 className="text-center">Dietary Restrictions</h1>
                         <Divider />
                         <div>
-                                <h3 className="text-center">{questions.dietary_pref.veg}</h3>
-                                <Form.Item>
-                                    <Radio.Group onChange={onRadioChange}>
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
-                                    </Radio.Group>
-                                </Form.Item>
+                            <h3 className="text-center">{questions.dietary_pref.veg}</h3>
+                            <Form.Item>
+                                <Radio.Group onChange={onRadioChange}>
+                                    <Radio value={true}>Yes</Radio>
+                                    <Radio value={false}>No</Radio>
+                                </Radio.Group>
+                            </Form.Item>
                         </div>
 
                         <div>
@@ -268,9 +270,10 @@ export default function Questions() {
                             <Space>
                                 <h3 className="text-center">{questions.dietary_pref.pesc}</h3>
                                 <Form.Item>
-                                    <Select mode="multiple" placeholder="Please select your allergies">
-
-                                    </Select>
+                                    <Radio.Group onChange={onRadioChange}>
+                                        <Radio value={true}>Yes</Radio>
+                                        <Radio value={false}>No</Radio>
+                                    </Radio.Group>
                                 </Form.Item>
                             </Space>
 
@@ -279,13 +282,18 @@ export default function Questions() {
                         <div>
                             <Space>
                                 <h3 className="text-center">{questions.dietary_pref.aller}</h3>
-                                <Form.Item
+                                <Form.Item>
+                                    <Select 
+                                    mode="multiple" 
+                                    style={{width:'100%'}}
+                                    defaultValue={[]}>
+                                        {allergens.map(allergen => (
+                                            <Option key={allergen.key} value={allergen.label}>
+                                                {allergen.label}
+                                            </Option>
+                                            ))}
 
-                                >
-                                    <Radio.Group onChange={onRadioChange}>
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
-                                    </Radio.Group>
+                                    </Select>
                                 </Form.Item>
                             </Space>
 
