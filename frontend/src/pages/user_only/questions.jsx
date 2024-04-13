@@ -49,7 +49,7 @@ const questions = {
 
 const QuestionsSchema = Yup.object().shape({
     // Personal Info
-    age: Yup
+    years: Yup
         .number()
         .required("Required.")
         .integer(),
@@ -160,8 +160,6 @@ export default function Questions() {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
-
-        console.log(data);
     }
 
     const prev = () => {
