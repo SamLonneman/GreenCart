@@ -160,6 +160,8 @@ export default function Questions() {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
+
+        console.log(data);
     }
 
     const prev = () => {
