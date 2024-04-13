@@ -5,73 +5,130 @@ import { useForm } from 'react-hook-form'; // Questions is, guess what, another 
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import Button, { ButtonProps } from '@mui/material/Button';
+import { InputNumber } from 'antd';
 import Stack from '@mui/material/Stack';
 import ArrowRight from '@mui/icons-material/ArrowRight';
+import { Radio } from 'antd';
 import ArrowLeft from '@mui/icons-material/ArrowLeft';
 import Container from '@mui/material/Container';
+import { Form } from 'antd';
+import { Button } from 'antd';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 
 
 const questions = {
-    personal_info: "What is your age?", // Text input, min 18 years old.
+    age: "What is your age?", // Text input, min 18 years old.
     dietary_pref: { // All yes/no questions.
         veg: "Are you a vegetarian?",
-        be: "Are you a vegan?",
-        third: "Do you follow a gluten-free diet?",
-        fourth: "Are you a pescatarian?",
-        fifth: "Do you have any allergies?"
+        vegan: "Are you a vegan?",
+        gluten: "Do you follow a gluten-free diet?",
+        pesc: "Are you a pescatarian?",
+        aller: "Do you have any allergies?"
     },
-    financial: "How much do you currently spend on groceries/day to day life per month?",
+    financial: "What is your estimated monthly spending on groceries and everyday expenses?",
     lifestyle: {
-        first: "What are you preferred methods of transportation?", // Dropdown
-        second: "Describe your household's energy source.", // Solar, grid, limited.
-        third: "How do you manage waste in your household?", // Do you recycle, compost, or trash
-        fourth: "Describe your household's water usage habits.", // under 2 minute showers, 5 minute showers, or more than 5 minute showers 
-        fifth: "How many people live in your household?" // Text input between 1 and 10.
+        transport: "What are you preferred methods of transportation?", // Dropdown
+        energy: "Describe your household's energy source.", // Solar, grid, limited.
+        waste: "How do you manage waste in your household?", // Do you recycle, compost, or trash
+        water: "Describe your household's water usage habits.", // under 2 minute showers, 5 minute showers, or more than 5 minute showers 
+        house: "How many people live in your household?" // Text input between 1 and 10.
     },
     engagement: {
-        first: "How much time are you willing to commit to activities or tasks per week?", // Probably in hours/week
-        second: "On a scale of 1 to 5, how much do you enjoy a challenge?", // Show labels for each value in the slider, 1 = least likely, 3 = neutral, 5 = most likely
-        third: "On a scale of 1 to 5, how important is community involvment to you?",
-        fourth: "On a scale of 1 to 5, how important is making an impact to you?",
-        fifth: "On a scale of 1 to 5, how important is learning new things to you?"
+        time: "How much time are you willing to commit to activities or tasks per week?", // Probably in hours/week
+        enjoy: "On a scale of 1 to 5, how much do you enjoy a challenge?", // Show labels for each value in the slider, 1 = least likely, 3 = neutral, 5 = most likely
+        comm: "On a scale of 1 to 5, how important is community involvment to you?",
+        impact: "On a scale of 1 to 5, how important is making an impact to you?",
+        learn: "On a scale of 1 to 5, how important is learning new things to you?"
     }
 };
 
 const QuestionsSchema = Yup.object().shape({
+    // Personal Info
     age: Yup
         .number()
         .required()
         .min(18)
         .max(119)
+        .integer(),
+
+    // Dietary Restrictions
+    veg: Yup
+        .bool()
+        .required(),
+    vegan: Yup
+        .bool()
+        .required(),
+    gluten: Yup
+        .bool()
+        .required(),
+    pesc: Yup
+        .bool()
+        .required(),
+    allergies: Yup
+        .array()
+        .required(),
+
+    // Financial Considerations
+    money: Yup
+        .number()
+        .required(),
+
+    // Lifestyle
+    transport: Yup
+        .string()
+        .required(),
+    energy: Yup
+        .string()
+        .required(),
+    waste: Yup
+        .string()
+        .required(),
+    water: Yup
+        .string()
+        .required(),
+    house: Yup
+        .number()
+        .integer()
+        .min(1)
+        .required(),
+
+    // Engagement
+    time: Yup
+        .number()
+        .required(),
+    enjoy: Yup
+        .number()
+        .required(),
+    comm: Yup
+        .number()
+        .required(),
+    impact: Yup
+        .number()
+        .required(),
+    learn: Yup
+        .number()
+        .required()
 
 });
-
-const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[500],
-    '&:hover': {
-        backgroundColor: green[700],
-    },
-}));
 
 export default function Questions() {
 
     const [currentStep, setCurrentStep] = useState(0);
-    const totalSteps = 5;
+    const totalSteps = 4;
 
-    const next = () => {
-        if (currentStep < 3) {
-            setCurrentStep(currentStep+1);
+    const next = (data) => {
+        if (currentStep < totalSteps) {
+            setCurrentStep(currentStep + 1);
         }
+
+        console.log(data);
     }
 
     const prev = () => {
         if (currentStep > 0) {
-            setCurrentStep(currentStep-1);
+            setCurrentStep(currentStep - 1);
         }
     }
 
@@ -83,8 +140,7 @@ export default function Questions() {
         setValue
     } = useForm({
         mode: "all",
-        resolver: yupResolver(QuestionsSchema),
-        defaultValues: { allergies: [] }
+        resolver: yupResolver(QuestionsSchema)
     });
 
     const selectedAllergies = watch("allergies");
@@ -100,84 +156,159 @@ export default function Questions() {
         console.log(data);
     };
 
-    const render = () =>{
-        switch(currentStep){
-            case 1:
-                return <div>Part 1</div>;
-            case 2:
-                return <div>Part 2</div>;
-            case 3:
-                return <div>Part 3</div>;
-            default:
-                return <div>Nothing here</div>;
-        }
+    const onChange = (value) => {
+        console.log(value);
+    };
 
-        console.log(currentStep);
+    const [val, setVal] = useState(true);
+    const onRadioChange = (e) => {
+        setVal(e.target.value);
+    };
+
+    const handleAgeChange = age => {
+        setValue('age', age, { shouldValidate: true});
     };
 
     return (
+        <Form onFinish={handleSubmit(onSubmit)}>
+            <Container maxWidth="sm">
+                {/*First Section*/}
+                {currentStep === 0 && (
+                    <div>
+                        <h1 className="text-center">Personal Information</h1>
+                        <div>
+                            <label>{questions.age}</label>
+                            <InputNumber
+                                min={18}
+                                max={119}
+                                onChange={onChange}
+                                changeOnWheel
+                            />
+                        </div>
 
-        <React.Fragment>
-            {render()}
-            <Container maxWidth="lg">
-                    <Stack direction="row" spacing={25}>
-                        {currentStep > 1 && <ColorButton onClick={prev} variant="contained" startIcon={<ArrowLeft />}>Back</ColorButton>}
-                        {currentStep < 3 && <ColorButton onClick={next} variant="contained" endIcon={<ArrowRight />}>Next</ColorButton>}
-                    </Stack>
-                    {/* Allergens
-                    <div className="dropdown mb-15 dropdown-hover dropdown-right">
-                        <label>{questions.allergies}</label>
-                        <div tabIndex={0} role="button" className="btn m-1">Allergies</div>
-                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><input
-                                {...register("allergies")}
-                                type="checkbox"
-                                name="allergies"
-                                className="btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="None"
-                                value="none"
-                            /></li>
-                            <li><input
-                                {...register("allergies")}
-                                type="checkbox"
-                                name="allergies"
-                                className="btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Fish"
-                                value="fish"
-                            /></li>
-                            <li><input
-                                {...register("allergies")}
-                                type="checkbox"
-                                name="allergies"
-                                className="btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Shellfish"
-                                value="shellfish"
-                            /></li>
-                            <li><input
-                                {...register("allergies")}
-                                type="checkbox"
-                                name="allergies"
-                                className="btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Peanuts"
-                                value="peanuts" /></li>
-                            <li><input
-                                {...register("allergies")}
-                                type="checkbox"
-                                name="allergies"
-                                className="btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Soy"
-                                value="soy" /></li>
-                            <li><input
-                                {...register("allergies")}
-                                type="checkbox"
-                                name="allergies"
-                                className="btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Eggs"
-                                value="eggs" /></li>
-                        </ul>
-                    </div> */}
+                    </div>)
+                }
 
+                {/*Second Section*/}
+                {currentStep === 1 && /*TODO: center elements*/(
+
+                    <div>
+                        <h1 className="text-center">Dietary Restrictions</h1>
+                        <div>
+                            <label>{questions.dietary_pref.veg}</label>
+                            <Radio.Group onChange={onRadioChange}>
+                                <Radio value={true}>Yes</Radio>
+                                <Radio value={false}>No</Radio>
+                            </Radio.Group>
+                        </div>
+
+                        <div>
+                            <label>{questions.dietary_pref.vegan}</label>
+                            <Radio.Group onChange={onRadioChange}>
+                                <Radio value={true}>Yes</Radio>
+                                <Radio value={false}>No</Radio>
+                            </Radio.Group>
+                        </div>
+
+                        <div>
+                            <label>{questions.dietary_pref.gluten}</label>
+                            <Radio.Group onChange={onRadioChange}>
+                                <Radio value={true}>Yes</Radio>
+                                <Radio value={false}>No</Radio>
+                            </Radio.Group>
+                        </div>
+
+                        <div>
+                            <label>{questions.dietary_pref.pesc}</label>
+                            <Radio.Group onChange={onRadioChange}>
+                                <Radio value={true}>Yes</Radio>
+                                <Radio value={false}>No</Radio>
+                            </Radio.Group>
+                        </div>
+
+                        <div>
+                            <label>{questions.dietary_pref.aller}</label>
+                            <Radio.Group onChange={onRadioChange}>
+                                <Radio value={true}>Yes</Radio>
+                                <Radio value={false}>No</Radio>
+                            </Radio.Group>
+                        </div>
+                    </div>
+                )
+                }
+
+                {/*Third Section*/}
+                {currentStep === 2 && (
+                    <div>
+                        <h1 className="text-center">Financial Information</h1>
+                        <div>
+                            <label>{questions.financial}</label>
+                            <InputNumber
+                                formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                                onChange={onChange}
+                            />
+                        </div>
+
+                    </div>
+                )
+                }
+
+                {/*Fourth Section*/}
+                {currentStep === 3 && (
+                    <div>
+                        <h1 className="text-center">Lifestyle</h1>
+                        <div>
+                            <label>{questions.lifestyle.transport}</label>
+                        </div>
+                        <div>
+                            <label>{questions.lifestyle.energy}</label>
+                        </div>
+                        <div>
+                            <label>{questions.lifestyle.waste}</label>
+                        </div>
+                        <div>
+                            <label>{questions.lifestyle.water}</label>
+                        </div>
+                        <div>
+                            <label>{questions.lifestyle.house}</label>
+                        </div>
+                    </div>
+                )
+                }
+
+                {/*Fifth Section*/}
+                {currentStep === 4 && (
+                    <div>
+                        <h1 className="text-center">Engagement</h1>
+                        <div>
+                            <label>{questions.engagement.time}</label>
+                        </div>
+                        <div>
+                            <label>{questions.engagement.enjoy}</label>
+                        </div>
+                        <div>
+                            <label>{questions.engagement.comm}</label>
+                        </div>
+                        <div>
+                            <label>{questions.engagement.impact}</label>
+                        </div>
+                        <div>
+                            <label>{questions.engagement.learn}</label>
+                        </div>
+                    </div>
+
+                )
+                }
+
+                {/*Next and Previous buttons*/}
+                <Stack direction="row" spacing={40} align='center'>
+                    {console.log(currentStep)}
+                    {currentStep > 0 && <Button type="primary" style={{ background: 'blue' }} onClick={prev} icon={<ArrowLeft />}>Back</Button>}
+                    {currentStep < totalSteps && <Button type="primary" style={{ background: 'blue' }} onClick={next} icon={<ArrowRight />}>Next</Button>}
+                    {currentStep === totalSteps && <Button type="primary" style={{background: 'green'}} onClick={onSubmit}>Submit</Button>}
+                </Stack>
             </Container>
-        </React.Fragment>
+        </Form>
     )
 };
