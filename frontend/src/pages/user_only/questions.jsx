@@ -11,12 +11,12 @@ import ArrowRight from '@mui/icons-material/ArrowRight';
 import { Radio } from 'antd';
 import ArrowLeft from '@mui/icons-material/ArrowLeft';
 import Container from '@mui/material/Container';
-import { Form } from 'antd';
+import { Form, Select } from 'antd';
 import { Button } from 'antd';
-import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
-
+import { Divider } from 'antd';
+import { Col, Row } from 'antd';
+import { Space } from 'antd';
+import { Dropdown } from 'antd';
 
 const questions = {
     age: "What is your age?", // Text input, min 18 years old.
@@ -46,7 +46,7 @@ const questions = {
 
 const QuestionsSchema = Yup.object().shape({
     // Personal Info
-    age: Yup
+    years: Yup
         .number()
         .required()
         .min(18)
@@ -113,17 +113,31 @@ const QuestionsSchema = Yup.object().shape({
 
 });
 
+const allergens = [
+    { key: '1', label: 'None' },
+    { key: '2', label: 'Other' },
+    { key: '3', label: 'Peanuts' },
+    { key: '4', label: 'Tree Nuts' },
+    { key: '5', label: 'Milk' },
+    { key: '6', label: 'Eggs' },
+    { key: '7', label: 'Fish' },
+    { key: '8', label: 'Shellfish' },
+    { key: '9', label: 'Wheat' },
+    { key: '10', label: 'Soy' },
+    { key: '11', label: 'Sesame' },
+    { key: '12', label: 'Pollen' }
+  ];
+  
+
 export default function Questions() {
 
     const [currentStep, setCurrentStep] = useState(0);
     const totalSteps = 4;
 
-    const next = (data) => {
+    const next = () => {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         }
-
-        console.log(data);
     }
 
     const prev = () => {
@@ -140,7 +154,8 @@ export default function Questions() {
         setValue
     } = useForm({
         mode: "all",
-        resolver: yupResolver(QuestionsSchema)
+        resolver: yupResolver(QuestionsSchema),
+        defaultValues: { allergies: [] }
     });
 
     const selectedAllergies = watch("allergies");
@@ -158,80 +173,122 @@ export default function Questions() {
 
     const onChange = (value) => {
         console.log(value);
-    };
+    }
 
     const [val, setVal] = useState(true);
     const onRadioChange = (e) => {
         setVal(e.target.value);
-    };
+    }
 
-    const handleAgeChange = age => {
-        setValue('age', age, { shouldValidate: true});
+    const handleAgeChange = (age) => {
+        setValue('years', age, { shouldValidate: true });
     };
 
     return (
-        <Form onFinish={handleSubmit(onSubmit)}>
-            <Container maxWidth="sm">
+        <Form
+            labelCol={{
+                span: 4
+            }}
+            wrapperCol={{
+                span: 14
+            }}
+            layout="horizontal"
+            onFinish={handleSubmit(onSubmit)}>
+            <Container fixed maxWidth="sm">
                 {/*First Section*/}
                 {currentStep === 0 && (
                     <div>
                         <h1 className="text-center">Personal Information</h1>
-                        <div>
-                            <label>{questions.age}</label>
-                            <InputNumber
-                                min={18}
-                                max={119}
-                                onChange={onChange}
-                                changeOnWheel
-                            />
-                        </div>
-
+                        <Divider />
+                        <Col>
+                            <Space>
+                                <h3 className="text-center">{questions.age}</h3>
+                                <Form.Item>
+                                    <InputNumber
+                                        {...register('years')}
+                                        min={18}
+                                        max={119}
+                                        defaultValue={18}
+                                        onChange={handleAgeChange}
+                                        changeOnWheel
+                                    />
+                                </Form.Item>
+                            </Space>
+                            <Form.Item></Form.Item>
+                            <Form.Item></Form.Item>
+                            <Form.Item></Form.Item>
+                            <Form.Item></Form.Item>
+                            <Form.Item></Form.Item>
+                        </Col>
                     </div>)
                 }
 
                 {/*Second Section*/}
                 {currentStep === 1 && /*TODO: center elements*/(
-
                     <div>
                         <h1 className="text-center">Dietary Restrictions</h1>
+                        <Divider />
                         <div>
-                            <label>{questions.dietary_pref.veg}</label>
-                            <Radio.Group onChange={onRadioChange}>
-                                <Radio value={true}>Yes</Radio>
-                                <Radio value={false}>No</Radio>
-                            </Radio.Group>
+                                <h3 className="text-center">{questions.dietary_pref.veg}</h3>
+                                <Form.Item>
+                                    <Radio.Group onChange={onRadioChange}>
+                                        <Radio value={true}>Yes</Radio>
+                                        <Radio value={false}>No</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
                         </div>
 
                         <div>
-                            <label>{questions.dietary_pref.vegan}</label>
-                            <Radio.Group onChange={onRadioChange}>
-                                <Radio value={true}>Yes</Radio>
-                                <Radio value={false}>No</Radio>
-                            </Radio.Group>
+                            <Space>
+                                <h3 className="text-center">{questions.dietary_pref.vegan}</h3>
+                                <Form.Item>
+                                    <Radio.Group onChange={onRadioChange}>
+                                        <Radio value={true}>Yes</Radio>
+                                        <Radio value={false}>No</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Space>
+
                         </div>
 
                         <div>
-                            <label>{questions.dietary_pref.gluten}</label>
-                            <Radio.Group onChange={onRadioChange}>
-                                <Radio value={true}>Yes</Radio>
-                                <Radio value={false}>No</Radio>
-                            </Radio.Group>
+                            <Space>
+                                <h3 className="text-center">{questions.dietary_pref.gluten}</h3>
+                                <Form.Item>
+                                    <Radio.Group onChange={onRadioChange}>
+                                        <Radio value={true}>Yes</Radio>
+                                        <Radio value={false}>No</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Space>
+
                         </div>
 
                         <div>
-                            <label>{questions.dietary_pref.pesc}</label>
-                            <Radio.Group onChange={onRadioChange}>
-                                <Radio value={true}>Yes</Radio>
-                                <Radio value={false}>No</Radio>
-                            </Radio.Group>
+                            <Space>
+                                <h3 className="text-center">{questions.dietary_pref.pesc}</h3>
+                                <Form.Item>
+                                    <Select mode="multiple" placeholder="Please select your allergies">
+
+                                    </Select>
+                                </Form.Item>
+                            </Space>
+
                         </div>
 
                         <div>
-                            <label>{questions.dietary_pref.aller}</label>
-                            <Radio.Group onChange={onRadioChange}>
-                                <Radio value={true}>Yes</Radio>
-                                <Radio value={false}>No</Radio>
-                            </Radio.Group>
+                            <Space>
+                                <h3 className="text-center">{questions.dietary_pref.aller}</h3>
+                                <Form.Item
+
+                                >
+                                    <Radio.Group onChange={onRadioChange}>
+                                        <Radio value={true}>Yes</Radio>
+                                        <Radio value={false}>No</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Space>
+
                         </div>
                     </div>
                 )
@@ -306,7 +363,7 @@ export default function Questions() {
                     {console.log(currentStep)}
                     {currentStep > 0 && <Button type="primary" style={{ background: 'blue' }} onClick={prev} icon={<ArrowLeft />}>Back</Button>}
                     {currentStep < totalSteps && <Button type="primary" style={{ background: 'blue' }} onClick={next} icon={<ArrowRight />}>Next</Button>}
-                    {currentStep === totalSteps && <Button type="primary" style={{background: 'green'}} onClick={onSubmit}>Submit</Button>}
+                    {currentStep === totalSteps && <Button type="primary" style={{ background: 'green' }} onClick={onSubmit}>Submit</Button>}
                 </Stack>
             </Container>
         </Form>
