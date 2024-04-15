@@ -49,7 +49,7 @@ const questions = {
 
 const QuestionsSchema = Yup.object().shape({
     // Personal Info
-    years: Yup
+    age: Yup
         .number()
         .required("Required.")
         .integer(),
