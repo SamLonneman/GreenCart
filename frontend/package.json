@@ -25,6 +25,7 @@
     "react-bootstrap-icons": "^1.11.3",
     "react-dom": "^17.0.0 || ^18.0.0",
     "react-hook-form": "^7.51.0",
+    "react-hook-form-antd": "^1.1.0",
     "react-icons": "^4.3.1",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
@@ -70,6 +71,7 @@
   },
   "proxy": "http://localhost:8000/",
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "daisyui": "^4.9.0",
     "tailwindcss": "^3.4.1"
   },
