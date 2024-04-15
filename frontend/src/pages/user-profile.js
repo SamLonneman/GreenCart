@@ -1,11 +1,11 @@
 import React from 'react';
-import DisplayText from './taskGet';
+import TaskGenerate from './taskgenerate';
 
 const UserProfile = () => {
     return (
         <div>
             <h1>User Profile</h1>
-            <DisplayText />
+            
         </div>
     );
 }

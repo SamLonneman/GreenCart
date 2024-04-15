@@ -1,13 +1,11 @@
 // Import necessary dependencies
 import React, { useState, useEffect } from 'react';import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
-import { getTasks } from '../actions/request'; // Import the action creator
 import './pages.css';
 import Box from '@mui/material/Box';
 import { green } from '@mui/material/colors';
 import CircularProgress from '@mui/material/CircularProgress';
-const DisplayText = () => {
+const TaskGenerate = () => {
     //const dispatch = useDispatch();
     //const response = useSelector(state => state.response); // Assuming your reducer updates state.response with the received text
     const [tasks, setTasks] = useState([]);
@@ -114,4 +112,4 @@ const DisplayText = () => {
     );
 };
 
-export default DisplayText;
+export default TaskGenerate;

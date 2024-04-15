@@ -45,7 +45,7 @@ const Login = ({login, isAuthenticated}) => {
     //console.log(data);
   };
   if (isAuthenticated) {
-    return <Navigate to="/home" replace = {true}/>;
+    return <Navigate to="/" replace = {true}/>;
   }
 
   return(
