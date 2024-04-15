@@ -13,10 +13,12 @@ const DisplayText = () => {
     const [tasks, setTasks] = useState([]);
     const [taskID, setTaskID] = useState([]); // This is the ID of the task you want to get from the API
     const [isLoading, setIsLoading] = useState(false);
+    const [isReady, setIsReady] = useState(false);
 
     const handleRequest = async (event) => {
         if (event)
             event.preventDefault();
+        setIsReady(false);
         setIsLoading(true);
         const config = {
             headers: {
@@ -41,14 +43,48 @@ const DisplayText = () => {
         setTasks(taskList);
         setTaskID(taskIDList);
         setIsLoading(false);
+        setIsReady(true);
     };
+    const handleAccept = async (event, id) => {
+        if (event)
+            event.preventDefault();
+        const config = {
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json',
+                'X-CSRFToken': Cookies.get('csrftoken')
+            }
+        };
+        const body = JSON.stringify({
+            'withCredentials': 'true',
+            'id': id
+        });
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/accept`, body, config);
+        // this is where you might add loading/spinner/changing the text to show it was accepted
+    }
+    const handleReject = async (event, id) => {
+        if (event)
+            event.preventDefault();
+        const config = {
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json',
+                'X-CSRFToken': Cookies.get('csrftoken')
+            }
+        };
+        const body = JSON.stringify({
+            'withCredentials': 'true',
+            'id': id
+        });
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/reject`, body, config);
+        // this is where you might add loading/spinner/changing the text to show it was denied
+    }
     // uncomment this if you want it to run on page load
     // useEffect(() => {
     //     // Dispatch the action to fetch the text when the component mounts
     //     handleRequest();
     // }, []);
-    // TODO: Add a loading spinner or some other indicator to show that the API request is in progress
-    // also, actually splice the response into the correct text elements. 
+
     return (
         <div>
             <button onClick={handleRequest}>Get Text</button>
@@ -59,6 +95,12 @@ const DisplayText = () => {
             {isLoading ? '' : tasks[1]}
             {isLoading ? '' : tasks[2]}
             </Box>
+            {isReady && <button onClick={(e) => handleAccept(e, taskID[0])}>Accept Task 1</button>}
+            {isReady && <button onClick={(e) => handleReject(e, taskID[0])}>Reject Task 1</button>}
+            {isReady && <button onClick={(e) => handleAccept(e, taskID[1])}>Accept Task 2</button>} 
+            {isReady && <button onClick={(e) => handleReject(e, taskID[1])}>Reject Task 2</button>}
+            {isReady && <button onClick={(e) => handleAccept(e, taskID[2])}>Accept Task 3</button>}
+            {isReady && <button onClick={(e) => handleReject(e, taskID[2])}>Reject Task 3</button>}
             {isLoading && (<CircularProgress 
             sx = {{
                 color: green[500],
