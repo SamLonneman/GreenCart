@@ -1,6 +1,7 @@
 import CSRFToken from "../../components/CSRFToken";
 import Cart from '../../icons/cart.png';
 import { Navigate } from 'react-router-dom';
+import {preferences} from '../../actions/auth';
 import { useForm } from 'react-hook-form'; // Questions is, guess what, another form!!
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -12,7 +13,7 @@ import { DevTool } from "@hookform/devtools";
 import { Radio } from 'antd';
 import ArrowLeft from '@mui/icons-material/ArrowLeft';
 import Container from '@mui/material/Container';
-import { Form, Select, Slider, Rate } from 'antd';
+import { Form, Select, Slider, Rate, Modal } from 'antd';
 import { Button } from 'antd';
 import { Divider } from 'antd';
 import { Col, Row } from 'antd';
@@ -50,24 +51,22 @@ const questions = {
 
 const QuestionsSchema = Yup.object().shape({
     // Personal Info
-    years: Yup
+    age: Yup
         .number()
-        .required()
-        .min(18)
-        .max(119)
+        .required("Required.")
         .integer(),
 
     // Dietary Restrictions
-    veg: Yup
+    isVegetarian: Yup
         .bool()
         .required("Required."),
-    vegan: Yup
+    isVegan: Yup
         .bool()
         .required("Required."),
-    gluten: Yup
+    isGluten: Yup
         .bool()
         .required("Required."),
-    pesc: Yup
+    isPesc: Yup
         .bool()
         .required("Required."),
     allergies: Yup
@@ -190,45 +189,23 @@ export default function Questions() {
     const {
         control,
         handleSubmit,
-        watch,
         formState: { errors },
-        setValue
     } = useForm({
         mode: "all",
         resolver: yupResolver(QuestionsSchema),
-        defaultValues: { years: 18, allergies: [] }
+        initialValues: { age: 18 }
     });
 
-    const selectedAllergies = watch("allergies");
-
-    const [selectedAllerg, setSelectedAllerg] = useState([]);
-
-    const handleAllergies = (values) => {
-        console.log(values)
-        if(values.includes('None')) {
-            setSelectedAllerg(['None']);
-        }
-        else{
-            setSelectedAllerg(values.filter(v => v !== 'None'));
-        }
-    }
 
     const onSubmit = (data) => {
         console.log(data);
+        preferences(data['age'], data['isVegetarian'], data['isVegan'], data['isGluten'], data['isPesc'], data['allergies'], data['money'], data['transport'], data['energy'], data['waste'], data['house'], data['time'], data['enjoy'], data['comm'], data['impact'], data['learn']);
     };
 
     const onChange = (value) => {
         console.log(value);
     }
 
-    const [val, setVal] = useState(true);
-    const onRadioChange = (e) => {
-        setVal(e.target.value);
-    }
-
-    const handleAgeChange = (age) => {
-        setValue('years', age, { shouldValidate: true });
-    };
 
 
     return (
@@ -241,9 +218,7 @@ export default function Questions() {
                 span: 14
             }}
             layout="horizontal"
-            onFinish={handleSubmit((data) => {
-                console.log(data);
-            })}>
+            onFinish={handleSubmit(onSubmit)}>
             <Container fixed maxWidth="sm">
                 {/*First Section*/}
                 {currentStep === 0 && (
@@ -253,12 +228,10 @@ export default function Questions() {
                         <Col>
                             <Space>
                                 <h3 className="text-center">{questions.age}</h3>
-                                <FormItem control={control} name="years">
+                                <FormItem control={control} name="age">
                                     <InputNumber
                                         min={18}
                                         max={119}
-                                        defaultValue={18}
-                                        onChange={handleAgeChange}
                                         changeOnWheel
                                     />
                                 </FormItem>
@@ -279,8 +252,8 @@ export default function Questions() {
                         <Divider />
                         <div>
                             <h3 className="text-center">{questions.dietary_pref.veg}</h3>
-                            <FormItem control={control} name="veg">
-                                <Radio.Group style={{width:'100%'}} onChange={onRadioChange}>
+                            <FormItem control={control} name="isVegetarian">
+                                <Radio.Group style={{width:'100%'}}>
                                     <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
                                         <Radio value={true}>Yes</Radio>
                                         <Radio value={false}>No</Radio>
@@ -291,8 +264,8 @@ export default function Questions() {
 
                         <div>
                                 <h3 className="text-center">{questions.dietary_pref.vegan}</h3>
-                                <FormItem control={control} name="vegan">
-                                    <Radio.Group style={{width:'100%'}} onChange={onRadioChange}>
+                                <FormItem control={control} name="isVegan">
+                                    <Radio.Group style={{width:'100%'}}>
                                     <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
                                         <Radio value={true}>Yes</Radio>
                                         <Radio value={false}>No</Radio>
@@ -303,8 +276,8 @@ export default function Questions() {
 
                         <div>
                                 <h3 className="text-center">{questions.dietary_pref.gluten}</h3>
-                                <FormItem control={control} name="gluten">
-                                    <Radio.Group style={{width:'100%'}} onChange={onRadioChange}>
+                                <FormItem control={control} name="isGluten">
+                                    <Radio.Group style={{width:'100%'}}>
                                     <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
                                         <Radio value={true}>Yes</Radio>
                                         <Radio value={false}>No</Radio>
@@ -315,8 +288,8 @@ export default function Questions() {
 
                         <div>
                                 <h3 className="text-center">{questions.dietary_pref.pesc}</h3>
-                                <FormItem control={control} name="pesc">
-                                    <Radio.Group style={{width:'100%'}} onChange={onRadioChange}>
+                                <FormItem control={control} name="isPesc">
+                                    <Radio.Group style={{width:'100%'}}>
                                     <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
                                         <Radio value={true}>Yes</Radio>
                                         <Radio value={false}>No</Radio>
@@ -332,8 +305,6 @@ export default function Questions() {
                                     <Select 
                                     mode="multiple" 
                                     style={{width:'100%'}}
-                                    value={selectedAllerg}
-                                    onChange={handleAllergies}
                                     defaultValue={[]}>
                                         {allergens.map(allergen => (
                                             <Option key={allergen.key} value={allergen.label}>
@@ -501,7 +472,7 @@ export default function Questions() {
                     {console.log(currentStep)}
                     {currentStep > 0 && <Button type="primary" style={{ background: 'blue' }} onClick={prev} icon={<ArrowLeft />}>Back</Button>}
                     {currentStep < totalSteps && <Button type="primary" style={{ background: 'blue' }} onClick={next} icon={<ArrowRight />}>Next</Button>}
-                    {currentStep === currentStep && (
+                    {currentStep === totalSteps && (
                     <Form.Item>
                          <Button type="primary" htmlType="submit" style={{ background: 'green' } }>Submit</Button>
                     </Form.Item>
