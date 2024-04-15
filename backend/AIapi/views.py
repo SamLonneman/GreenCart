@@ -1,20 +1,22 @@
+import google.generativeai as genai
+
+
 from django.shortcuts import render
+
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes
+
 from django.http import HttpResponse
 import json
 from rest_framework import status
 
-from django.http import JsonResponse
-import google.generativeai as genai
-from .models import AIapi
-from api.serializers import TaskSerializer
 
 # import /api/models.py to access the Task model
 from api.models import Task
-from api.models import get_week_from_now
+from api.serializers import TaskSerializer
+
 from user_profile.models import UserProfile
 import os
 import environ

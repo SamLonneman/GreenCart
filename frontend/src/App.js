@@ -13,12 +13,14 @@ import Profile from "./pages/user-profile";
 import Home from "./pages/home";
 import ProductSearch from "./pages/product-search";
 import Forgotpassword from "./pages/forgotpassword";
-import TaskList from "./pages/tasklist";
-import TaskGenerate from "./pages/taskgenerate";
+
 import { useEffect } from 'react';
 
 import { Provider } from 'react-redux';
 import store from './store';
+
+import TaskList from "./pages/tasklist";
+import TaskGenerate from "./pages/taskgenerate";
 
 export default function App() {
     useEffect(() => {
@@ -39,6 +41,7 @@ export default function App() {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/user-profile" element={<Profile />} />
                 <Route path="/product-search" element={<ProductSearch />} />
+                <Route path="/questions" element={<Questions />} />
                 <Route path ="/taskgenerate" element={<TaskGenerate />} />
                 <Route path ="/tasklist" element={<TaskList />} />
                 <Route path="*" element={<h1>Page Not Found</h1>} />

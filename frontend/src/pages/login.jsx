@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React  from 'react';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -45,7 +45,7 @@ const Login = ({login, isAuthenticated}) => {
     //console.log(data);
   };
   if (isAuthenticated) {
-    return <Navigate to="/" replace = {true}/>;
+    return <Navigate to="/home" replace = {true}/>;
   }
 
   return(
