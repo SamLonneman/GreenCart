@@ -1,15 +1,15 @@
-import React  from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import './pages.css';
+import '../pages.css';
 import {connect } from 'react-redux';
-import {login} from '../actions/auth';
+import {login} from '../../actions/auth';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import CSRFToken from '../components/CSRFToken';
-import Cart from '../icons/cart.png';
+import CSRFToken from '../../components/CSRFToken';
+import Cart from '../../icons/cart.png';
 
 const messages = {
   missingUsername: "Please enter a username.",

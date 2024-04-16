@@ -36,6 +36,9 @@ const navbar = ({ isAuthenticated, logout }) => {
             <li className='nav-item'>
                 <NavLink className='nav-link' to='/product-search'>Product Search</NavLink>
             </li>
+            <li className='nav-item'>
+                <NavLink className='nav-link' to='/questions'>Questions</NavLink>
+            </li>
         </Fragment>
     );
 

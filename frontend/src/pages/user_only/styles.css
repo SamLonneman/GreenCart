@@ -1,0 +1,9 @@
+.radio-buttons-flex {
+    display: flex;
+    align-items: center; /* Align items vertically */
+}
+
+.radio-buttons-flex label,
+.radio-buttons-flex input {
+    margin-right: 10px; /* Adjust spacing between elements */
+}

@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import Cart from '../icons/cart.png';
-import '../App.css';
+import Cart from '../../icons/cart.png';
+import '../../App.css';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { register as registerAction } from '../actions/auth';
-import CSRFToken from '../components/CSRFToken';
+import { register as registerAction } from '../../actions/auth';
+import CSRFToken from '../../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Questions from '../user_only/questions';
 
 
 export const PASSWORD_COMPLEX_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,20}$/);
@@ -73,7 +74,8 @@ const Register = ({ registerAction, isAuthenticated }) => {
   }
 
   if (accountCreated) {
-    return <Navigate to="/login" replace={true} />;
+    return <Questions />;
+    //return <Navigate to="/login" replace={true} />;
   }
   if (isAuthenticated) {
     return <Navigate to="/" replace={true} />;
