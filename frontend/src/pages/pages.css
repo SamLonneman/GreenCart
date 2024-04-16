@@ -117,7 +117,11 @@ h2 {
 }
 
 .link{
-    color: #85E458;
+    color: #1AAA7D;
+}
+
+.navigation-button{
+    background: #1aaa7d;
 }
 
 .custom-box {
@@ -125,7 +129,23 @@ h2 {
     width: 750px;
     height: 750px;
     flex-shrink: 0;
-    background: #F6F6F6;
+    margin: 0 auto; margin-top: 25px;
+    background: #DAF1EA;
+    border-style: solid;
+    border-radius: .5rem;
+    border-width: 1px;
+    border-color: #59A68E; 
+}
+
+.questions-box{
+    padding: 10px;
+    flex-shrink:0;
+    margin: 0 auto; margin-top: 25px;
+    background: #DAF1EA;
+    border-style: solid;
+    border-radius: .5rem;
+    border-width: 1px;
+    border-color: #59A68E; 
 }
 
 .custom-input {
@@ -139,7 +159,7 @@ h2 {
     font-size: 16px !important;
     margin: 0.5em 0.5em !important;
     border-radius: 14px;
-    background: #85E458;
+    background: #1aaa7d;
     width: 282px;
     height: 41px;
     flex-shrink: 0;
