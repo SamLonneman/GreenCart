@@ -12,3 +12,7 @@ export const AUTHENTICATED_FAIL = "AUTHENTICATED_FAIL";
 // Profile Dispatch states
 export const LOAD_USER_PROFILE_SUCCESS = "USER_LOADED_SUCCESS";
 export const LOAD_USER_PROFILE_FAIL = "USER_LOADED_FAIL";
+
+// AI Dispatch states
+export const REQUEST_AI_SUCCESS = "REQUEST_AI_SUCCESS";
+export const REQUEST_AI_FAIL = "REQUEST_AI_FAIL";

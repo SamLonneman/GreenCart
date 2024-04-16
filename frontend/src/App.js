@@ -18,6 +18,9 @@ import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
 
+import TaskList from "./pages/tasklist";
+import TaskGenerate from "./pages/taskgenerate";
+
 export default function App() {
     useEffect(() => {
         document.title = "GreenCart"
@@ -33,11 +36,14 @@ export default function App() {
                     element={<Home />}
                 />
                 <Route path="/login" element={<Login />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path="/user-profile" element={<Profile />} />
                 <Route path="/product-search" element={<ProductSearch />} />
                 <Route path="/questions" element={<Questions />} />
-                <Route path="*" element={<h1>Not Found</h1>} />
+                <Route path ="/taskgenerate" element={<TaskGenerate />} />
+                <Route path ="/tasklist" element={<TaskList />} />
+                <Route path="*" element={<h1>Page Not Found</h1>} />
             </Routes>
             </Layout>
         </Router>
