@@ -14,6 +14,7 @@ import Home from "./pages/home";
 import ProductSearch from "./pages/user_only/product-search";
 import Forgotpassword from "./pages/user_auth/forgotpassword";
 import { useEffect } from 'react';
+import {ConfigProvider} from 'antd';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -25,7 +26,18 @@ export default function App() {
         document.title = "GreenCart"
      }, []);
 
+    document.body.style.background = "#edf8f4";
+
     return (
+        <ConfigProvider
+            // theme={{
+            //     token: {
+            //         colorPrimary :'#36c15b',
+            //         borderRadius: 5,
+            //         colorBgContainer: '#f6ffed',
+            //     },
+            // }}
+        >
         <Provider store={store}>
 
         <Router>
@@ -46,5 +58,6 @@ export default function App() {
             </Layout>
         </Router>
         </Provider>
+        </ConfigProvider>
     );
 }
