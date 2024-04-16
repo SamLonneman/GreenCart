@@ -206,7 +206,36 @@ export default function Questions() {
         console.log(value);
     }
 
+    // Modal for confirmation.
+    const [open, setOpen] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [modalText, setModalText] = useState('Are you sure you want to submit?');
+    const showModal = () => {
+        setOpen(true);
+    };
+    const handleOk = () => {
+        setModalText('Processing your answers.');
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setModalText('Sending your answers to the database.')
+        }, 2000);
+        setTimeout(() => {
+            setOpen(false);
+            setConfirmLoading(false);
+        }, 3000);
+        setSuccess(true);
+    };
+    const handleCancel = () => {
+        console.log('Clicked cancel button');
+        setOpen(false);
+    };
 
+    const [sentToDatabase, setSentToDatabase] = useState(false);
+
+    if(sentToDatabase){
+        return <Navigate to="/home" replace = {true}/>;
+    }
 
     return (
         <>
@@ -221,12 +250,12 @@ export default function Questions() {
                 onFinish={handleSubmit(onSubmit)}>
                 {/*First Section*/}
                 {currentStep === 0 && (
-                    <div className="questions-box">
-                        <h1 className="text-center">Personal Information</h1>
-                        <Divider />
-                        <Col>
+                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '50vh' }}>
+                        <div className="questions-box">
+                            <h1 className="text-center">Personal Information</h1>
+                            <Divider />
                             <Space>
-                                <h3 style={{marginLeft:'20px'}}>{questions.age}</h3>
+                                <h3 style={{ marginLeft: '20px' }}>{questions.age}</h3>
                                 <FormItem style={{ marginLeft: '300px', marginBottom: '5px' }} control={control} name="age">
                                     <InputNumber
                                         min={18}
@@ -236,63 +265,21 @@ export default function Questions() {
                                     />
                                 </FormItem>
                             </Space>
-                        </Col>
-                    </div>)
+                        </div>
+                    </Row>)
                 }
 
                 {/*Second Section*/}
                 {currentStep === 1 && /*TODO: center elements*/(
-                    <div className="questions-box">
-                        <h1 className="text-center">Dietary Restrictions</h1>
-                        <Divider />
+                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '80vh' }}>
+                        <div className="questions-box">
+                            <h1 className="text-center">Dietary Restrictions</h1>
+                            <Divider />
 
-                        <Tooltip title="Eats plants, avoids animal products except for eggs and milk.">
-                            <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.veg}</h3>
-                        </Tooltip>
-                        <FormItem control={control} name="isVegetarian">
-                            <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
-                                <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
-                                    <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
-                                    <Radio value={false}><span className="radio-inpt">No</span></Radio>
-                                </Space>
-                            </Radio.Group>
-                        </FormItem>
-
-                        <div>
-                            <Tooltip title="Avoids all animal-based products ex. eggs, milk.">
-                                <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.vegan}</h3>
+                            <Tooltip title="Eats plants, avoids animal products except for eggs and milk.">
+                                <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.veg}</h3>
                             </Tooltip>
-                            <FormItem control={control} name="isVegan">
-                                <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
-                                    <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
-                                        <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
-                                        <Radio value={false}><span className="radio-inpt">No</span></Radio>
-                                    </Space>
-                                </Radio.Group>
-                            </FormItem>
-                        </div>
-
-                        <div>
-                            <Tooltip title="Avoids wheat and related grains.">
-                                <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.gluten}</h3>
-                            </Tooltip>
-
-                            <FormItem control={control} name="isGluten">
-                                <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
-                                    <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
-                                        <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
-                                        <Radio value={false}><span className="radio-inpt">No</span></Radio>
-                                    </Space>
-                                </Radio.Group>
-                            </FormItem>
-                        </div>
-
-                        <div>
-                            <Tooltip title="Eats only fish, but can consume milk, eggs.">
-                                <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.pesc}</h3>
-                            </Tooltip>
-
-                            <FormItem control={control} name="isPesc">
+                            <FormItem control={control} name="isVegetarian">
                                 <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
                                     <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
                                         <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
@@ -301,184 +288,253 @@ export default function Questions() {
                                 </Radio.Group>
                             </FormItem>
 
+                            <div>
+                                <Tooltip title="Avoids all animal-based products ex. eggs, milk.">
+                                    <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.vegan}</h3>
+                                </Tooltip>
+                                <FormItem control={control} name="isVegan">
+                                    <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
+                                        <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
+                                            <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
+                                            <Radio value={false}><span className="radio-inpt">No</span></Radio>
+                                        </Space>
+                                    </Radio.Group>
+                                </FormItem>
+                            </div>
+
+                            <div>
+                                <Tooltip title="Avoids wheat and related grains.">
+                                    <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.gluten}</h3>
+                                </Tooltip>
+
+                                <FormItem control={control} name="isGluten">
+                                    <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
+                                        <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
+                                            <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
+                                            <Radio value={false}><span className="radio-inpt">No</span></Radio>
+                                        </Space>
+                                    </Radio.Group>
+                                </FormItem>
+                            </div>
+
+                            <div>
+                                <Tooltip title="Eats only fish, but can consume milk, eggs.">
+                                    <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.pesc}</h3>
+                                </Tooltip>
+
+                                <FormItem control={control} name="isPesc">
+                                    <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
+                                        <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
+                                            <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
+                                            <Radio value={false}><span className="radio-inpt">No</span></Radio>
+                                        </Space>
+                                    </Radio.Group>
+                                </FormItem>
+
+                            </div>
+
+                            <div>
+                                <Divider />
+                                <h3 className="text-center">{questions.dietary_pref.aller}</h3>
+                                <FormItem style={{ marginLeft: '170px' }} control={control} name="allergies">
+                                    <Select
+                                        mode="multiple"
+                                        style={{ width: '100%' }}
+                                        defaultValue={[]}>
+                                        {allergens.map(allergen => (
+                                            <Option key={allergen.key} value={allergen.label}>
+                                                {allergen.label}
+                                            </Option>
+                                        ))}
+
+                                    </Select>
+                                </FormItem>
+
+                            </div>
                         </div>
-
-                        <div>
-                            <h3 className="text-center">{questions.dietary_pref.aller}</h3>
-                            <FormItem style={{ marginLeft: '170px' }} control={control} name="allergies">
-                                <Select
-                                    mode="multiple"
-                                    style={{ width: '100%' }}
-                                    defaultValue={[]}>
-                                    {allergens.map(allergen => (
-                                        <Option key={allergen.key} value={allergen.label}>
-                                            {allergen.label}
-                                        </Option>
-                                    ))}
-
-                                </Select>
-                            </FormItem>
-
-                        </div>
-                    </div>
+                    </Row>
                 )
                 }
 
                 {/*Third Section*/}
                 {currentStep === 2 && (
-                    <div className="questions-box">
-                        <h1 className="text-center">Financial Information</h1>
-                        <Divider />
-                        <div>
-                            <h3 className="text-center">{questions.financial}</h3>
-                            <FormItem control={control} name="money">
-                                <InputNumber
-                                    min={0}
-                                    max={1000000}
-                                    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                                    onChange={onChange}
-                                    style={{ width: '100%' }}
-                                />
-                            </FormItem>
-                        </div>
+                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '50vh' }}>
+                        <div className="questions-box">
+                            <h1 className="text-center">Financial Information</h1>
+                            <Divider />
+                            <div>
+                                <h3 className="text-center">{questions.financial}</h3>
+                                <FormItem control={control} name="money">
+                                    <InputNumber
+                                        min={0}
+                                        max={10000}
+                                        formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                        parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                                        onChange={onChange}
+                                        style={{ width: '35%' }}
+                                        changeOnWheel
+                                    />
+                                </FormItem>
+                            </div>
 
-                    </div>
+                        </div>
+                    </Row>
                 )
                 }
 
                 {/*Fourth Section*/}
                 {currentStep === 3 && (
-                    <div className="questions-box">
-                        <h1 className="text-center">Lifestyle</h1>
-                        <Divider />
-                        <div>
-                            <h3 className="text-center">{questions.lifestyle.transport}</h3>
-                            <FormItem control={control} name="transport">
-                                <Select
-                                    mode="multiple"
-                                    style={{ width: '100%' }}
-                                    defaultValue={[]}>
-                                    {transport.map(allergen => (
-                                        <Option key={allergen.key} value={allergen.label}>
-                                            {allergen.label}
-                                        </Option>
-                                    ))}
+                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '85vh' }}>
+                        <div className="questions-box">
+                            <h1 className="text-center">Lifestyle</h1>
+                            <Divider />
+                            <div>
+                                <h3 className="text-center">{questions.lifestyle.transport}</h3>
+                                <FormItem control={control} name="transport">
+                                    <Select
+                                        mode="multiple"
+                                        style={{ width: '100%' }}
+                                        defaultValue={[]}>
+                                        {transport.map(allergen => (
+                                            <Option key={allergen.key} value={allergen.label}>
+                                                {allergen.label}
+                                            </Option>
+                                        ))}
 
-                                </Select>
-                            </FormItem>
-                        </div>
-                        <div>
-                            <h3 className="text-center">{questions.lifestyle.energy}</h3>
-                            <FormItem control={control} name="energy">
-                                <Select
-                                    mode="multiple"
-                                    style={{ width: '100%' }}
-                                    defaultValue={[]}>
-                                    {householdEnergySources.map(allergen => (
-                                        <Option key={allergen.key} value={allergen.label}>
-                                            {allergen.label}
-                                        </Option>
-                                    ))}
+                                    </Select>
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3 className="text-center">{questions.lifestyle.energy}</h3>
+                                <FormItem control={control} name="energy">
+                                    <Select
+                                        mode="multiple"
+                                        style={{ width: '100%' }}
+                                        defaultValue={[]}>
+                                        {householdEnergySources.map(allergen => (
+                                            <Option key={allergen.key} value={allergen.label}>
+                                                {allergen.label}
+                                            </Option>
+                                        ))}
 
-                                </Select>
-                            </FormItem>
-                        </div>
-                        <div>
-                            <h3 className="text-center">{questions.lifestyle.waste}</h3>
-                            <FormItem control={control} name="waste">
-                                <Select
-                                    mode="multiple"
-                                    style={{ width: '100%' }}
-                                    defaultValue={[]}>
-                                    {waste.map(allergen => (
-                                        <Option key={allergen.key} value={allergen.label}>
-                                            {allergen.label}
-                                        </Option>
-                                    ))}
+                                    </Select>
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3 className="text-center">{questions.lifestyle.waste}</h3>
+                                <FormItem control={control} name="waste">
+                                    <Select
+                                        mode="multiple"
+                                        style={{ width: '100%' }}
+                                        defaultValue={[]}>
+                                        {waste.map(allergen => (
+                                            <Option key={allergen.key} value={allergen.label}>
+                                                {allergen.label}
+                                            </Option>
+                                        ))}
 
-                                </Select>
-                            </FormItem>
+                                    </Select>
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3 className="text-center">{questions.lifestyle.water}</h3>
+                                <FormItem control={control} name="water">
+                                    <Slider min={0} max={5} marks={{ 0: '0', 2: '2', 5: '5' }} />
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3 className="text-center">{questions.lifestyle.house}</h3>
+                                <FormItem control={control} name="house">
+                                    <Slider min={1} max={10} marks={{ 1: '1', 5: '5', 10: '10' }} />
+                                </FormItem>
+                            </div>
                         </div>
-                        <div>
-                            <h3 className="text-center">{questions.lifestyle.water}</h3>
-                            <FormItem control={control} name="water">
-                                <Slider min={0} max={5} marks={{ 0: '0', 2: '2', 5: '5' }} />
-                            </FormItem>
-                        </div>
-                        <div>
-                            <h3 className="text-center">{questions.lifestyle.house}</h3>
-                            <FormItem control={control} name="house">
-                                <Slider min={1} max={10} marks={{ 1: '1', 5: '5', 10: '10' }} />
-                            </FormItem>
-                        </div>
-                    </div>
+                    </Row>
                 )
                 }
 
                 {/*Fifth Section*/}
                 {currentStep === 4 && (
-                    <div className="questions-box">
-                        <h1 className="text-center">Engagement</h1>
-                        <Divider />
-                        <div>
-                            <h3>{questions.engagement.time}</h3>
-                            <FormItem control={control} name="time">
-                                <Select>
-                                    <Option value="1-3 hours">
-                                        1-3 hours
-                                    </Option>
-                                    <Option value="4-6 hours">
-                                        4-6 hours
-                                    </Option>
-                                    <Option value="7-10 hours">
-                                        7-10 hours
-                                    </Option>
-                                    <Option value=">10 hours">
-                                        More than 10 hours
-                                    </Option>
-                                </Select>
-                            </FormItem>
+                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '65vh' }}>
+                        <div className="questions-box">
+                            <h1 className="text-center">Engagement</h1>
+                            <Divider />
+                            <div>
+                                <h3>{questions.engagement.time}</h3>
+                                <FormItem control={control} name="time">
+                                    <Select>
+                                        <Option value="1-3 hours">
+                                            1-3 hours
+                                        </Option>
+                                        <Option value="4-6 hours">
+                                            4-6 hours
+                                        </Option>
+                                        <Option value="7-10 hours">
+                                            7-10 hours
+                                        </Option>
+                                        <Option value=">10 hours">
+                                            More than 10 hours
+                                        </Option>
+                                    </Select>
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3>{questions.engagement.enjoy}</h3>
+                                <FormItem control={control} name="enjoy">
+                                    <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3>{questions.engagement.comm}</h3>
+                                <FormItem control={control} name="comm">
+                                    <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3>{questions.engagement.impact}</h3>
+                                <FormItem control={control} name="impact">
+                                    <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
+                                </FormItem>
+                            </div>
+                            <div>
+                                <h3>{questions.engagement.learn}</h3>
+                                <FormItem control={control} name="learn">
+                                    <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
+                                </FormItem>
+                            </div>
                         </div>
-                        <div>
-                            <h3>{questions.engagement.enjoy}</h3>
-                            <FormItem control={control} name="enjoy">
-                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
-                            </FormItem>
-                        </div>
-                        <div>
-                            <h3>{questions.engagement.comm}</h3>
-                            <FormItem control={control} name="comm">
-                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
-                            </FormItem>
-                        </div>
-                        <div>
-                            <h3>{questions.engagement.impact}</h3>
-                            <FormItem control={control} name="impact">
-                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
-                            </FormItem>
-                        </div>
-                        <div>
-                            <h3>{questions.engagement.learn}</h3>
-                            <FormItem control={control} name="learn">
-                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
-                            </FormItem>
-                        </div>
-                    </div>
-
+                    </Row>
                 )
                 }
+
+
+                {currentStep === totalSteps && (
+                    <>
+                    <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
+                        <Form.Item>
+                            <Modal
+                            title="Confirmation"
+                            open={open}
+                            onOk={handleOk}
+                            confirmLoading={confirmLoading}
+                            onCancel={handleCancel}
+                            okButtonProps={{
+                                style: {backgroundColor: '#85E458', color: 'black'},
+                                htmlType: 'submit'
+
+                            }}
+                         >
+                            <p>{modalText}</p>
+                        </Modal>
+                        </Form.Item>
+                    </>
+                )}
 
                 {/*Next and Previous buttons*/}
                 <Stack direction="row" spacing={40} align='center'>
                     {console.log(currentStep)}
                     {currentStep > 0 && <Button type="primary" className="navigation-button" onClick={prev}>Back</Button>}
                     {currentStep < totalSteps && <Button type="primary" className="navigation-button" onClick={next}>Next</Button>}
-                    {currentStep === totalSteps && (
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit" style={{ background: 'green' }}>Submit</Button>
-                        </Form.Item>
-                    )}
                 </Stack>
             </Form>
             <DevTool control={control} />
