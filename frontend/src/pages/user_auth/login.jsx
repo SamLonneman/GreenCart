@@ -51,7 +51,7 @@ const Login = ({login, isAuthenticated}) => {
   return(
     <div className="signin-form">
       <div className="center">
-        <div className="custom-box center">
+        <div className="custom-box center border-solid">
             <form onSubmit={handleSubmit(onSubmit)}>
               <CSRFToken />
               <img src={Cart} alt="GreenCart"/>
