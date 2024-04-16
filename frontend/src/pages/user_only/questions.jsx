@@ -13,7 +13,7 @@ import { DevTool } from "@hookform/devtools";
 import { Radio } from 'antd';
 import ArrowLeft from '@mui/icons-material/ArrowLeft';
 import Container from '@mui/material/Container';
-import { Form, Select, Slider, Rate, Modal, Tooltip } from 'antd';
+import { Form, Select, Slider, Rate, Modal, Tooltip, notification } from 'antd';
 import { Button } from 'antd';
 import { Divider } from 'antd';
 import { Col, Row } from 'antd';
@@ -224,6 +224,7 @@ export default function Questions() {
             setOpen(false);
             setConfirmLoading(false);
         }, 3000);
+        openNotificationwWithIcon('success')
         setSuccess(true);
     };
     const handleCancel = () => {
@@ -231,14 +232,25 @@ export default function Questions() {
         setOpen(false);
     };
 
+    // Notifications
+    const [api, contextHolder] = notification.useNotification();
+    const openNotificationwWithIcon = (type) => {
+        api[type]({
+            message: 'Answers Submitted',
+            description:
+            'Your answers have been submitted successfully! Thank you for your input.'
+        })
+    }
+
     const [sentToDatabase, setSentToDatabase] = useState(false);
 
-    if(sentToDatabase){
+    if(sentToDatabase && success){
         return <Navigate to="/home" replace = {true}/>;
     }
 
     return (
         <>
+        {contextHolder}
             <Form
                 labelCol={{
                     span: 4
@@ -520,8 +532,9 @@ export default function Questions() {
                             onCancel={handleCancel}
                             okButtonProps={{
                                 style: {backgroundColor: '#85E458', color: 'black'},
-                                htmlType: 'submit'
-
+                                onClick: () => {
+                                    console.log("Hi");
+                                }
                             }}
                          >
                             <p>{modalText}</p>
