@@ -297,7 +297,6 @@ export default function Questions() {
                                 <h3 style={{ marginLeft: '20px' }}>{questions.age}</h3>
                                 <FormItem style={{ marginLeft: '300px', marginBottom: '5px' }} control={control} name="age">
                                     <InputNumber
-                                        label={questions.age}
                                         min={18}
                                         max={119}
                                         keyboard
@@ -578,6 +577,54 @@ export default function Questions() {
                     </Row>
                 )
                 }
+
+
+                {currentStep === totalSteps && (
+                    <>
+                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
+                        <Form.Item>
+                            <Modal
+                                title="Confirmation"
+                                open={open}
+                                onOk={handleOk}
+                                confirmLoading={confirmLoading}
+                                onCancel={handleCancel}
+                                okButtonProps={{
+                                    style: { backgroundColor: '#85E458', color: 'black' },
+                                    onClick: () => {
+                                        console.log("Hi");
+                                    }
+                                }}
+                            >
+                                <p>{modalText}</p>
+                            </Modal>
+                        </Form.Item>
+                    </>
+                )}
+
+
+                {currentStep === totalSteps && (
+                    <>
+                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
+                        <Form.Item>
+                            <Modal
+                                title="Confirmation"
+                                open={open}
+                                onOk={handleOk}
+                                confirmLoading={confirmLoading}
+                                onCancel={handleCancel}
+                                okButtonProps={{
+                                    style: { backgroundColor: '#85E458', color: 'black' },
+                                    onClick: () => {
+                                        console.log("Hi");
+                                    }
+                                }}
+                            >
+                                <p>{modalText}</p>
+                            </Modal>
+                        </Form.Item>
+                    </>
+                )}
 
 
                 {currentStep === totalSteps && (
