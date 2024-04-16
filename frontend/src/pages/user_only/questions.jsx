@@ -221,8 +221,8 @@ export default function Questions() {
             onFinish={handleSubmit(onSubmit)}>
             <Container fixed maxWidth="sm">
                 {/*First Section*/}
-                {currentStep === 0 && (
-                    <div>
+                 {currentStep === 0 && (
+                    <div className="questions-box">
                         <h1 className="text-center">Personal Information</h1>
                         <Divider />
                         <Col>
@@ -230,27 +230,22 @@ export default function Questions() {
                                 <h3 className="text-center">{questions.age}</h3>
                                 <FormItem control={control} name="age">
                                     <InputNumber
+                                        label={questions.age}
                                         min={18}
                                         max={119}
                                         changeOnWheel
                                     />
                                 </FormItem>
                             </Space>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
                         </Col>
                     </div>)
                 }
 
                 {/*Second Section*/}
                 {currentStep === 1 && /*TODO: center elements*/(
-                    <div>
+                    <div className="questions-box">
                         <h1 className="text-center">Dietary Restrictions</h1>
                         <Divider />
-                        <div>
                             <h3 className="text-center">{questions.dietary_pref.veg}</h3>
                             <FormItem control={control} name="isVegetarian">
                                 <Radio.Group style={{width:'100%'}}>
@@ -260,7 +255,6 @@ export default function Questions() {
                                     </Space>
                                 </Radio.Group>
                             </FormItem>
-                        </div>
 
                         <div>
                                 <h3 className="text-center">{questions.dietary_pref.vegan}</h3>
@@ -322,8 +316,9 @@ export default function Questions() {
 
                 {/*Third Section*/}
                 {currentStep === 2 && (
-                    <div>
+                    <div className="questions-box">
                         <h1 className="text-center">Financial Information</h1>
+                        <Divider />
                         <div>
                             <h3 className="text-center">{questions.financial}</h3>
                             <FormItem control={control} name="money">
@@ -336,11 +331,6 @@ export default function Questions() {
                                 style={{width:'100%'}}
                             />
                             </FormItem>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
-                            <Form.Item></Form.Item>
                         </div>
 
                     </div>
@@ -349,8 +339,9 @@ export default function Questions() {
 
                 {/*Fourth Section*/}
                 {currentStep === 3 && (
-                    <div>
+                    <div className="questions-box">
                         <h1 className="text-center">Lifestyle</h1>
+                        <Divider />
                         <div>
                             <h3 className="text-center">{questions.lifestyle.transport}</h3>
                             <FormItem control={control} name="transport">
@@ -417,8 +408,9 @@ export default function Questions() {
 
                 {/*Fifth Section*/}
                 {currentStep === 4 && (
-                    <div>
+                    <div className="questions-box">
                         <h1 className="text-center">Engagement</h1>
+                        <Divider/>
                         <div>
                             <h3>{questions.engagement.time}</h3>
                             <FormItem control={control} name="time">
@@ -470,8 +462,8 @@ export default function Questions() {
                 {/*Next and Previous buttons*/}
                 <Stack direction="row" spacing={40} align='center'>
                     {console.log(currentStep)}
-                    {currentStep > 0 && <Button type="primary" style={{ background: 'blue' }} onClick={prev} icon={<ArrowLeft />}>Back</Button>}
-                    {currentStep < totalSteps && <Button type="primary" style={{ background: 'blue' }} onClick={next} icon={<ArrowRight />}>Next</Button>}
+                    {currentStep > 0 && <Button type="primary" className="button" onClick={prev} icon={<ArrowLeft />}>Back</Button>}
+                    {currentStep < totalSteps && <Button type="primary" className="button" onClick={next} icon={<ArrowRight />}>Next</Button>}
                     {currentStep === totalSteps && (
                     <Form.Item>
                          <Button type="primary" htmlType="submit" style={{ background: 'green' } }>Submit</Button>
