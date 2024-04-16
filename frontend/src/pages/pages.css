@@ -152,10 +152,6 @@ h2 {
     color: black !important;
 }
 
-.ant-radio-button-wrapper-checked {
-    color: red !important;
-  }
-
 .radio-inpt {
     font-size: 15px !important;
     width: 45% !important;
@@ -170,25 +166,26 @@ h2 {
 }
 
 .navigation-button{
+    font-size: 16px !important;
     background: #1aaa7d;
     flex-shrink: 0;
     color: white !important;
     margin: 0 auto; 
-    margin-top: 150px;
-    align: 'center';
+    text-align: center;
     border-radius: .5rem;
-
+    height: 40px;
+    width: 200px;
 }
 
 .button {
     font-size: 16px !important;
     margin: 0.5em 0.5em !important;
     border-radius: 14px;
-    background: #1aaa7d;
+    background: #85E458;
     width: 282px;
     height: 41px;
     flex-shrink: 0;
-    color: white !important;
+    color: black !important;
 }
 
 .tablecell {
