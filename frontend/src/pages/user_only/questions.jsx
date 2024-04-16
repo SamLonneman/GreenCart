@@ -1,7 +1,7 @@
 import CSRFToken from "../../components/CSRFToken";
 import Cart from '../../icons/cart.png';
 import { Navigate } from 'react-router-dom';
-import {preferences} from '../../actions/auth';
+import { preferences } from '../../actions/auth';
 import { useForm } from 'react-hook-form'; // Questions is, guess what, another form!!
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -13,7 +13,7 @@ import { DevTool } from "@hookform/devtools";
 import { Radio } from 'antd';
 import ArrowLeft from '@mui/icons-material/ArrowLeft';
 import Container from '@mui/material/Container';
-import { Form, Select, Slider, Rate, Modal } from 'antd';
+import { Form, Select, Slider, Rate, Modal, Tooltip } from 'antd';
 import { Button } from 'antd';
 import { Divider } from 'antd';
 import { Col, Row } from 'antd';
@@ -150,10 +150,10 @@ const transport = [
 ];
 
 const waste = [
-    {key: 1, label: 'Recycle'},
-    {key: 2, label: 'Compost'},
-    {key: 3, label: 'Trash'},
-    {key: 4, label: 'None'},
+    { key: 1, label: 'Recycle' },
+    { key: 2, label: 'Compost' },
+    { key: 3, label: 'Trash' },
+    { key: 4, label: 'None' },
 ]
 
 const householdEnergySources = [
@@ -210,29 +210,28 @@ export default function Questions() {
 
     return (
         <>
-        <Form
-            labelCol={{
-                span: 4
-            }}
-            wrapperCol={{
-                span: 14
-            }}
-            layout="horizontal"
-            onFinish={handleSubmit(onSubmit)}>
-            <Container fixed maxWidth="sm">
+            <Form
+                labelCol={{
+                    span: 4
+                }}
+                wrapperCol={{
+                    span: 14
+                }}
+                layout="horizontal"
+                onFinish={handleSubmit(onSubmit)}>
                 {/*First Section*/}
-                 {currentStep === 0 && (
+                {currentStep === 0 && (
                     <div className="questions-box">
                         <h1 className="text-center">Personal Information</h1>
                         <Divider />
                         <Col>
                             <Space>
-                                <h3 className="text-center">{questions.age}</h3>
-                                <FormItem control={control} name="age">
+                                <h3 style={{marginLeft:'20px'}}>{questions.age}</h3>
+                                <FormItem style={{ marginLeft: '300px', marginBottom: '5px' }} control={control} name="age">
                                     <InputNumber
-                                        label={questions.age}
                                         min={18}
                                         max={119}
+                                        keyboard
                                         changeOnWheel
                                     />
                                 </FormItem>
@@ -246,68 +245,79 @@ export default function Questions() {
                     <div className="questions-box">
                         <h1 className="text-center">Dietary Restrictions</h1>
                         <Divider />
-                            <h3 className="text-center">{questions.dietary_pref.veg}</h3>
-                            <FormItem control={control} name="isVegetarian">
-                                <Radio.Group style={{width:'100%'}}>
-                                    <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
+
+                        <Tooltip title="Eats plants, avoids animal products except for eggs and milk.">
+                            <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.veg}</h3>
+                        </Tooltip>
+                        <FormItem control={control} name="isVegetarian">
+                            <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
+                                <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
+                                    <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
+                                    <Radio value={false}><span className="radio-inpt">No</span></Radio>
+                                </Space>
+                            </Radio.Group>
+                        </FormItem>
+
+                        <div>
+                            <Tooltip title="Avoids all animal-based products ex. eggs, milk.">
+                                <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.vegan}</h3>
+                            </Tooltip>
+                            <FormItem control={control} name="isVegan">
+                                <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
+                                    <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
+                                        <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
+                                        <Radio value={false}><span className="radio-inpt">No</span></Radio>
+                                    </Space>
+                                </Radio.Group>
+                            </FormItem>
+                        </div>
+
+                        <div>
+                            <Tooltip title="Avoids wheat and related grains.">
+                                <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.gluten}</h3>
+                            </Tooltip>
+
+                            <FormItem control={control} name="isGluten">
+                                <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
+                                    <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
+                                        <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
+                                        <Radio value={false}><span className="radio-inpt">No</span></Radio>
+                                    </Space>
+                                </Radio.Group>
+                            </FormItem>
+                        </div>
+
+                        <div>
+                            <Tooltip title="Eats only fish, but can consume milk, eggs.">
+                                <h3 style={{ marginLeft: '20px' }}>{questions.dietary_pref.pesc}</h3>
+                            </Tooltip>
+
+                            <FormItem control={control} name="isPesc">
+                                <Radio.Group style={{ width: '100%', marginLeft: '200px', position: "absolute", top: '-40px' }}>
+                                    <Space direction="horizontal" style={{ width: '100%', justifyContent: 'right' }}>
+                                        <Radio value={true}><span className="radio-inpt">Yes</span></Radio>
+                                        <Radio value={false}><span className="radio-inpt">No</span></Radio>
                                     </Space>
                                 </Radio.Group>
                             </FormItem>
 
-                        <div>
-                                <h3 className="text-center">{questions.dietary_pref.vegan}</h3>
-                                <FormItem control={control} name="isVegan">
-                                    <Radio.Group style={{width:'100%'}}>
-                                    <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
-                                    </Space>
-                                    </Radio.Group>
-                                </FormItem>
                         </div>
 
                         <div>
-                                <h3 className="text-center">{questions.dietary_pref.gluten}</h3>
-                                <FormItem control={control} name="isGluten">
-                                    <Radio.Group style={{width:'100%'}}>
-                                    <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
-                                    </Space>
-                                    </Radio.Group>
-                                </FormItem>
-                        </div>
-
-                        <div>
-                                <h3 className="text-center">{questions.dietary_pref.pesc}</h3>
-                                <FormItem control={control} name="isPesc">
-                                    <Radio.Group style={{width:'100%'}}>
-                                    <Space direction="horizontal" style={{width: '100%', justifyContent: 'right'}}>
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
-                                    </Space>
-                                    </Radio.Group>
-                                </FormItem>
-
-                        </div>
-
-                        <div>
-                                <h3 className="text-center">{questions.dietary_pref.aller}</h3>
-                                <FormItem control={control} name="allergies">
-                                    <Select 
-                                    mode="multiple" 
-                                    style={{width:'100%'}}
+                            <h3 className="text-center">{questions.dietary_pref.aller}</h3>
+                            <FormItem style={{ marginLeft: '170px' }} control={control} name="allergies">
+                                <Select
+                                    mode="multiple"
+                                    style={{ width: '100%' }}
                                     defaultValue={[]}>
-                                        {allergens.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                            ))}
+                                    {allergens.map(allergen => (
+                                        <Option key={allergen.key} value={allergen.label}>
+                                            {allergen.label}
+                                        </Option>
+                                    ))}
 
-                                    </Select>
-                                </FormItem>
+                                </Select>
+                            </FormItem>
 
                         </div>
                     </div>
@@ -322,14 +332,14 @@ export default function Questions() {
                         <div>
                             <h3 className="text-center">{questions.financial}</h3>
                             <FormItem control={control} name="money">
-                            <InputNumber
-                                min={0}
-                                max={1000000}
-                                formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                                onChange={onChange}
-                                style={{width:'100%'}}
-                            />
+                                <InputNumber
+                                    min={0}
+                                    max={1000000}
+                                    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={onChange}
+                                    style={{ width: '100%' }}
+                                />
                             </FormItem>
                         </div>
 
@@ -345,61 +355,61 @@ export default function Questions() {
                         <div>
                             <h3 className="text-center">{questions.lifestyle.transport}</h3>
                             <FormItem control={control} name="transport">
-                            <Select 
-                                    mode="multiple" 
-                                    style={{width:'100%'}}
+                                <Select
+                                    mode="multiple"
+                                    style={{ width: '100%' }}
                                     defaultValue={[]}>
-                                        {transport.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                            ))}
+                                    {transport.map(allergen => (
+                                        <Option key={allergen.key} value={allergen.label}>
+                                            {allergen.label}
+                                        </Option>
+                                    ))}
 
-                                    </Select>
+                                </Select>
                             </FormItem>
                         </div>
                         <div>
                             <h3 className="text-center">{questions.lifestyle.energy}</h3>
                             <FormItem control={control} name="energy">
-                            <Select 
-                                    mode="multiple" 
-                                    style={{width:'100%'}}
+                                <Select
+                                    mode="multiple"
+                                    style={{ width: '100%' }}
                                     defaultValue={[]}>
-                                        {householdEnergySources.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                            ))}
+                                    {householdEnergySources.map(allergen => (
+                                        <Option key={allergen.key} value={allergen.label}>
+                                            {allergen.label}
+                                        </Option>
+                                    ))}
 
-                                    </Select>
+                                </Select>
                             </FormItem>
                         </div>
                         <div>
                             <h3 className="text-center">{questions.lifestyle.waste}</h3>
                             <FormItem control={control} name="waste">
-                            <Select 
-                                    mode="multiple" 
-                                    style={{width:'100%'}}
+                                <Select
+                                    mode="multiple"
+                                    style={{ width: '100%' }}
                                     defaultValue={[]}>
-                                        {waste.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                            ))}
+                                    {waste.map(allergen => (
+                                        <Option key={allergen.key} value={allergen.label}>
+                                            {allergen.label}
+                                        </Option>
+                                    ))}
 
-                                    </Select>
+                                </Select>
                             </FormItem>
                         </div>
                         <div>
                             <h3 className="text-center">{questions.lifestyle.water}</h3>
                             <FormItem control={control} name="water">
-                                <Slider min={0} max={5} marks={{0:'0', 2:'2', 5:'5'}} />
+                                <Slider min={0} max={5} marks={{ 0: '0', 2: '2', 5: '5' }} />
                             </FormItem>
                         </div>
                         <div>
                             <h3 className="text-center">{questions.lifestyle.house}</h3>
                             <FormItem control={control} name="house">
-                                    <Slider min={1} max={10} marks={{1:'1', 5:'5', 10:'10'}}/>
+                                <Slider min={1} max={10} marks={{ 1: '1', 5: '5', 10: '10' }} />
                             </FormItem>
                         </div>
                     </div>
@@ -410,7 +420,7 @@ export default function Questions() {
                 {currentStep === 4 && (
                     <div className="questions-box">
                         <h1 className="text-center">Engagement</h1>
-                        <Divider/>
+                        <Divider />
                         <div>
                             <h3>{questions.engagement.time}</h3>
                             <FormItem control={control} name="time">
@@ -433,25 +443,25 @@ export default function Questions() {
                         <div>
                             <h3>{questions.engagement.enjoy}</h3>
                             <FormItem control={control} name="enjoy">
-                                <Rate style={{color:"green"}} defaultValue={3} character={({index = 0}) => index+1}/>
+                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                             </FormItem>
                         </div>
                         <div>
                             <h3>{questions.engagement.comm}</h3>
                             <FormItem control={control} name="comm">
-                                <Rate style={{color:"green"}} defaultValue={3} character={({index = 0}) => index+1}/>
+                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                             </FormItem>
                         </div>
                         <div>
                             <h3>{questions.engagement.impact}</h3>
                             <FormItem control={control} name="impact">
-                                <Rate style={{color:"green"}} defaultValue={3} character={({index = 0}) => index+1}/>
+                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                             </FormItem>
                         </div>
                         <div>
                             <h3>{questions.engagement.learn}</h3>
                             <FormItem control={control} name="learn">
-                                <Rate style={{color:"green"}} defaultValue={3} character={({index = 0}) => index+1}/>
+                                <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                             </FormItem>
                         </div>
                     </div>
@@ -462,17 +472,16 @@ export default function Questions() {
                 {/*Next and Previous buttons*/}
                 <Stack direction="row" spacing={40} align='center'>
                     {console.log(currentStep)}
-                    {currentStep > 0 && <Button type="primary" className="button" onClick={prev} icon={<ArrowLeft />}>Back</Button>}
-                    {currentStep < totalSteps && <Button type="primary" className="button" onClick={next} icon={<ArrowRight />}>Next</Button>}
+                    {currentStep > 0 && <Button type="primary" className="navigation-button" onClick={prev}>Back</Button>}
+                    {currentStep < totalSteps && <Button type="primary" className="navigation-button" onClick={next}>Next</Button>}
                     {currentStep === totalSteps && (
-                    <Form.Item>
-                         <Button type="primary" htmlType="submit" style={{ background: 'green' } }>Submit</Button>
-                    </Form.Item>
-                   )}
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" style={{ background: 'green' }}>Submit</Button>
+                        </Form.Item>
+                    )}
                 </Stack>
-            </Container>
-        </Form>
-        <DevTool control={control} />
+            </Form>
+            <DevTool control={control} />
         </>
     )
 };
