@@ -13,12 +13,12 @@ import Profile from "./pages/user_only/user-profile";
 import Home from "./pages/home";
 import ProductSearch from "./pages/user_only/product-search";
 import Forgotpassword from "./pages/user_auth/forgotpassword";
+import Tasks from "./pages/user_only/tasks";
 import { useEffect } from 'react';
 
 import { Provider } from 'react-redux';
 import store from './store';
 
-import Tasks from "./pages/tasks";
 
 export default function App() {
     useEffect(() => {
