@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button, Box } from '@mui/material';
 
-const TaskCard = ({ task, showAcceptButton, showRejectButton, showCompleteButton, showDeleteButton, getPendingTasks, getCompletedTasks }) => {
+const TaskCard = ({ task, showAcceptButton, showRejectButton, showCompleteButton, showDeleteButton, getPendingTasks, getCompletedTasks, setSuggestedTasks, suggestedTasks }) => {
 
     const config = {
         headers: {
@@ -13,26 +13,25 @@ const TaskCard = ({ task, showAcceptButton, showRejectButton, showCompleteButton
         }
     };
 
-    const handleComplete = () => {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/complete`, {id: task.id}, config);
+    const handleAccept = async () => {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/accept`, {id: task.id}, config);
+        setSuggestedTasks(suggestedTasks.filter(t => t.id !== task.id));
+        getPendingTasks();
+    };
+
+    const handleReject = async () => {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/reject`, {id: task.id}, config);
+        setSuggestedTasks(suggestedTasks.filter(t => t.id !== task.id));
+    };
+
+    const handleComplete = async () => {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/complete`, {id: task.id}, config);
         getPendingTasks();
         getCompletedTasks();
     };
 
-    const handleAccept = () => {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/accept`, {id: task.id}, config);
-        getPendingTasks();
-        getCompletedTasks();
-    };
-
-    const handleReject = () => {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/reject`, {id: task.id}, config);
-        getPendingTasks();
-        getCompletedTasks();
-    };
-
-    const handleDelete = () => {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/delete`, {id: task.id}, config);
+    const handleDelete = async () => {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/tasks/delete`, {id: task.id}, config);
         getPendingTasks();
         getCompletedTasks();
     };
@@ -44,8 +43,8 @@ const TaskCard = ({ task, showAcceptButton, showRejectButton, showCompleteButton
                 <Typography variant="body2" sx={{ marginBottom: '10px' }}>{task.description}</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     {showAcceptButton && <Button variant="contained" color="success" onClick={handleAccept}>Accept</Button>}
-                    {showCompleteButton && <Button variant="contained" color="success" onClick={handleComplete}>Complete</Button>}
                     {showRejectButton && <Button variant="contained" color="error" onClick={handleReject}>Reject</Button>}
+                    {showCompleteButton && <Button variant="contained" color="success" onClick={handleComplete}>Complete</Button>}
                     {showDeleteButton && <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>}
                 </Box>
             </CardContent>
