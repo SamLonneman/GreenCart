@@ -1,46 +1,63 @@
-import React, { useState, useEffect } from 'react';import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Cookies from 'js-cookie';
-import './pages.css';
-import Box from '@mui/material/Box';
-import { green } from '@mui/material/colors';
-import CircularProgress from '@mui/material/CircularProgress';
+import TaskCard from '../components/TaskCard';
 
 
 const TaskList = () => {
-    const [tasks, setTasks] = useState([]);
-    const TaskGenerate = async (event) => {
+    const [pendingTasks, setPendingTasks] = useState([]);
+    const [completedTasks, setCompletedTasks] = useState([]);
+    const config = {
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json',
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    };
+    const getPendingTasks = async (event) => {
         if (event)
             event.preventDefault();
-        const config = {
-            headers: {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json',
-                'X-CSRFToken': Cookies.get('csrftoken')
-            }
-        };
-    
-        const body = JSON.stringify({
-            'withCredentials': 'true'
-        });
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tasks/all`, body, config);
-        // get whatever data you need from these guys here. this includes ID! since thats what you need to make a request to the api
-        // you can also get the title, description, etc.
-        setTasks(response.data.tasks);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tasks/pending`, {}, config);
+        setPendingTasks(response.data.tasks);
+    };
+    const getCompletedTasks = async (event) => {
+        if (event)
+            event.preventDefault();
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tasks/completed`, {}, config);
+        setCompletedTasks(response.data.tasks);
     };
     useEffect(() => {
-        TaskGenerate();
+        getPendingTasks();
+    }, []);
+    useEffect(() => {
+        getCompletedTasks();
     }, []);
     return (
-        // this makes a successful request !!! 
-        <div>
-            <h1> Task List</h1>
-            <p1> Here are your tasks:</p1>
-            {tasks.map((task) => (
-                <div key={task.id}>
-                    <h2>{task.title}</h2>
-                    <p>{task.description}</p>
-                </div>
-            ))}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ margin: `60px` }}>
+                <h1>Pending Tasks</h1>
+                {pendingTasks.map((task) => (
+                    <TaskCard 
+                        key={task.id} 
+                        task={task} 
+                        showCompleteButton
+                        getPendingTasks={getPendingTasks} 
+                        getCompletedTasks={getCompletedTasks}
+                    />
+                ))}
+            </div>
+            <div style={{ margin: `60px` }}>
+                <h1>Completed Tasks</h1>
+                {completedTasks.map((task) => (
+                    <TaskCard
+                        key={task.id}
+                        task={task}
+                        showDeleteButton
+                        getPendingTasks={getPendingTasks}
+                        getCompletedTasks={getCompletedTasks}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
