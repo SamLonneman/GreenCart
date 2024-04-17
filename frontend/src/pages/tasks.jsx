@@ -60,7 +60,7 @@ const Tasks = () => {
                     <h1>Suggested Tasks</h1>
                     <div>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                            {isLoading && <CircularProgress/>}
+                            {isLoading && <CircularProgress style={{ color: 'green' }}/>}
                             {suggestedTasks.map((task) => (
                                 <TaskCard
                                     key={task.id}
@@ -75,15 +75,15 @@ const Tasks = () => {
                         </Box>
                     </div>
                     <div>
-                        <Button variant="contained" color="primary" onClick={getSuggestedTasks}>
+                        <Button variant="contained" color="success" onClick={getSuggestedTasks}>
                             Suggest New Tasks
                         </Button>
                     </div>
                 </Box>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' , gap: '150px'}}>
                 {/* Active Tasks */}
-                <div style={{ margin: `60px` }}>
+                <div style={{ margin: `40px` }}>
                     <h1>Active Tasks</h1>
                     {pendingTasks.map((task) => (
                         <TaskCard 
@@ -96,7 +96,7 @@ const Tasks = () => {
                     ))}
                 </div>
                 {/* Completed Tasks */}
-                <div style={{ margin: `60px` }}>
+                <div style={{ margin: `40px` }}>
                     <h1>Completed Tasks</h1>
                     {completedTasks.map((task) => (
                         <TaskCard
