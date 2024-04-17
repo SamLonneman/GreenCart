@@ -51,7 +51,7 @@ const TaskCard = ({ task, showAcceptButton, showRejectButton, showCompleteButton
                 <Typography variant="body2" sx={{ marginBottom: '10px' }}>
                     {task.description}
                 </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mb: '10px'}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mb: '10px', gap: '10px' }}>
                     {showAcceptButton && <Button variant="contained" color="success" onClick={handleAccept}>Accept</Button>}
                     {showRejectButton && <Button variant="contained" color="error" onClick={handleReject}>Reject</Button>}
                     {showCompleteButton && <Button variant="contained" color="success" onClick={handleComplete}>Complete</Button>}

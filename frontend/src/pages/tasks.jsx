@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import TaskCard from '../components/TaskCard';
-import { Button, Box, CircularProgress } from '@mui/material';
+import { Button, Box, CircularProgress, Typography } from '@mui/material';
 
 
 const Tasks = () => {
@@ -23,6 +23,7 @@ const Tasks = () => {
     const getSuggestedTasks = async (event) => {
         if (event)
             event.preventDefault();
+        setSuggestedTasks([]);
         setIsLoading(true);
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/AIapi/generate-task`, {}, config);
         setSuggestedTasks([response.data.task1, response.data.task2, response.data.task3]);
@@ -61,6 +62,7 @@ const Tasks = () => {
                     <div>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                             {isLoading && <CircularProgress style={{ color: 'green' }}/>}
+                            {isLoading && <Typography variant="h6">Generating personalized tasks...</Typography>}
                             {suggestedTasks.map((task) => (
                                 <TaskCard
                                     key={task.id}
