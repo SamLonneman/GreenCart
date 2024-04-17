@@ -186,3 +186,9 @@ form {
     flex-shrink: 0;
     fill: #FF737B;
 }
+
+.header-cell {
+    background-color: #f5f5f5;
+    color: #333;
+    font-weight: bold;
+  }
