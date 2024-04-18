@@ -3,12 +3,18 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
+import { TextField } from '@mui/material';
+import '../pages.css';
 import Cookies from 'js-cookie';
 const SetProfile = () =>
 {
     // make call to backend to set profile
     // this is a simple post request to the backend
     // use data from the form to set the user profile
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const updateProfile = async (event) => {
         if (event)
             event.preventDefault();
@@ -25,24 +31,30 @@ const SetProfile = () =>
             'email': document.getElementById('email').value,
             'name': document.getElementById('name').value,
         });
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/profile/update`, body, config);
-        // update is made. we should do nothing.
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/update`, body, config);
+        // update is made. return to user profile
+        window.location.href = '/user-profile';
+
  
     }
-    onSubmit = e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         updateProfile();
+        // submit done, redirect to user profile
     }   
+    const handleChange = (e) => {
+        if (e.target.id === 'email')
+            setEmail(e.target.value);
+        else if (e.target.id === 'name')
+            setName(e.target.value);
+    }
     return (
         <div>
-            <h1>Set Profile</h1>
-            <p1>Set your profile:</p1>
-            <form onSubmit={e => onSubmit(e)}>
-                <label>Email:</label>
-                <input type="text" id="email" name="email"></input>
-                <label>Name:</label>
-                <input type="text" id="name" name="name"></input>
-                <button type="submit">Submit</button>
+            <h1 class = "center">Update Profile</h1>
+            <form onSubmit={e => handleSubmit(e)}>
+                <TextField variant="standard" type="text" id="email" name="email" label="New Email" onChange={e => handleChange(e)} value = {email}></TextField>
+                <TextField variant="standard" type="text" id="name" name="name" label = "New Name" onChange={e => handleChange(e)} value = {name}></TextField>
+                <Button type="submit">Submit</Button>
             </form>
         </div>
     )

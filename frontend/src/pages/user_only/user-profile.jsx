@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
+import '../pages.css';
+import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
+import { TextField } from '@mui/material';
 // call to the backend to get the user profile
 // this is a simple get request to the backend
 // the backend will then return the user profile
@@ -46,9 +49,8 @@ const UserProfile = () => {
     }, []);
 
     return (
-        <div>
+        <div class = "center">
             <h1>User Profile</h1> 
-            <p1>Here is your profile:</p1>
             <div>
                 <h2>Username: {username}</h2>
                 <h2>Email: {email}</h2>
@@ -56,7 +58,7 @@ const UserProfile = () => {
                 <h2>Age: {age}</h2>
             </div>
             <p1>Update your profile:</p1>
-            <a href="/setprofile">Set Profile</a>
+            <Button href="/setprofile">Set Profile</Button>
         </div>
     );
 }
