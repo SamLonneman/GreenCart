@@ -13,6 +13,7 @@ import Profile from "./pages/user_only/user-profile";
 import Home from "./pages/home";
 import ProductSearch from "./pages/user_only/product-search";
 import Forgotpassword from "./pages/user_auth/forgotpassword";
+import SetProfile from "./pages/user_only/setProfile";
 import { useEffect } from 'react';
 
 import { Provider } from 'react-redux';
@@ -43,6 +44,7 @@ export default function App() {
                 <Route path="/questions" element={<Questions />} />
                 <Route path ="/taskgenerate" element={<TaskGenerate />} />
                 <Route path ="/tasklist" element={<TaskList />} />
+                <Route path="/setprofile" element={<SetProfile />} />
                 <Route path="*" element={<h1>Page Not Found</h1>} />
             </Routes>
             </Layout>
