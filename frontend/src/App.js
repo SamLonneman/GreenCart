@@ -14,6 +14,7 @@ import Home from "./pages/home";
 import ProductSearch from "./pages/user_only/product-search";
 import Forgotpassword from "./pages/user_auth/forgotpassword";
 import Tasks from "./pages/user_only/tasks";
+import ProgressTracking from "./pages/user_only/progress-tracking";
 import { useEffect } from 'react';
 
 import { Provider } from 'react-redux';
