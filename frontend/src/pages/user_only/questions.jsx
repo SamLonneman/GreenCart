@@ -3,17 +3,15 @@ import Cart from '../../icons/cart.png';
 import { Navigate } from 'react-router-dom';
 import { preferences } from '../../actions/auth';
 import { useForm } from 'react-hook-form'; // Questions is, guess what, another form!!
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputNumber } from 'antd';
 import Stack from '@mui/material/Stack';
-import ArrowRight from '@mui/icons-material/ArrowRight';
 import { DevTool } from "@hookform/devtools";
 import { Radio } from 'antd';
-import ArrowLeft from '@mui/icons-material/ArrowLeft';
-import Container from '@mui/material/Container';
-import { Form, Select, Slider, Rate, Modal, Tooltip, notification } from 'antd';
+import { Form, Select, Slider, Rate, Modal, Tooltip, notification, Input } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Divider } from 'antd';
 import { Col, Row } from 'antd';
@@ -117,19 +115,17 @@ const QuestionsSchema = Yup.object().shape({
 
 });
 
-const allergens = [
-    { key: '1', label: 'None' },
-    { key: '2', label: 'Other' },
-    { key: '3', label: 'Peanuts' },
-    { key: '4', label: 'Tree Nuts' },
-    { key: '5', label: 'Milk' },
-    { key: '6', label: 'Eggs' },
-    { key: '7', label: 'Fish' },
-    { key: '8', label: 'Shellfish' },
-    { key: '9', label: 'Wheat' },
-    { key: '10', label: 'Soy' },
-    { key: '11', label: 'Sesame' },
-    { key: '12', label: 'Pollen' }
+const ALLERGENS = [
+    'Peanuts',
+    'Tree Nuts',
+    'Milk',
+    'Eggs',
+    'Fish',
+    'Shellfish',
+    'Wheat',
+    'Soy',
+    'Sesame',
+    'Pollen'
 ];
 
 const transport = [
@@ -169,8 +165,11 @@ const householdEnergySources = [
     { key: 10, label: 'None' } // Option for households without active energy services
 ];
 
+
+let index = 0;
 export default function Questions() {
 
+    // Controls pages.
     const [currentStep, setCurrentStep] = useState(0);
     const totalSteps = 4;
 
@@ -196,7 +195,7 @@ export default function Questions() {
         initialValues: { age: 18 }
     });
 
-
+    // Submits data.
     const onSubmit = (data) => {
         console.log(data);
         preferences(data['age'], data['isVegetarian'], data['isVegan'], data['isGluten'], data['isPesc'], data['allergies'], data['money'], data['transport'], data['energy'], data['waste'], data['house'], data['time'], data['enjoy'], data['comm'], data['impact'], data['learn']);
@@ -242,11 +241,34 @@ export default function Questions() {
         })
     }
 
+    // Used for allergies dropdown, user can add an allergy that isn't there.
+    const [selectedItems, setSelectedItems] = useState([]);
+    const filteredOptions = ALLERGENS.filter(o => !selectedItems.includes(o));
+    const [name, setName] = useState('');
+    const [items, setItems] = useState(ALLERGENS);
+    const inputRef = useRef(null);
+    const onNameChange = (event) => {
+        setName(event.target.value);
+    };
+
+    const addItem = (e) => {
+        e.preventDefault();
+        setItems([...items, name || `New item ${index++}`]);
+        setName('');
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 0);
+    };
+
+    // Sending to database.
     const [sentToDatabase, setSentToDatabase] = useState(false);
 
     if(sentToDatabase && success){
         return <Navigate to="/home" replace = {true}/>;
     }
+
+
+   
 
     return (
         <>
@@ -351,14 +373,42 @@ export default function Questions() {
                                 <FormItem style={{ marginLeft: '170px' }} control={control} name="allergies">
                                     <Select
                                         mode="multiple"
+                                        placeholder="Allergens"
+                                        value={selectedItems}
+                                        onChange={setSelectedItems}
                                         style={{ width: '100%' }}
-                                        defaultValue={[]}>
-                                        {allergens.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                        ))}
 
+                                        dropdownRender={(menu) => (
+                                            <>
+                                            {menu}
+                                            <Divider 
+                                                style={{
+                                                    margin: '8px 0',
+                                                }}
+                                            />
+                                            <Space 
+                                                style={{
+                                                    padding: '0 8px 4px',
+                                                }}
+                                            >
+                                                <Input 
+                                                    placeholder="Enter other allergen"
+                                                    ref={inputRef}
+                                                    value={name}
+                                                    onChange={onNameChange}
+                                                    onKeyDown={(e) => e.stopPropagation()}
+                                                />
+                                                <Button type="text" ico={<PlusOutlined />} onClick={addItem}>
+                                                    Add allergen
+                                                </Button>
+                                            </Space>
+                                            </>
+                                        )}
+                                        options={filteredOptions.map((item) => ({
+                                            value: item,
+                                            label: item,
+                                        }))}
+                                    >
                                     </Select>
                                 </FormItem>
 
@@ -376,14 +426,14 @@ export default function Questions() {
                             <Divider />
                             <div>
                                 <h3 className="text-center">{questions.financial}</h3>
-                                <FormItem control={control} name="money">
+                                <FormItem style={{marginLeft: '200px'}} control={control} name="money">
                                     <InputNumber
                                         min={0}
                                         max={10000}
                                         formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                         parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
                                         onChange={onChange}
-                                        style={{ width: '35%' }}
+                                        style={{ width: '75%'}}
                                         changeOnWheel
                                     />
                                 </FormItem>
@@ -402,7 +452,7 @@ export default function Questions() {
                             <Divider />
                             <div>
                                 <h3 className="text-center">{questions.lifestyle.transport}</h3>
-                                <FormItem control={control} name="transport">
+                                <FormItem style={{marginLeft:'170px'}} control={control} name="transport">
                                     <Select
                                         mode="multiple"
                                         style={{ width: '100%' }}
