@@ -109,6 +109,23 @@ export const register = (username, password, re_password, email) => async dispat
     }
 
 };
+
+export const preferences = (age, isVeg, isVegan, isGluten, isPesc, allergies, money, transport, energy, waste, house, time, enjoy, comm, impact, learn) => async dispatch => {
+    const config = {
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json',
+            'X-CSRFTOken' : Cookies.get('csfrtoken')
+        }
+    };
+    const body = JSON.stringify({age, isVeg, isVegan, isGluten, isPesc, allergies, money, transport, energy, waste, house, time, enjoy, comm, impact, learn});
+    console.log("Submitting.");
+    console.log(body);
+    // try {
+    //     const res = await axios.post(`$`)
+    // }
+}
+
 export const logout = () => async dispatch => {
     const config = {
         headers: {
