@@ -289,7 +289,7 @@ export default function Questions() {
                 onFinish={handleSubmit(onSubmit)}>
                 {/*First Section*/}
                 {currentStep === 0 && (
-                    <Row type="flex" justify="center" align="middle" style={{padding: '35px' }}>
+                    <Row type="flex" justify="center" align="middle" style={{padding: '15px 0' }}>
                         <div className="questions-box">
                             <h1 className="text-center">Personal Information</h1>
                             <Divider />
@@ -310,7 +310,7 @@ export default function Questions() {
 
                 {/*Second Section*/}
                 {currentStep === 1 && /*TODO: center elements*/(
-                    <Row type="flex" justify="center" align="middle" style={{ padding: '35px'}}>
+                    <Row type="flex" justify="center" align="middle" style={{ padding: '15px 0'}}>
                         <div className="questions-box">
                             <h1 className="text-center">Dietary Restrictions</h1>
                             <Divider />
@@ -526,7 +526,7 @@ export default function Questions() {
 
                 {/*Fifth Section*/}
                 {currentStep === 4 && (
-                    <Row type="flex" justify="center" align="middle" style={{ padding: '35px'}}>
+                    <Row type="flex" justify="center" align="middle" style={{ padding: '15px 0'}}>
                         <div className="questions-box">
                             <h1 className="text-center">Engagement</h1>
                             <Divider />
