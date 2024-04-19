@@ -115,56 +115,40 @@ const QuestionsSchema = Yup.object().shape({
 
 });
 
-const ALLERGENS = [
-    'Peanuts',
-    'Tree Nuts',
-    'Milk',
-    'Eggs',
-    'Fish',
-    'Shellfish',
-    'Wheat',
-    'Soy',
-    'Sesame',
-    'Pollen'
+const TRANSPORT = [
+    'Walking',
+    'Bicycling',
+    'Car',
+    'Motorcycle',
+    'Bus',
+    'Subway',
+    'Train',
+    'Tram',
+    'Ferry',
+    'Airplane',
+    'Helicopter',
+    'Electric scooter',
+    'Skateboarding',
+    'Rollerblading'
 ];
 
-const transport = [
-    { key: '1', label: 'Walking' },
-    { key: '2', label: 'Bicycling' },
-    { key: '3', label: 'Car' },
-    { key: '4', label: 'Motorcycle' },
-    { key: '5', label: 'Bus' },
-    { key: '6', label: 'Subway' },
-    { key: '7', label: 'Train' },
-    { key: '8', label: 'Tram' },
-    { key: '9', label: 'Ferry' },
-    { key: '10', label: 'Airplane' },
-    { key: '11', label: 'Helicopter' },
-    { key: '12', label: 'Electric scooter' },
-    { key: '13', label: 'Skateboarding' },
-    { key: '14', label: 'Rollerblading' },
-];
-
-const waste = [
-    { key: 1, label: 'Recycle' },
-    { key: 2, label: 'Compost' },
-    { key: 3, label: 'Trash' },
-    { key: 4, label: 'None' },
+const WASTE = [
+    'Recycle',
+    'Compost',
+    'Trash'
 ]
 
-const householdEnergySources = [
-    { key: 1, label: 'Electricity' },
-    { key: 2, label: 'Natural Gas' },
-    { key: 3, label: 'Solar Power' },
-    { key: 4, label: 'Wind Power' },
-    { key: 5, label: 'Hydroelectric Power' },
-    { key: 6, label: 'Biomass' },
-    { key: 7, label: 'Coal' },
-    { key: 8, label: 'Propane' },
-    { key: 9, label: 'Geothermal' },
-    { key: 10, label: 'None' } // Option for households without active energy services
+const ENERGY = [
+    'Electricity',
+    'Natural Gas',
+    'Solar Power',
+    'Wind Power',
+    'Hydroelectric Power',
+    'Biomass',
+    'Coal',
+    'Propane',
+    'Geothermal'
 ];
-
 
 let index = 0;
 export default function Questions() {
@@ -237,42 +221,64 @@ export default function Questions() {
         api[type]({
             message: 'Answers Submitted',
             description:
-            'Your answers have been submitted successfully! Thank you for your input.'
+                'Your answers have been submitted successfully! Thank you for your input.'
         })
     }
 
     // Used for allergies dropdown, user can add an allergy that isn't there.
-    const [selectedItems, setSelectedItems] = useState([]);
-    const filteredOptions = ALLERGENS.filter(o => !selectedItems.includes(o));
+    const [selectedALLERGENS, setSelectedALLERGENS] = useState([]);
+    const [ALLERGENS, setALLERGENS] = useState([
+        'Peanuts',
+        'Tree Nuts',
+        'Milk',
+        'Eggs',
+        'Fish',
+        'Shellfish',
+        'Wheat',
+        'Soy',
+        'Sesame',
+        'Pollen'
+    ]);
+    const filteredALLERGENS = ALLERGENS.filter(o => !selectedALLERGENS.includes(o));
+
     const [name, setName] = useState('');
-    const [items, setItems] = useState(ALLERGENS);
     const inputRef = useRef(null);
     const onNameChange = (event) => {
         setName(event.target.value);
+        console.log(event.target.value);
     };
 
     const addItem = (e) => {
         e.preventDefault();
-        setItems([...items, name || `New item ${index++}`]);
+        setALLERGENS([...ALLERGENS, name || `New item ${index++}`]);
         setName('');
         setTimeout(() => {
             inputRef.current?.focus();
         }, 0);
     };
 
+    // Filter transport methods
+    const [selectedTRANSPORT, setSelectedTRANSPORT] = useState([]);
+    const filteredTRANSPORT = TRANSPORT.filter(o => !selectedTRANSPORT.includes(o));
+
+    // Filter energy sources
+    const [selectedENERGY, setSelectedENERGY] = useState([]);
+    const filteredENERGY = ENERGY.filter(o => !selectedENERGY.includes(o));
+
+    // Filter waste options
+    const [selectedWASTE, setSelectedWASTE] = useState([]);
+    const filteredWASTE = WASTE.filter(o => !selectedWASTE.includes(o));
+
     // Sending to database.
     const [sentToDatabase, setSentToDatabase] = useState(false);
 
-    if(sentToDatabase && success){
-        return <Navigate to="/home" replace = {true}/>;
+    if (sentToDatabase && success) {
+        return <Navigate to="/home" replace={true} />;
     }
-
-
-   
 
     return (
         <>
-        {contextHolder}
+            {contextHolder}
             <Form
                 labelCol={{
                     span: 4
@@ -374,37 +380,37 @@ export default function Questions() {
                                     <Select
                                         mode="multiple"
                                         placeholder="Allergens"
-                                        value={selectedItems}
-                                        onChange={setSelectedItems}
+                                        value={selectedALLERGENS}
+                                        onChange={setSelectedALLERGENS}
                                         style={{ width: '100%' }}
 
                                         dropdownRender={(menu) => (
                                             <>
-                                            {menu}
-                                            <Divider 
-                                                style={{
-                                                    margin: '8px 0',
-                                                }}
-                                            />
-                                            <Space 
-                                                style={{
-                                                    padding: '0 8px 4px',
-                                                }}
-                                            >
-                                                <Input 
-                                                    placeholder="Enter other allergen"
-                                                    ref={inputRef}
-                                                    value={name}
-                                                    onChange={onNameChange}
-                                                    onKeyDown={(e) => e.stopPropagation()}
+                                                {menu}
+                                                <Divider
+                                                    style={{
+                                                        margin: '10px 0',
+                                                    }}
                                                 />
-                                                <Button type="text" ico={<PlusOutlined />} onClick={addItem}>
-                                                    Add allergen
-                                                </Button>
-                                            </Space>
+                                                <Space
+                                                    style={{
+                                                        padding: '0 5px 4px',
+                                                    }}
+                                                >
+                                                    <Input
+                                                        placeholder="Enter other allergen"
+                                                        ref={inputRef}
+                                                        value={name}
+                                                        onChange={onNameChange}
+                                                        onKeyDown={(e) => e.stopPropagation()}
+                                                    />
+                                                    <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
+                                                        Add allergen
+                                                    </Button>
+                                                </Space>
                                             </>
                                         )}
-                                        options={filteredOptions.map((item) => ({
+                                        options={filteredALLERGENS.map((item) => ({
                                             value: item,
                                             label: item,
                                         }))}
@@ -426,14 +432,14 @@ export default function Questions() {
                             <Divider />
                             <div>
                                 <h3 className="text-center">{questions.financial}</h3>
-                                <FormItem style={{marginLeft: '200px'}} control={control} name="money">
+                                <FormItem style={{ marginLeft: '200px' }} control={control} name="money">
                                     <InputNumber
                                         min={0}
                                         max={10000}
                                         formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                         parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
                                         onChange={onChange}
-                                        style={{ width: '75%'}}
+                                        style={{ width: '75%' }}
                                         changeOnWheel
                                     />
                                 </FormItem>
@@ -452,44 +458,46 @@ export default function Questions() {
                             <Divider />
                             <div>
                                 <h3 className="text-center">{questions.lifestyle.transport}</h3>
-                                <FormItem style={{marginLeft:'170px'}} control={control} name="transport">
+                                <FormItem style={{ marginLeft: '170px' }} control={control} name="transport">
                                     <Select
                                         mode="multiple"
+                                        placeholder="Transportation options"
+                                        value={selectedTRANSPORT}
+                                        onChange={setSelectedTRANSPORT}
                                         style={{ width: '100%' }}
-                                        defaultValue={[]}>
-                                        {transport.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                        ))}
-
+                                        options={filteredTRANSPORT.map((item) => ({
+                                            value: item,
+                                            label: item,
+                                        }))}
+                                    >
                                     </Select>
                                 </FormItem>
                             </div>
                             <div>
                                 <h3 className="text-center">{questions.lifestyle.energy}</h3>
-                                <FormItem control={control} name="energy">
+                                <FormItem style={{marginLeft: '170px'}} control={control} name="energy">
                                     <Select
                                         mode="multiple"
+                                        placeholder="Energy sources"
+                                        value={selectedENERGY}
+                                        onChange={setSelectedENERGY}
                                         style={{ width: '100%' }}
-                                        defaultValue={[]}>
-                                        {householdEnergySources.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                        ))}
-
+                                        options={filteredENERGY.map((item) => ({
+                                            value: item,
+                                            label: item,
+                                        }))}
+                                    >
                                     </Select>
                                 </FormItem>
                             </div>
                             <div>
                                 <h3 className="text-center">{questions.lifestyle.waste}</h3>
-                                <FormItem control={control} name="waste">
+                                <FormItem style={{marginLeft: '170px'}} control={control} name="waste">
                                     <Select
                                         mode="multiple"
                                         style={{ width: '100%' }}
                                         defaultValue={[]}>
-                                        {waste.map(allergen => (
+                                        {WASTE.map(allergen => (
                                             <Option key={allergen.key} value={allergen.label}>
                                                 {allergen.label}
                                             </Option>
@@ -572,23 +580,23 @@ export default function Questions() {
 
                 {currentStep === totalSteps && (
                     <>
-                    <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
+                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
                         <Form.Item>
                             <Modal
-                            title="Confirmation"
-                            open={open}
-                            onOk={handleOk}
-                            confirmLoading={confirmLoading}
-                            onCancel={handleCancel}
-                            okButtonProps={{
-                                style: {backgroundColor: '#85E458', color: 'black'},
-                                onClick: () => {
-                                    console.log("Hi");
-                                }
-                            }}
-                         >
-                            <p>{modalText}</p>
-                        </Modal>
+                                title="Confirmation"
+                                open={open}
+                                onOk={handleOk}
+                                confirmLoading={confirmLoading}
+                                onCancel={handleCancel}
+                                okButtonProps={{
+                                    style: { backgroundColor: '#85E458', color: 'black' },
+                                    onClick: () => {
+                                        console.log("Hi");
+                                    }
+                                }}
+                            >
+                                <p>{modalText}</p>
+                            </Modal>
                         </Form.Item>
                     </>
                 )}
