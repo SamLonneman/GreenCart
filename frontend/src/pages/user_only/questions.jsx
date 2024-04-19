@@ -68,8 +68,7 @@ const QuestionsSchema = Yup.object().shape({
         .bool()
         .required("Required."),
     allergies: Yup
-        .array()
-        .required("Required."),
+        .array(),
 
     // Financial Considerations
     money: Yup
@@ -290,7 +289,7 @@ export default function Questions() {
                 onFinish={handleSubmit(onSubmit)}>
                 {/*First Section*/}
                 {currentStep === 0 && (
-                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '50vh' }}>
+                    <Row type="flex" justify="center" align="middle" style={{padding: '35px' }}>
                         <div className="questions-box">
                             <h1 className="text-center">Personal Information</h1>
                             <Divider />
@@ -311,7 +310,7 @@ export default function Questions() {
 
                 {/*Second Section*/}
                 {currentStep === 1 && /*TODO: center elements*/(
-                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '80vh' }}>
+                    <Row type="flex" justify="center" align="middle" style={{ padding: '35px'}}>
                         <div className="questions-box">
                             <h1 className="text-center">Dietary Restrictions</h1>
                             <Divider />
@@ -376,6 +375,8 @@ export default function Questions() {
                             <div>
                                 <Divider />
                                 <h3 className="text-center">{questions.dietary_pref.aller}</h3>
+                                <p className="text-center">(Leave blank if you don't have allergies.)</p>
+
                                 <FormItem style={{ marginLeft: '170px' }} control={control} name="allergies">
                                     <Select
                                         mode="multiple"
@@ -426,7 +427,7 @@ export default function Questions() {
 
                 {/*Third Section*/}
                 {currentStep === 2 && (
-                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '50vh' }}>
+                    <Row type="flex" justify="center" align="middle" style={{ padding: '35px' }}>
                         <div className="questions-box">
                             <h1 className="text-center">Financial Information</h1>
                             <Divider />
@@ -452,7 +453,7 @@ export default function Questions() {
 
                 {/*Fourth Section*/}
                 {currentStep === 3 && (
-                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '85vh' }}>
+                    <Row type="flex" justify="center" align="middle" style={{ padding: '35px' }}>
                         <div className="questions-box">
                             <h1 className="text-center">Lifestyle</h1>
                             <Divider />
@@ -495,26 +496,26 @@ export default function Questions() {
                                 <FormItem style={{marginLeft: '170px'}} control={control} name="waste">
                                     <Select
                                         mode="multiple"
+                                        placeholder="Waste management"
                                         style={{ width: '100%' }}
-                                        defaultValue={[]}>
-                                        {WASTE.map(allergen => (
-                                            <Option key={allergen.key} value={allergen.label}>
-                                                {allergen.label}
-                                            </Option>
-                                        ))}
-
+                                        value={selectedWASTE}
+                                        onChange={setSelectedWASTE}
+                                        options={filteredWASTE.map((item) => ({
+                                            value: item,
+                                            label: item,
+                                        }))}>
                                     </Select>
                                 </FormItem>
                             </div>
                             <div>
                                 <h3 className="text-center">{questions.lifestyle.water}</h3>
-                                <FormItem control={control} name="water">
+                                <FormItem style={{marginLeft: '170px'}}control={control} name="water">
                                     <Slider min={0} max={5} marks={{ 0: '0', 2: '2', 5: '5' }} />
                                 </FormItem>
                             </div>
                             <div>
                                 <h3 className="text-center">{questions.lifestyle.house}</h3>
-                                <FormItem control={control} name="house">
+                                <FormItem style={{marginLeft: '170px'}} control={control} name="house">
                                     <Slider min={1} max={10} marks={{ 1: '1', 5: '5', 10: '10' }} />
                                 </FormItem>
                             </div>
@@ -525,13 +526,13 @@ export default function Questions() {
 
                 {/*Fifth Section*/}
                 {currentStep === 4 && (
-                    <Row type="flex" justify="center" align="middle" style={{ minHeight: '65vh' }}>
+                    <Row type="flex" justify="center" align="middle" style={{ padding: '35px'}}>
                         <div className="questions-box">
                             <h1 className="text-center">Engagement</h1>
                             <Divider />
                             <div>
-                                <h3>{questions.engagement.time}</h3>
-                                <FormItem control={control} name="time">
+                                <h3 className="text-center">{questions.engagement.time}</h3>
+                                <FormItem style={{marginLeft:'170px'}} control={control} name="time">
                                     <Select>
                                         <Option value="1-3 hours">
                                             1-3 hours
@@ -549,26 +550,26 @@ export default function Questions() {
                                 </FormItem>
                             </div>
                             <div>
-                                <h3>{questions.engagement.enjoy}</h3>
-                                <FormItem control={control} name="enjoy">
+                                <h3 className="text-center">{questions.engagement.enjoy}</h3>
+                                <FormItem style={{marginLeft:'250px'}} control={control} name="enjoy">
                                     <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                                 </FormItem>
                             </div>
                             <div>
-                                <h3>{questions.engagement.comm}</h3>
-                                <FormItem control={control} name="comm">
+                                <h3 className="text-center">{questions.engagement.comm}</h3>
+                                <FormItem style={{marginLeft:'250px'}} control={control} name="comm">
                                     <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                                 </FormItem>
                             </div>
                             <div>
-                                <h3>{questions.engagement.impact}</h3>
-                                <FormItem control={control} name="impact">
+                                <h3 className="text-center">{questions.engagement.impact}</h3>
+                                <FormItem style={{marginLeft:'250px'}} control={control} name="impact">
                                     <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                                 </FormItem>
                             </div>
                             <div>
-                                <h3>{questions.engagement.learn}</h3>
-                                <FormItem control={control} name="learn">
+                                <h3 className="text-center">{questions.engagement.learn}</h3>
+                                <FormItem style={{marginLeft:'250px'}} control={control} name="learn">
                                     <Rate style={{ color: "green" }} defaultValue={3} character={({ index = 0 }) => index + 1} />
                                 </FormItem>
                             </div>
