@@ -19,8 +19,7 @@ import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import TaskList from "./pages/tasklist";
-import TaskGenerate from "./pages/taskgenerate";
+import Tasks from "./pages/tasks";
 
 export default function App() {
     useEffect(() => {
@@ -45,6 +44,7 @@ export default function App() {
                 <Route path ="/taskgenerate" element={<TaskGenerate />} />
                 <Route path ="/tasklist" element={<TaskList />} />
                 <Route path="/setprofile" element={<SetProfile />} />
+                <Route path ="/tasks" element={<Tasks />} />
                 <Route path="*" element={<h1>Page Not Found</h1>} />
             </Routes>
             </Layout>

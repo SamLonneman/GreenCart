@@ -26,7 +26,7 @@ class ProductList(ListAPIView):
 
     def get_queryset(self):
         query = self.request.GET.get('contains', '')
-        return Products.objects.filter(name__icontains=query).order_by('id')
+        return Products.objects.filter(name__contains=query).order_by('id')
 
 # Get pending tasks in order of nearest due date
 @permission_classes([IsAuthenticated])
