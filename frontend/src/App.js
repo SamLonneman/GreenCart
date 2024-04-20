@@ -56,6 +56,7 @@ export default function App() {
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/setprofile" element={<SetProfile />} />
                 <Route path ="/tasks" element={<Tasks />} />
+                <Route path ="/progress-tracking" element={<ProgressTracking />} />
                 <Route path="*" element={<h1>Page Not Found</h1>} />
             </Routes>
             </Layout>
