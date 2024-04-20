@@ -58,7 +58,7 @@ const ProgressTracking = () => {
                         "due_date": "2024-03-24T16:35:16.638974Z",
                         "is_accepted": true,
                         "accepted_date": "2024-04-17T16:35:23.817506Z",
-                        "is_completed": true,
+                        "is_completed": false,
                         "completed_date": "2024-04-17T16:35:32.484015Z"
                     },
                     {
@@ -70,10 +70,10 @@ const ProgressTracking = () => {
                         "is_community_oriented": false,
                         "is_impactful": true,
                         "is_learning_task": true,
-                        "due_date": "2024-04-24T12:53:01.569476Z",
+                        "due_date": "2024-03-24T12:53:01.569476Z",
                         "is_accepted": true,
                         "accepted_date": "2024-04-17T12:53:26.290488Z",
-                        "is_completed": true,
+                        "is_completed": false,
                         "completed_date": "2024-04-17T16:35:02.926284Z"
                     },
                     {
@@ -85,10 +85,10 @@ const ProgressTracking = () => {
                         "is_community_oriented": false,
                         "is_impactful": true,
                         "is_learning_task": true,
-                        "due_date": "2024-04-23T23:40:46.818236Z",
+                        "due_date": "2024-03-23T23:40:46.818236Z",
                         "is_accepted": true,
                         "accepted_date": "2024-04-16T23:40:59.172892Z",
-                        "is_completed": true,
+                        "is_completed": false,
                         "completed_date": "2024-04-17T16:35:04.310013Z"
                     }
                 ]
@@ -106,7 +106,7 @@ const ProgressTracking = () => {
     }, []);
 
     return (
-        <div style={{ maxWidth: '1260px', margin: '0 auto' }}>
+        <div style={{ paddingTop: '30px', paddingBottom: '30px' }}>
             <Typography variant="h1" style={{ textAlign: 'center' }}>
                 Progress Tracking
             </Typography>
