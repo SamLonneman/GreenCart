@@ -161,17 +161,14 @@ class GetStatsView(APIView):
         })
 
 # Email task progress to given recipient, or to self if none provided
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class EmailProgressView(APIView):
     def post(self, request, format=None):
-        print('EMAIL_HOST_USER:', settings.EMAIL_HOST_USER)
-        print('EMAIL_HOST_PASSWORD:', settings.EMAIL_HOST_PASSWORD)
+        recipient = request.data['recipient'] if 'recipient' in request.data else self.request.user.userprofile.email
         send_mail(
             'Personalized Progress Report',
             'Message body message body message body!!!!',
             settings.EMAIL_HOST_USER,
-            ['lonneman.sam@gmail.com']
-            #[request.data['recipient'] if 'recipient' in request.data else self.request.user.email]
-            #[request.data['recipient']]
+            [recipient]
         )
-        return Response({'message': 'Email sent successfully'})
+        return Response({'message': f'Progress report sent successfully to {recipient}.'})
