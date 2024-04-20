@@ -152,6 +152,61 @@ const ENERGY = [
 let index = 0;
 export default function Questions() {
 
+    // const updatePreferences = async (event) => {
+    //     if (event)
+    //         event.preventDefault();
+    //     const config = {
+    //         headers: {
+    //             'Accept' : 'application/json',
+    //             'Content-Type' : 'application/json',
+    //             'X-CSRFToken': Cookies.get('csrftoken')
+    //         }
+    //     };
+    //     const body = JSON.stringify
+    //     ({
+    //         // see backend/userprofile/views.py to see how it works
+    //         'withCredentials': 'true',
+    //         // age is an integer
+    //         'age': age,
+    //         // dietary preferences are booleans
+    //         'isVegetarian': isVegetarian,
+    //         'isVegan': isVegan,
+    //         'isGluten': isGluten,
+    //         'isPescatarian': isPesc,
+    //         // no idea how you get your allergens; user profile only has fish and dairy allergen
+    //         'fishallergen': fishallergen,
+    //         'dairyallergen': dairyallergen,
+    //         // financial limitation is a boolean: should be true if money is greater than a given value
+    //         'financiallimitation': money,
+    //         // transport preferences is a list of strings, converted to a single string with , delimiter
+    //         'transportpreferences': transport,
+    //         // energy is a list of strings, converted to a single string with , delimiter
+    //         'energyavailability': energy,
+    //         // again, waste management is a list of strings, converted to a single string with , delimiter
+    //         'wastemanagement': waste,
+    //         // shopping preferences is a list of strings, converted to a single string with , delimiter
+    //         'shoppingpreferences': shopping,
+    //         // water usage is a string, i.e low, medium, high
+    //         'waterusage': water,
+    //         // household size is an integer
+    //         'householdsize': house,
+    //         // time commitment is a integer
+    //         'timecommitment': time,
+    //         // challenge enjoyment is an integer
+    //         'challengepreference': enjoy,
+    //         // community bias is an integer
+    //         'communitybias': comm,
+    //         // impact bias is an integer
+    //         'impactbias': impact,
+    //         // learning bias is an integer
+    //         'learningbias': learn
+
+    //     });
+    //     const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
+    //     // update is made. do whatever you want now
+ 
+    // }
+
     // Controls pages.
     const [currentStep, setCurrentStep] = useState(0);
     const totalSteps = 4;
