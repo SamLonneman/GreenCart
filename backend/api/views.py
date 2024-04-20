@@ -1,10 +1,6 @@
 from datetime import datetime
 from django.utils import timezone
 
-from django.db.models import Avg, F
-from django.db.models.functions import Cast
-from django.db.models.fields import DurationField
-
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListAPIView
@@ -18,6 +14,7 @@ from django.core.mail import send_mail
 
 from .models import Products, Task
 from .serializers import ProductSerializer, TaskSerializer
+from .actions import calculate_stats
 
 
 # Pagination settings for product list
@@ -134,41 +131,106 @@ class DeleteTaskView(APIView):
 class GetStatsView(APIView):
     def get(self, request, format=None):
         user = self.request.user
-        tasks = user.task_set.all()
-        completedTasks = tasks.filter(is_completed=True)
-        num_tasks_accepted = tasks.filter(is_accepted=True).count()
-        num_tasks_completed = completedTasks.count()
-        average_turnaround_time = completedTasks.aggregate(
-            avg_turnaround=Avg(
-                Cast(F('completed_date') - F('accepted_date'), DurationField())
-            )
-        )['avg_turnaround']
-        average_turnaround_time = average_turnaround_time.total_seconds() / 86400 if average_turnaround_time else None
-        num_community_oriented = completedTasks.filter(is_community_oriented=True).count()
-        num_learning = completedTasks.filter(is_learning_task=True).count()
-        num_impactful = completedTasks.filter(is_impactful=True).count()
-        num_challenging = completedTasks.filter(is_challenging=True).count()
-        return Response({
-            "stats": {
-                "num_tasks_accepted": num_tasks_accepted,
-                "num_tasks_completed": num_tasks_completed,
-                "average_turnaround_time": average_turnaround_time,
-                "num_community_oriented": num_community_oriented,
-                "num_learning": num_learning,
-                "num_impactful": num_impactful,
-                "num_challenging": num_challenging
-            }
-        })
+        return Response({"stats": calculate_stats(user)})
 
-# Email task progress to given recipient, or to self if none provided
+# Email task progress to provided recipient, or to self if body is empty
 @permission_classes([IsAuthenticated])
 class EmailProgressView(APIView):
     def post(self, request, format=None):
-        recipient = request.data['recipient'] if 'recipient' in request.data else self.request.user.userprofile.email
+        user = self.request.user
+
+        # If sending to a friend
+        if 'recipient' in request.data:
+            recipient = request.data['recipient']
+            subject = f"{user.username}'s GreenCart Progress Report"
+            greeting = 'Greetings!'
+            introduction = f"Your friend, {user.username}, wants you to see their latest GreenCart progress tracking report. Take a look!"
+            closing = f"Try GreenCart today to join {user.username} in building a more sustainable lifestyle!"
+        
+        # If sending to self
+        else:
+            if not user.userprofile.email:
+                return Response({'message': 'Please update your user profile to include an email account.'}, status=status.HTTP_400_BAD_REQUEST)
+            recipient = user.userprofile.email
+            subject = 'Greencart Progress Report'
+            greeting = f"Hello {user.username},"
+            introduction = 'You recently requested a copy of your GreenCart Progress Tracking Report. Here are your latest statistics:'
+            closing = 'Keep up the good work!'
+
+        # Calculate progress tracking statistics
+        stats = calculate_stats(user)
+        # Nicely format average turnaround time
+        if stats['average_turnaround_time']:
+            days = int(stats['average_turnaround_time'])
+            hours = int((stats['average_turnaround_time'] - days) * 24)
+            if days != 0:
+                stats['average_turnaround_time'] = f"{days} days {hours} hours"
+            else:
+                stats['average_turnaround_time'] = f"{hours} hours"
+        
+        # Construct email body
+        body = f"""
+        <html>
+            <head>
+                <style>
+                    .header-footer {{
+                        font-size: 24px;
+                        color: green;
+                        text-align: center;
+                        padding: 10px;
+                        background-color: #f2f2f2;
+                    }}
+                    body {{
+                        font-family: Arial, sans-serif;
+                        color: #333;
+                        padding: 20px;
+                    }}
+                    table {{
+                        width: 80%;
+                        max-width: 600px;
+                        border-collapse: collapse;
+                        margin-left: auto;
+                        margin-right: auto;
+                        margin-top: 20px;
+                        margin-bottom: 40px;
+                    }}
+                    th, td {{
+                        padding: 10px;
+                        border-bottom: 1px solid #ddd;
+                        text-align: left;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="header-footer">GreenCart</div>
+                <p><br>{greeting}</p>
+                <p>{introduction}</p>
+                <table>
+                    <tr><th>Statistic</th><th>Value</th></tr>
+                    <tr><td>Number of tasks accepted</td><td>{stats['num_tasks_accepted']} tasks</td></tr>
+                    <tr><td>Number of tasks completed</td><td>{stats['num_tasks_completed']} tasks</td></tr>
+                    <tr><td>Average turnaround time</td><td>{stats['average_turnaround_time']}</td></tr>
+                    <tr><td>Number of community-oriented tasks</td><td>{stats['num_community_oriented']} tasks</td></tr>
+                    <tr><td>Number of learning tasks</td><td>{stats['num_learning']} tasks</td></tr>
+                    <tr><td>Number of impactful tasks</td><td>{stats['num_impactful']} tasks</td></tr>
+                    <tr><td>Number of challenging tasks</td><td>{stats['num_challenging']} tasks</td></tr>
+                </table>
+                <p>{closing}</p>
+                <p>Best,</p>
+                <p>The GreenCart Team<br></p>
+                <div class="header-footer">GreenCart</div>
+            </body>
+        </html>
+        """
+
+        # Send email
         send_mail(
-            'Personalized Progress Report',
-            'Message body message body message body!!!!',
-            settings.EMAIL_HOST_USER,
-            [recipient]
+            subject=subject,
+            message='',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[recipient],
+            html_message=body
         )
+
+        # Return response
         return Response({'message': f'Progress report sent successfully to {recipient}.'})
