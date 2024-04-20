@@ -138,14 +138,15 @@ class GetStatsView(APIView):
 class EmailProgressView(APIView):
     def post(self, request, format=None):
         user = self.request.user
+        name = user.userprofile.name if user.userprofile.name else user.username
 
         # If sending to a friend
         if 'recipient' in request.data:
             recipient = request.data['recipient']
-            subject = f"{user.username}'s GreenCart Progress Report"
+            subject = f"{name}'s GreenCart Progress Report"
             greeting = 'Greetings!'
-            introduction = f"Your friend, {user.username}, wants you to see their latest GreenCart progress tracking report. Take a look!"
-            closing = f"Try GreenCart today to join {user.username} in building a more sustainable lifestyle!"
+            introduction = f"Your friend, {name}, wants you to see their latest GreenCart progress tracking report. Take a look!"
+            closing = f"Try GreenCart today to join {name} in building a more sustainable lifestyle!"
         
         # If sending to self
         else:
@@ -153,7 +154,7 @@ class EmailProgressView(APIView):
                 return Response({'message': 'Please update your user profile to include an email account.'}, status=status.HTTP_400_BAD_REQUEST)
             recipient = user.userprofile.email
             subject = 'Greencart Progress Report'
-            greeting = f"Hello {user.username},"
+            greeting = f"Hello {name},"
             introduction = 'You recently requested a copy of your GreenCart Progress Tracking Report. Here are your latest statistics:'
             closing = 'Keep up the good work!'
 
