@@ -22,7 +22,7 @@ const ProgressTracking = () => {
     const getStats = async (event) => {
         if (event)
             event.preventDefault();
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tasks/stats`, {}, config);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/progress-tracking/stats`, {}, config);
         setStats(response.data.stats);
     };
 

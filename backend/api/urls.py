@@ -5,11 +5,12 @@ from .views import (
     GetCompletedTasksView,
     GetOverdueTasksView,
     GetAllTasksView,
-    GetTaskStatsView,
     CreateTaskView,
     CompleteTaskView,
     DeleteTaskView,
     AcceptTaskView,
+    GetStatsView,
+    EmailProgressView
 )
 
 
@@ -19,10 +20,11 @@ urlpatterns = [
     path('tasks/completed', GetCompletedTasksView.as_view()),
     path('tasks/overdue', GetOverdueTasksView.as_view()),
     path('tasks/all', GetAllTasksView.as_view()),
-    path('tasks/stats', GetTaskStatsView.as_view()),
     path('tasks/accept', AcceptTaskView.as_view()),
     path('tasks/reject', DeleteTaskView.as_view()),
     path('tasks/complete', CompleteTaskView.as_view()),
     path('tasks/create', CreateTaskView.as_view()),
-    path('tasks/delete', DeleteTaskView.as_view())
+    path('tasks/delete', DeleteTaskView.as_view()),
+    path('progress-tracking/stats', GetStatsView.as_view()),
+    path('progress-tracking/email', EmailProgressView.as_view())
 ]
