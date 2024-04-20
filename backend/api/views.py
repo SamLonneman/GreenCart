@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 
 from rest_framework import status
 from rest_framework.decorators import permission_classes
@@ -43,6 +44,15 @@ class GetCompletedTasksView(APIView):
     def get(self, request, format=None):
         user = self.request.user
         tasks = user.task_set.filter(is_completed=True).order_by('-completed_date')
+        tasks = TaskSerializer(tasks, many=True)
+        return Response({'tasks': tasks.data})
+
+# Get overdue tasks in order of most overdue
+@permission_classes([IsAuthenticated])
+class GetOverdueTasksView(APIView):
+    def get(self, request, format=None):
+        user = self.request.user
+        tasks = user.task_set.filter(is_accepted=True, is_completed=False, due_date__lt=timezone.now()).order_by('due_date')
         tasks = TaskSerializer(tasks, many=True)
         return Response({'tasks': tasks.data})
 
