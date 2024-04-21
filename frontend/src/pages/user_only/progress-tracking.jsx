@@ -3,7 +3,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import StatCard from '../../components/StatCard';
 import TaskCard from '../../components/TaskCard';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography, Container, Grid, IconButton } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 
 const ProgressTracking = () => {
@@ -33,6 +34,18 @@ const ProgressTracking = () => {
         setOverdueTasks(response.data.tasks);
     };
 
+    const handleShare = async (event) => {
+        event.preventDefault();
+        const email = event.target[0].value;
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/progress-tracking/email`, { "recipient": email }, config);
+        event.target[0].value = 'Success! Share with another friend?';
+    };
+
+    const handleSendMeACopy = async (event) => {
+        event.preventDefault();
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/progress-tracking/email`, {}, config);
+    };
+
     // Initially load stats and overdue tasks
     useEffect(() => {
         getStats();
@@ -49,13 +62,13 @@ const ProgressTracking = () => {
     // Render the Progress Tracking page
     return (
         <div style={{ paddingTop: '30px', paddingBottom: '30px' }}>
+
+            {/* Page Title */}
             <Typography variant="h1" style={{ textAlign: 'center' }}>
                 Progress Tracking
             </Typography>
-                    
-            <Typography variant="h3" style={{ marginTop: '30px' , textAlign: 'center' }}>
-                General Performance
-            </Typography>
+
+            {/* General Performance Stats */}
             <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
                     <StatCard title="Tasks Accepted" value={stats.num_tasks_accepted} />
@@ -64,7 +77,8 @@ const ProgressTracking = () => {
                 </Box>
             </div>
 
-            <Typography variant="h3" style={{ marginTop: '30px' , textAlign: 'center' }}>
+            {/* Task Tags */}
+            <Typography variant="h3" style={{ marginTop: '50px' , textAlign: 'center' }}>
                 Task Tags
             </Typography>
             <div style={{ maxWidth: '675px', margin: '0 auto' }}>
@@ -76,7 +90,39 @@ const ProgressTracking = () => {
                 </Box>
             </div>
 
-            <Typography variant="h3" style={{ marginTop: '30px' , textAlign: 'center' }}>
+            {/* Share with a friend */}
+            <Typography variant="h3" style={{ marginTop: '50px' , textAlign: 'center' }}>
+                Share with a friend!
+            </Typography>
+            <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
+                <form onSubmit={handleShare}>
+                    <Grid container spacing={1} alignItems="center">
+                        <Grid item xs>
+                            <TextField 
+                                label="Email Address"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item>
+                            <IconButton color="success" type="submit">
+                                <SendIcon color="success" />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Container>
+            <Typography variant="body1" align="center" style={{ marginTop: '10px' }}>
+                or
+            </Typography>
+            <Grid container justifyContent="center" style={{ marginTop: '10px' }}>
+                <Button onClick={handleSendMeACopy} variant="contained" color="success">
+                    Send me a copy
+                </Button>
+            </Grid>
+
+            {/* Overdue Tasks */}
+            <Typography variant="h3" style={{ marginTop: '50px' , textAlign: 'center' }}>
                 Overdue Tasks
             </Typography>
             {overdueTasks.length === 0 && <Typography variant="h6" style={{ textAlign: 'center' }}>No overdue tasks. Great work!</Typography>}
