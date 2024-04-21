@@ -53,8 +53,8 @@ export default function App() {
                 <Route path="/user-profile" element={<Profile />} />
                 <Route path="/product-search" element={<ProductSearch />} />
                 <Route path="/questions" element={<Questions />} />
-                <Route path ="/taskgenerate" element={<TaskGenerate />} />
-                <Route path ="/tasklist" element={<TaskList />} />
+                {/* <Route path ="/taskgenerate" element={<TaskGenerate />} />
+                <Route path ="/tasklist" element={<TaskList />} /> */}
                 <Route path="/setprofile" element={<SetProfile />} />
                 <Route path ="/tasks" element={<Tasks />} />
                 <Route path="*" element={<h1>Page Not Found</h1>} />

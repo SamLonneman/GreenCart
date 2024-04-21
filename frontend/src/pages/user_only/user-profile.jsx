@@ -50,7 +50,7 @@ const UserProfile = () => {
 
     return (
         <div class = "center">
-            <h1>User Profile</h1> 
+            <h1 style="text-center">Your Profile</h1> 
             <div>
                 <h2>Username: {username}</h2>
                 <h2>Email: {email}</h2>
