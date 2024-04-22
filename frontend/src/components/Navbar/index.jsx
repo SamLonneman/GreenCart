@@ -20,7 +20,7 @@ const navbar = ({ isAuthenticated, logout }) => {
                 <NavLink className='nav-link' to='/progress-tracking'>Progress Tracking</NavLink>
             </li>
             <li className='nav-item'>
-                <a className='nav-link' onClick={logout} href='#!'><img className="logout" src={logout_icon} alt="Logout" /></a>
+                <a className='nav-link' onClick={logout} href='/'><img className="logout" src={logout_icon} alt="Logout" /></a>
             </li>
         </Fragment>
     );
