@@ -10,13 +10,12 @@ const Home = () => {
     <div className="signin-form">
       <div className="center">
         <div className="custom-box center border-solid">
-          <form>
-            <div></div>
+          <form style={{ padding: '30px', paddingBottom: '100px' }}>
             <CSRFToken />
             <img src={Cart} alt="GreenCart"/>
             <h1 className="center-text">GreenCart</h1>
             <h2>Reimagining sustainability, one goal at a time.</h2>
-            <h4>Please log in or sign up to get started.</h4>
+            <h4>Please log in or register to get started.</h4>
             <div className="form-group">
               <Link to="/login">
                 <button className="custom-text btn button">Log In</button>
@@ -25,11 +24,9 @@ const Home = () => {
             <p className="custom-text">or</p>
             <div className="form-group">
               <Link to="/register">
-                <button className="custom-text btn button">Sign up</button>
+                <button className="custom-text btn button">Register</button>
               </Link>
             </div>
-            <div></div>
-            <div></div>
           </form>
         </div>
       </div>

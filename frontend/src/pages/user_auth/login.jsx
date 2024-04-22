@@ -52,11 +52,11 @@ const Login = ({login, isAuthenticated}) => {
     <div className="signin-form">
       <div className="center">
         <div className="custom-box center border-solid">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '30px' }}>
               <CSRFToken />
               <img src={Cart} alt="GreenCart"/>
               <h1 className="center-text">GreenCart</h1>
-              <h2 className="sh center-text">Reimagining sustainability, 1 goal at a time.</h2>
+              <h3>Reimagining sustainability, one goal at a time.</h3>
               <div className="form-group">
                 <label className="custom-text"> Username</label>
                 <input 
