@@ -14,13 +14,14 @@ import Home from "./pages/home";
 import ProductSearch from "./pages/user_only/product-search";
 import Forgotpassword from "./pages/user_auth/forgotpassword";
 import SetProfile from "./pages/user_only/setProfile";
+import Tasks from "./pages/user_only/tasks";
+import ProgressTracking from "./pages/user_only/progress-tracking";
 import { useEffect } from 'react';
 import {ConfigProvider} from 'antd';
 
 import { Provider } from 'react-redux';
 import store from './store';
 
-import Tasks from "./pages/tasks";
 
 export default function App() {
     useEffect(() => {
@@ -53,10 +54,9 @@ export default function App() {
                 <Route path="/user-profile" element={<Profile />} />
                 <Route path="/product-search" element={<ProductSearch />} />
                 <Route path="/questions" element={<Questions />} />
-                <Route path ="/taskgenerate" element={<TaskGenerate />} />
-                <Route path ="/tasklist" element={<TaskList />} />
                 <Route path="/setprofile" element={<SetProfile />} />
                 <Route path ="/tasks" element={<Tasks />} />
+                <Route path ="/progress-tracking" element={<ProgressTracking />} />
                 <Route path="*" element={<h1>Page Not Found</h1>} />
             </Routes>
             </Layout>

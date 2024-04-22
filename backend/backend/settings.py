@@ -165,3 +165,11 @@ SESSION_COOKIE_HTTPONLY = False
 # Google API Key
 GEMINI_API_KEY = env('GOOGLE_API_KEY')
 genai.configure(api_key = GEMINI_API_KEY)
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
