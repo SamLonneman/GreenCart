@@ -36,7 +36,6 @@ class UpdateUserProfileView(APIView):
 
 class UpdateUserPreferenceView(APIView):
     def put(self, request, format=None):
-        g
         try:
             user = self.request.user
             username = user.username
@@ -47,25 +46,26 @@ class UpdateUserPreferenceView(APIView):
             age = int(data['age'])
             isVegetarian = data['isVegetarian']
             isVegan = data['isVegan']
-            isGlutenFree = data['isGlutenFree']
+            isGlutenFree = data['isGluten']
             isPescatarian = data['isPescatarian']
             allergies = data['allergies']
             financiallimitation = data['financiallimitation'] 
             transportpreferences = data['transportpreferences'] 
             energyavailability = data['energyavailability'] 
             wastemanagement = data['wastemanagement'] 
-            shoppingpreferences = data['shoppingpreferences']
             waterusage = data['waterusage']
             householdsize = int(data['householdsize'])
-            timecommitment = int(data['timecommitment'])
+            timecommitment = data['timecommitment']
             challengepreference = int(data['challengepreference'])
             communitybias = int(data['communitybias'])
             impactbias = int(data['impactbias'])
             learningbias = int(data['learningbias'])
 
             # update user profile with new preferences
-            UserProfile.objects.filter(user = user).update(age = age, isVegetarian = isVegetarian, isVegan = isVegan, isGlutenFree = isGlutenFree, isPescatarian = isPescatarian, allergies = allergies, financiallimitation = financiallimitation, transportpreferences = transportpreferences, energyavailability = energyavailability, wastemanagement = wastemanagement, shoppingpreferences = shoppingpreferences, waterusage = waterusage, householdsize = householdsize, timecommitment = timecommitment, challengepreference = challengepreference, communitybias = communitybias, impactbias = impactbias, learningbias = learningbias)
-
+            print(user)
+            print(UserProfile.objects.get(user=user))
+            UserProfile.objects.filter(user = user).update(age = age, isVegetarian = isVegetarian, isVegan = isVegan, isGlutenFree = isGlutenFree, isPescatarian = isPescatarian, allergies = allergies, financiallimitation = financiallimitation, transportpreferences = transportpreferences, energyavailability = energyavailability, wastemanagement = wastemanagement, waterusage = waterusage, householdsize = householdsize, timecommitment = timecommitment, challengepreference = challengepreference, communitybias = communitybias, impactbias = impactbias, learningbias = learningbias)
+            print("DONE")
             user_profile = UserProfile.objects.get(user = user)
 
             user_profile = UserProfileSerializer(user_profile)
