@@ -40,7 +40,7 @@ const ProductSearch = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <Typography variant="h3" align="center" sx={{ fontWeight: 'bold', color: 'green', mb: 2, mt: 6 }}>
+        <Typography variant="h3" align="center" sx={{ fontWeight: 'bold', color: 'primary', pt: 4 }}>
           Product Search
         </Typography>
         <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
@@ -65,6 +65,7 @@ const ProductSearch = () => {
         <Box ml={15} mr={15} mb={15}>
           <div style={{ height: products.length === 0 || isLoading ? 400 : 'auto' }}>
             <DataGrid
+              style={{ backgroundColor: '#fff' }}
               rows={isLoading ? [] : products}
               columns={[
                 { field: 'price', headerName: 'Price', headerClassName: 'header-cell', headerAlign: 'center', align: 'center', flex: 1, renderCell: (params) => `$${params.value}`},

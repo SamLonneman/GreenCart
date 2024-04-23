@@ -20,7 +20,7 @@ const navbar = ({ isAuthenticated, logout }) => {
                 <NavLink className='nav-link' to='/progress-tracking'>Progress Tracking</NavLink>
             </li>
             <li className='nav-item'>
-                <a className='nav-link' onClick={logout} href='#!'><img className="logout" src={logout_icon} alt="Logout Icon" /></a>
+                <a className='nav-link' onClick={logout} href='/'><img className="logout" src={logout_icon} alt="Logout" /></a>
             </li>
         </Fragment>
     );
@@ -59,9 +59,6 @@ const navbar = ({ isAuthenticated, logout }) => {
                 </button>
                 <div className='collapse navbar-collapse' id='navbarNav'>
                     <ul className='navbar-nav'>
-                        <li className='nav-item'>
-                            <NavLink className='nav-link' exact to='/'>Home</NavLink>
-                        </li>
                         {isAuthenticated ? authLinks : guestLinks}
                     </ul>
                 </div>
