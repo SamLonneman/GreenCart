@@ -61,11 +61,36 @@ class UpdateUserPreferenceView(APIView):
             impactbias = int(data['impactbias'])
             learningbias = int(data['learningbias'])
 
+            match data['timecommitment']:
+                case '1-3 hours':
+                    _time = 90
+                case '4-7 hours':
+                    _time = 330
+                case '7-10 hours':
+                    _time = 510
+                case '> 10 hours':
+                    _time = 600
+
             # update user profile with new preferences
-            print(user)
-            print(UserProfile.objects.get(user=user))
-            UserProfile.objects.filter(user = user).update(age = age, isVegetarian = isVegetarian, isVegan = isVegan, isGlutenFree = isGlutenFree, isPescatarian = isPescatarian, allergies = allergies, financiallimitation = financiallimitation, transportpreferences = transportpreferences, energyavailability = energyavailability, wastemanagement = wastemanagement, waterusage = waterusage, householdsize = householdsize, timecommitment = timecommitment, challengepreference = challengepreference, communitybias = communitybias, impactbias = impactbias, learningbias = learningbias)
-            print("DONE")
+            UserProfile.objects.filter(user = user).update(age = age, 
+            isVegetarian = isVegetarian, 
+            isVegan = isVegan,
+            isGlutenFree = isGlutenFree,
+            isPescatarian = isPescatarian, 
+            allergies = allergies,
+            financiallimitation = financiallimitation, 
+            transportpreferences = transportpreferences, 
+            energyavailability = energyavailability, 
+            wastemanagement = wastemanagement, 
+            waterusage = waterusage, 
+            householdsize = householdsize, 
+            timecommitment = timecommitment,
+            time = _time,
+            challengepreference = challengepreference, 
+            communitybias = communitybias, 
+            impactbias = impactbias, 
+            learningbias = learningbias)
+
             user_profile = UserProfile.objects.get(user = user)
 
             user_profile = UserProfileSerializer(user_profile)
