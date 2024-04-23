@@ -1,7 +1,6 @@
 import CSRFToken from "../../components/CSRFToken";
 import Cart from '../../icons/cart.png';
 import { Navigate } from 'react-router-dom';
-import { preferences } from '../../actions/auth';
 import { useForm } from 'react-hook-form'; // Questions is, guess what, another form!!
 import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
@@ -17,6 +16,8 @@ import { Divider } from 'antd';
 import { Col, Row } from 'antd';
 import { FormItem } from 'react-hook-form-antd';
 import { Space } from 'antd';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -151,61 +152,6 @@ const ENERGY = [
 let index = 0;
 export default function Questions() {
 
-    // const updatePreferences = async (event) => {
-    //     if (event)
-    //         event.preventDefault();
-    //     const config = {
-    //         headers: {
-    //             'Accept' : 'application/json',
-    //             'Content-Type' : 'application/json',
-    //             'X-CSRFToken': Cookies.get('csrftoken')
-    //         }
-    //     };
-    //     const body = JSON.stringify
-    //     ({
-    //         // see backend/userprofile/views.py to see how it works
-    //         'withCredentials': 'true',
-    //         // age is an integer
-    //         'age': age,
-    //         // dietary preferences are booleans
-    //         'isVegetarian': isVegetarian,
-    //         'isVegan': isVegan,
-    //         'isGluten': isGluten,
-    //         'isPescatarian': isPesc,
-    //         // no idea how you get your allergens; user profile only has fish and dairy allergen
-    //         'fishallergen': fishallergen,
-    //         'dairyallergen': dairyallergen,
-    //         // financial limitation is a boolean: should be true if money is greater than a given value
-    //         'financiallimitation': money,
-    //         // transport preferences is a list of strings, converted to a single string with , delimiter
-    //         'transportpreferences': transport,
-    //         // energy is a list of strings, converted to a single string with , delimiter
-    //         'energyavailability': energy,
-    //         // again, waste management is a list of strings, converted to a single string with , delimiter
-    //         'wastemanagement': waste,
-    //         // shopping preferences is a list of strings, converted to a single string with , delimiter
-    //         'shoppingpreferences': shopping,
-    //         // water usage is a string, i.e low, medium, high
-    //         'waterusage': water,
-    //         // household size is an integer
-    //         'householdsize': house,
-    //         // time commitment is a integer
-    //         'timecommitment': time,
-    //         // challenge enjoyment is an integer
-    //         'challengepreference': enjoy,
-    //         // community bias is an integer
-    //         'communitybias': comm,
-    //         // impact bias is an integer
-    //         'impactbias': impact,
-    //         // learning bias is an integer
-    //         'learningbias': learn
-
-    //     });
-    //     const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
-    //     // update is made. do whatever you want now
- 
-    // }
-
     // Controls pages.
     const [currentStep, setCurrentStep] = useState(0);
     const totalSteps = 4;
@@ -235,7 +181,7 @@ export default function Questions() {
     // Submits data.
     const onSubmit = (data) => {
         console.log(data);
-        preferences(data['age'], data['isVegetarian'], data['isVegan'], data['isGluten'], data['isPesc'], data['allergies'], data['money'], data['transport'], data['energy'], data['waste'], data['house'], data['time'], data['enjoy'], data['comm'], data['impact'], data['learn']);
+        updatePreferences(data['age'], data['isVegetarian'], data['isVegan'], data['isGluten'], data['isPesc'], data['allergies'], data['money'], data['transport'], data['energy'], data['waste'], data['house'], data['time'], data['enjoy'], data['comm'], data['impact'], data['learn']);
     };
 
     const onChange = (value) => {
@@ -324,6 +270,110 @@ export default function Questions() {
 
     // Sending to database.
     const [sentToDatabase, setSentToDatabase] = useState(false);
+
+    // Call to API
+    const updatePreferences = async (data) => {
+        // if (data)
+        //     data.preventDefault();
+
+        const config = {
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json',
+                'X-CSRFToken': Cookies.get('csrftoken')
+            }
+        };
+
+        console.log(data);
+
+        try{
+            const body = JSON.stringify({
+                'withCredentials': 'true',
+                'age': data['age'],
+                // dietary preferences are booleans
+                'isVegetarian': data['isVegetarian'],
+                'isVegan': data['isVegan'],
+                'isGluten': data['isGluten'],
+                'isPescatarian': data['isPesc'],
+                // no idea how you get your allergens; user profile only has fish and dairy allergen
+                'fishAllergies': allergies,
+                // financial limitation is a boolean: should be true if money is greater than a given value
+                'financiallimitation': money,
+                // transport preferences is a list of strings, converted to a single string with , delimiter
+                'transportpreferences': transport,
+                // energy is a list of strings, converted to a single string with , delimiter
+                'energyavailability': energy,
+                // again, waste management is a list of strings, converted to a single string with , delimiter
+                'wastemanagement': waste,
+                // shopping preferences is a list of strings, converted to a single string with , delimiter
+                'shoppingpreferences': shopping,
+                // water usage is a string, i.e low, medium, high
+                'waterusage': water,
+                // household size is an integer
+                'householdsize': house,
+                // time commitment is a integer
+                'timecommitment': time,
+                // challenge enjoyment is an integer
+                'challengepreference': enjoy,
+                // community bias is an integer
+                'communitybias': comm,
+                // impact bias is an integer
+                'impactbias': impact,
+                // learning bias is an integer
+                'learningbias': learn
+            })
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, JSON.stringify(data), config);
+            console.log('Update successful', response.data);
+            setSentToDatabase(true);
+            setSuccess(true);
+        } catch (error) {
+            console.error('Update failed', error);
+        }
+
+
+        // const body = JSON.stringify
+        // ({
+        //     // see backend/userprofile/views.py to see how it works
+        //     'withCredentials': 'true',
+        //     // age is an integer
+        //     'age': age,
+        //     // dietary preferences are booleans
+        //     'isVegetarian': isVegetarian,
+        //     'isVegan': isVegan,
+        //     'isGluten': isGluten,
+        //     'isPescatarian': isPesc,
+        //     // no idea how you get your allergens; user profile only has fish and dairy allergen
+        //     'fishAllergies': allergies,
+        //     // financial limitation is a boolean: should be true if money is greater than a given value
+        //     'financiallimitation': money,
+        //     // transport preferences is a list of strings, converted to a single string with , delimiter
+        //     'transportpreferences': transport,
+        //     // energy is a list of strings, converted to a single string with , delimiter
+        //     'energyavailability': energy,
+        //     // again, waste management is a list of strings, converted to a single string with , delimiter
+        //     'wastemanagement': waste,
+        //     // shopping preferences is a list of strings, converted to a single string with , delimiter
+        //     'shoppingpreferences': shopping,
+        //     // water usage is a string, i.e low, medium, high
+        //     'waterusage': water,
+        //     // household size is an integer
+        //     'householdsize': house,
+        //     // time commitment is a integer
+        //     'timecommitment': time,
+        //     // challenge enjoyment is an integer
+        //     'challengepreference': enjoy,
+        //     // community bias is an integer
+        //     'communitybias': comm,
+        //     // impact bias is an integer
+        //     'impactbias': impact,
+        //     // learning bias is an integer
+        //     'learningbias': learn
+
+        // });
+        // const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
+        // // update is made. do whatever you want now
+ 
+    }
 
     if (sentToDatabase && success) {
         return <Navigate to="/home" replace={true} />;
