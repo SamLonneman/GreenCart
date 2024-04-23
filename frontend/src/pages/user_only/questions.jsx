@@ -181,7 +181,7 @@ export default function Questions() {
     // Submits data.
     const onSubmit = (data) => {
         console.log(data);
-        updatePreferences(data['age'], data['isVegetarian'], data['isVegan'], data['isGluten'], data['isPesc'], data['allergies'], data['money'], data['transport'], data['energy'], data['waste'], data['house'], data['time'], data['enjoy'], data['comm'], data['impact'], data['learn']);
+        updatePreferences(data);
     };
 
     const onChange = (value) => {
@@ -284,7 +284,7 @@ export default function Questions() {
             }
         };
 
-        console.log(data);
+        console.log(data['age']);
 
         try{
             const body = JSON.stringify({
@@ -296,33 +296,33 @@ export default function Questions() {
                 'isGluten': data['isGluten'],
                 'isPescatarian': data['isPesc'],
                 // no idea how you get your allergens; user profile only has fish and dairy allergen
-                'fishAllergies': allergies,
+                'allergies': data['allergies'], 
                 // financial limitation is a boolean: should be true if money is greater than a given value
-                'financiallimitation': money,
+                'financiallimitation': data['money'],
                 // transport preferences is a list of strings, converted to a single string with , delimiter
-                'transportpreferences': transport,
+                'transportpreferences': data['transport'],
                 // energy is a list of strings, converted to a single string with , delimiter
-                'energyavailability': energy,
+                'energyavailability': data['energy'],
                 // again, waste management is a list of strings, converted to a single string with , delimiter
-                'wastemanagement': waste,
+                'wastemanagement': data['waste'],
                 // shopping preferences is a list of strings, converted to a single string with , delimiter
-                'shoppingpreferences': shopping,
+                'shoppingpreferences': data['shopping'],
                 // water usage is a string, i.e low, medium, high
-                'waterusage': water,
+                'waterusage': data['water'],
                 // household size is an integer
-                'householdsize': house,
+                'householdsize': data['house'],
                 // time commitment is a integer
-                'timecommitment': time,
+                'timecommitment': data['time'],
                 // challenge enjoyment is an integer
-                'challengepreference': enjoy,
+                'challengepreference': data['enjoy'],
                 // community bias is an integer
-                'communitybias': comm,
+                'communitybias': data['comm'],
                 // impact bias is an integer
-                'impactbias': impact,
+                'impactbias': data['impact'],
                 // learning bias is an integer
-                'learningbias': learn
+                'learningbias': data['learn']
             })
-            const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, JSON.stringify(data), config);
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
             console.log('Update successful', response.data);
             setSentToDatabase(true);
             setSuccess(true);
@@ -694,9 +694,6 @@ export default function Questions() {
                                 onCancel={handleCancel}
                                 okButtonProps={{
                                     style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
                                 }}
                             >
                                 <p>{modalText}</p>
