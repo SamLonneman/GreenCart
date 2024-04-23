@@ -14,23 +14,19 @@ class UserProfile(models.Model):
     isGlutenFree = models.BooleanField(default=False)
     isPescatarian = models.BooleanField(default=False)
     allergies = models.CharField(max_length=255, default='')
-    financiallimitation = models.BooleanField(default=False)
+    financiallimitation = models.IntegerField(default=0)
     transportpreferences = models.CharField(max_length=255, default='')
     energyavailability = models.CharField(max_length=255, default='')
     wastemanagement = models.CharField(max_length=255, default='')
     waterusage = models.CharField(max_length=255, default='')
     householdsize = models.IntegerField(default=1)
     # Variable Preferences!
-    timecommitment = models.IntegerField(default=30)
+    timecommitment = models.CharField(default='1-3 hours')
+    time = models.IntegerField(default=90)
     challengepreference = models.IntegerField(default=1)
     communitybias = models.IntegerField(default=1)
     impactbias = models.IntegerField(default=1)
     learningbias = models.IntegerField(default=1)
-
-
-
-
-
 
     def __str__(self):
         return self.name
