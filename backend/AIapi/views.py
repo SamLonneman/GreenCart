@@ -112,7 +112,6 @@ class GenerateTaskView(APIView):
         Transport Preferences: {user_profile.transportpreferences}
         Energy Availability: {user_profile.energyavailability}
         Waste Management: {user_profile.wastemanagement}
-        Shopping Preferences: {user_profile.shoppingpreferences}
         Water Usage: {user_profile.waterusage}
         Household Size: {user_profile.householdsize}
         User Time Commitment (weekly): {user_profile.timecommitment}
