@@ -17,7 +17,6 @@ import { Divider } from 'antd';
 import { Col, Row } from 'antd';
 import { FormItem } from 'react-hook-form-antd';
 import { Space } from 'antd';
-import { Dropdown } from 'antd';
 
 const { Option } = Select;
 
@@ -577,79 +576,6 @@ export default function Questions() {
                     </Row>
                 )
                 }
-
-
-                {currentStep === totalSteps && (
-                    <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
-                        <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
-                        </Form.Item>
-                    </>
-                )}
-
-
-                {currentStep === totalSteps && (
-                    <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
-                        <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
-                        </Form.Item>
-                    </>
-                )}
-
-
-                {currentStep === totalSteps && (
-                    <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
-                        <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
-                        </Form.Item>
-                    </>
-                )}
-
 
                 {currentStep === totalSteps && (
                     <>
