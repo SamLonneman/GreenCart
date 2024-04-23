@@ -5,9 +5,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import '../pages.css';
 import Button from '@mui/material/Button';
-import { Row, Col, Card, Space } from 'antd';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { Row, Col, Card, Space, Divider } from 'antd';
+import { EditOutlined, SettingOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
+import { RandomColorAvatar } from './avatar';
 import Input from '@mui/material/Input';
 import { TextField } from '@mui/material';
 // call to the backend to get the user profile
@@ -51,56 +52,43 @@ const UserProfile = () => {
     //     getUserProfile();
     // }, []);
 
-    useEffect(() => {
-        setUsername("@greencart");
-        setEmail("greencart@gmail.com");
-        setName("Green Guy");
-        setAge("56");
-    }, []);
+
+        useEffect(() => {
+            setUsername("@greencart");
+            setEmail("greencart@gmail.com");
+            setName("Green Guy");
+            setAge("56");
+        }, []);
 
 
-    return (
-        <>
-            <Row>
-                <Col span={24}><h1 className="text-center">Profile</h1> </Col>
-            </Row>
-            <Card className="center" 
-            style={{marginTop: '10px'}} 
-            title={username}
-            actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />
-            ]}
-            
-            >
-                <Space>
-                <Meta 
-                    avatar={<Avatar src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlIlWApcB9DkD174kGhYbj_hbHOH-bp-27-kgjOLZjaDDFoBZvZSb5jq7oaXiRUW6VRCs&usqp=CAU"/>}
-
-                />
-                <Row>
-                    <Col span={24}><h2>{name}</h2></Col>
-                </Row>
-                </Space>
-                
-                <Row>
-                    <Col span={12}><h2>Email Address:</h2> <h3>{email}</h3></Col>
-                </Row>
-                <Row>
-                    <Col><h2>{age} years old</h2></Col>
-                </Row>
-                
-            </Card>
-
-        </>
-
-    );
-}
-export default UserProfile;
-
-{/* <h2>{username}</h2>
-                <h2>Email: {email}</h2>
-                <h2>Name: {name}</h2>
-                <h2>Age: {age}</h2>
-            <p1>Update your profile:</p1>
-            <Button href="/setprofile">Set Profile</Button> */}
+        return (
+            <>
+                <h1 className="text-center">{name}'s Profile</h1>
+                <Card className="center"
+                    style={{ marginTop: '10px', width: 300 }}
+                    //title={username}
+                    actions={[
+                        <Button href="/setprofile"><EditOutlined style={{ fontSize: '30px' }} key="edit" /></Button>
+                    ]}
+                >
+                    <Space>
+                        <Meta
+                            avatar={<RandomColorAvatar name={name}/>}
+                            style={{ position: 'relative', left: '100px' }}
+                        />
+                    </Space>
+                    <Divider />
+                    <Row>
+                        <MailOutlined style={{ fontSize: '22px' }} />
+                        <Col span={12} offset={2}><h3>{email}</h3></Col>
+                    </Row>
+                    <Divider />
+                    <Row>
+                        <UserOutlined style={{ fontSize: '22px' }} />
+                        <Col span={12} offset={2}><h3>{age} years</h3></Col>
+                    </Row>
+                </Card>
+            </>
+        );
+    }
+    export default UserProfile;
