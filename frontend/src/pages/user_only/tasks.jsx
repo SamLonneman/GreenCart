@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import TaskCard from '../components/TaskCard';
+import TaskCard from '../../components/TaskCard';
 import { Button, Box, CircularProgress, Typography } from '@mui/material';
 
 

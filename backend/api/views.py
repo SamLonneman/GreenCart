@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 
 from rest_framework import status
 from rest_framework.decorators import permission_classes
@@ -8,8 +9,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.conf import settings
+from django.core.mail import send_mail
+
 from .models import Products, Task
 from .serializers import ProductSerializer, TaskSerializer
+from .actions import calculate_stats
 
 
 # Pagination settings for product list
@@ -43,6 +48,15 @@ class GetCompletedTasksView(APIView):
     def get(self, request, format=None):
         user = self.request.user
         tasks = user.task_set.filter(is_completed=True).order_by('-completed_date')
+        tasks = TaskSerializer(tasks, many=True)
+        return Response({'tasks': tasks.data})
+
+# Get overdue tasks in order of most overdue
+@permission_classes([IsAuthenticated])
+class GetOverdueTasksView(APIView):
+    def get(self, request, format=None):
+        user = self.request.user
+        tasks = user.task_set.filter(is_accepted=True, is_completed=False, due_date__lt=timezone.now()).order_by('due_date')
         tasks = TaskSerializer(tasks, many=True)
         return Response({'tasks': tasks.data})
 
@@ -111,3 +125,113 @@ class DeleteTaskView(APIView):
         task = Task.objects.get(id=task_id)
         task.delete()
         return Response({'message': 'Task deleted successfully'})
+
+# Get statistics for progress tracking
+@permission_classes([IsAuthenticated])
+class GetStatsView(APIView):
+    def get(self, request, format=None):
+        user = self.request.user
+        return Response({"stats": calculate_stats(user)})
+
+# Email task progress to provided recipient, or to self if body is empty
+@permission_classes([IsAuthenticated])
+class EmailProgressView(APIView):
+    def post(self, request, format=None):
+        user = self.request.user
+        name = user.userprofile.name if user.userprofile.name else user.username
+
+        # If sending to a friend
+        if 'recipient' in request.data:
+            recipient = request.data['recipient']
+            subject = f"{name}'s GreenCart Progress Report"
+            greeting = 'Greetings!'
+            introduction = f"Your friend, {name}, wants you to see their latest GreenCart progress tracking report. Take a look!"
+            closing = f"Try GreenCart today to join {name} in building a more sustainable lifestyle!"
+        
+        # If sending to self
+        else:
+            if not user.userprofile.email:
+                return Response({'message': 'Please update your user profile to include an email account.'}, status=status.HTTP_400_BAD_REQUEST)
+            recipient = user.userprofile.email
+            subject = 'Greencart Progress Report'
+            greeting = f"Hello {name},"
+            introduction = 'You recently requested a copy of your GreenCart Progress Tracking Report. Here are your latest statistics:'
+            closing = 'Keep up the good work!'
+
+        # Calculate progress tracking statistics
+        stats = calculate_stats(user)
+        # Nicely format average turnaround time
+        if stats['average_turnaround_time']:
+            days = int(stats['average_turnaround_time'])
+            hours = int((stats['average_turnaround_time'] - days) * 24)
+            if days != 0:
+                stats['average_turnaround_time'] = f"{days} days {hours} hours"
+            else:
+                stats['average_turnaround_time'] = f"{hours} hours"
+        
+        # Construct email body
+        body = f"""
+        <html>
+            <head>
+                <style>
+                    .header-footer {{
+                        font-size: 24px;
+                        color: green;
+                        text-align: center;
+                        padding: 10px;
+                        background-color: #f2f2f2;
+                    }}
+                    body {{
+                        font-family: Arial, sans-serif;
+                        color: #333;
+                        padding: 20px;
+                    }}
+                    table {{
+                        width: 80%;
+                        max-width: 600px;
+                        border-collapse: collapse;
+                        margin-left: auto;
+                        margin-right: auto;
+                        margin-top: 20px;
+                        margin-bottom: 40px;
+                    }}
+                    th, td {{
+                        padding: 10px;
+                        border-bottom: 1px solid #ddd;
+                        text-align: left;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="header-footer">GreenCart</div>
+                <p><br>{greeting}</p>
+                <p>{introduction}</p>
+                <table>
+                    <tr><th>Statistic</th><th>Value</th></tr>
+                    <tr><td>Number of tasks accepted</td><td>{stats['num_tasks_accepted']} tasks</td></tr>
+                    <tr><td>Number of tasks completed</td><td>{stats['num_tasks_completed']} tasks</td></tr>
+                    <tr><td>Average turnaround time</td><td>{stats['average_turnaround_time']}</td></tr>
+                    <tr><td>Number of community-oriented tasks</td><td>{stats['num_community_oriented']} tasks</td></tr>
+                    <tr><td>Number of learning tasks</td><td>{stats['num_learning']} tasks</td></tr>
+                    <tr><td>Number of impactful tasks</td><td>{stats['num_impactful']} tasks</td></tr>
+                    <tr><td>Number of challenging tasks</td><td>{stats['num_challenging']} tasks</td></tr>
+                </table>
+                <p>{closing}</p>
+                <p>Best,</p>
+                <p>The GreenCart Team<br></p>
+                <div class="header-footer">GreenCart</div>
+            </body>
+        </html>
+        """
+
+        # Send email
+        send_mail(
+            subject=subject,
+            message='',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[recipient],
+            html_message=body
+        )
+
+        # Return response
+        return Response({'message': f'Progress report sent successfully to {recipient}.'})
