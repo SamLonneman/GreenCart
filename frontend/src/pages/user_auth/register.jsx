@@ -74,9 +74,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
   }
 
   if (accountCreated) {
-    console.log(isAuthenticated);
-    return <Questions />;
-    //return <Navigate to="/login" replace={true} />;
+    return <Navigate to="/login" replace={true} />;
   }
   if (isAuthenticated) {
     return <Navigate to="/" replace={true} />;
