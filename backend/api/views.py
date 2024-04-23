@@ -90,9 +90,10 @@ class CompleteTaskView(APIView):
         task.is_completed = True
         task.completed_date = datetime.now()
         task.save()
+
         # Dynamically update user profile points based on task attributes
         user_profile = self.request.user.userprofile
-        user_profile.timecommitment += task.expected_time_commitment
+        user_profile.time += task.expected_time_commitment
         if task.is_challenging:
             user_profile.challengepreference += 1
         if task.is_community_oriented:
