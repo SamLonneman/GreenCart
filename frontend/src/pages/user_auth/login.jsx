@@ -46,7 +46,7 @@ const Login = ({login, isAuthenticated}) => {
     //console.log(data);
   };
   if (isAuthenticated) {
-    return <Navigate to="/questions" replace = {true}/>;
+    return <Navigate to="/user-profile" replace = {true}/>;
   }
 
   return(
