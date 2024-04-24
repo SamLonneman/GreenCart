@@ -28,16 +28,7 @@ const navbar = ({ isAuthenticated, logout }) => {
     const guestLinks = (
         <Fragment>
             <li className='nav-item'>
-                <NavLink className='nav-link' to='/login'>Login</NavLink>
-            </li>
-            <li className='nav-item'>
-                <NavLink className='nav-link' to='/register'>Register</NavLink>
-            </li>
-            <li className='nav-item'>
                 <NavLink className='nav-link' to='/product-search'>Product Search</NavLink>
-            </li>
-            <li className='nav-item'>
-                <NavLink className='nav-link' to='/questions'>Questions</NavLink>
             </li>
         </Fragment>
     );

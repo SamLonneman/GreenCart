@@ -41,29 +41,55 @@ class UpdateUserPreferenceView(APIView):
             username = user.username
 
             data = self.request.data
+            print(data)
             # assign all user preferences to based on incoming data
             age = int(data['age'])
             isVegetarian = data['isVegetarian']
             isVegan = data['isVegan']
-            isGlutenFree = data['isGlutenFree']
+            isGlutenFree = data['isGluten']
             isPescatarian = data['isPescatarian']
-            fishallergen = data['fishallergen'] 
-            dairyallergen = data['dairyallergen'] 
+            allergies = data['allergies']
             financiallimitation = data['financiallimitation'] 
             transportpreferences = data['transportpreferences'] 
             energyavailability = data['energyavailability'] 
             wastemanagement = data['wastemanagement'] 
-            shoppingpreferences = data['shoppingpreferences']
             waterusage = data['waterusage']
             householdsize = int(data['householdsize'])
-            timecommitment = int(data['timecommitment'])
+            timecommitment = data['timecommitment']
             challengepreference = int(data['challengepreference'])
             communitybias = int(data['communitybias'])
             impactbias = int(data['impactbias'])
             learningbias = int(data['learningbias'])
 
+            match data['timecommitment']:
+                case '1-3 hours':
+                    _time = 90
+                case '4-7 hours':
+                    _time = 330
+                case '7-10 hours':
+                    _time = 510
+                case '> 10 hours':
+                    _time = 600
+
             # update user profile with new preferences
-            UserProfile.objects.filter(user = user).update(age = age, isVegetarian = isVegetarian, isVegan = isVegan, isGlutenFree = isGlutenFree, isPescatarian = isPescatarian, fishallergen = fishallergen, dairyallergen = dairyallergen, financiallimitation = financiallimitation, transportpreferences = transportpreferences, energyavailability = energyavailability, wastemanagement = wastemanagement, shoppingpreferences = shoppingpreferences, waterusage = waterusage, householdsize = householdsize, timecommitment = timecommitment, challengepreference = challengepreference, communitybias = communitybias, impactbias = impactbias, learningbias = learningbias)
+            UserProfile.objects.filter(user = user).update(age = age, 
+            isVegetarian = isVegetarian, 
+            isVegan = isVegan,
+            isGlutenFree = isGlutenFree,
+            isPescatarian = isPescatarian, 
+            allergies = allergies,
+            financiallimitation = financiallimitation, 
+            transportpreferences = transportpreferences, 
+            energyavailability = energyavailability, 
+            wastemanagement = wastemanagement, 
+            waterusage = waterusage, 
+            householdsize = householdsize, 
+            timecommitment = timecommitment,
+            time = _time,
+            challengepreference = challengepreference, 
+            communitybias = communitybias, 
+            impactbias = impactbias, 
+            learningbias = learningbias)
 
             user_profile = UserProfile.objects.get(user = user)
 

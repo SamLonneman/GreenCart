@@ -1,23 +1,22 @@
 import CSRFToken from "../../components/CSRFToken";
 import Cart from '../../icons/cart.png';
 import { Navigate } from 'react-router-dom';
-import { preferences } from '../../actions/auth';
 import { useForm } from 'react-hook-form'; // Questions is, guess what, another form!!
 import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputNumber } from 'antd';
 import Stack from '@mui/material/Stack';
-import { DevTool } from "@hookform/devtools";
 import { Radio } from 'antd';
-import { Form, Select, Slider, Rate, Modal, Tooltip, notification, Input } from 'antd';
+import { Form, Select, Slider, Rate, Tooltip, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Divider } from 'antd';
-import { Col, Row } from 'antd';
+import { Row } from 'antd';
 import { FormItem } from 'react-hook-form-antd';
 import { Space } from 'antd';
-import { Dropdown } from 'antd';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -152,61 +151,6 @@ const ENERGY = [
 let index = 0;
 export default function Questions() {
 
-    // const updatePreferences = async (event) => {
-    //     if (event)
-    //         event.preventDefault();
-    //     const config = {
-    //         headers: {
-    //             'Accept' : 'application/json',
-    //             'Content-Type' : 'application/json',
-    //             'X-CSRFToken': Cookies.get('csrftoken')
-    //         }
-    //     };
-    //     const body = JSON.stringify
-    //     ({
-    //         // see backend/userprofile/views.py to see how it works
-    //         'withCredentials': 'true',
-    //         // age is an integer
-    //         'age': age,
-    //         // dietary preferences are booleans
-    //         'isVegetarian': isVegetarian,
-    //         'isVegan': isVegan,
-    //         'isGluten': isGluten,
-    //         'isPescatarian': isPesc,
-    //         // no idea how you get your allergens; user profile only has fish and dairy allergen
-    //         'fishallergen': fishallergen,
-    //         'dairyallergen': dairyallergen,
-    //         // financial limitation is a boolean: should be true if money is greater than a given value
-    //         'financiallimitation': money,
-    //         // transport preferences is a list of strings, converted to a single string with , delimiter
-    //         'transportpreferences': transport,
-    //         // energy is a list of strings, converted to a single string with , delimiter
-    //         'energyavailability': energy,
-    //         // again, waste management is a list of strings, converted to a single string with , delimiter
-    //         'wastemanagement': waste,
-    //         // shopping preferences is a list of strings, converted to a single string with , delimiter
-    //         'shoppingpreferences': shopping,
-    //         // water usage is a string, i.e low, medium, high
-    //         'waterusage': water,
-    //         // household size is an integer
-    //         'householdsize': house,
-    //         // time commitment is a integer
-    //         'timecommitment': time,
-    //         // challenge enjoyment is an integer
-    //         'challengepreference': enjoy,
-    //         // community bias is an integer
-    //         'communitybias': comm,
-    //         // impact bias is an integer
-    //         'impactbias': impact,
-    //         // learning bias is an integer
-    //         'learningbias': learn
-
-    //     });
-    //     const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
-    //     // update is made. do whatever you want now
- 
-    // }
-
     // Controls pages.
     const [currentStep, setCurrentStep] = useState(0);
     const totalSteps = 4;
@@ -236,47 +180,11 @@ export default function Questions() {
     // Submits data.
     const onSubmit = (data) => {
         console.log(data);
-        preferences(data['age'], data['isVegetarian'], data['isVegan'], data['isGluten'], data['isPesc'], data['allergies'], data['money'], data['transport'], data['energy'], data['waste'], data['house'], data['time'], data['enjoy'], data['comm'], data['impact'], data['learn']);
+        updatePreferences(data);
     };
 
     const onChange = (value) => {
         console.log(value);
-    }
-
-    // Modal for confirmation.
-    const [open, setOpen] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState('Are you sure you want to submit?');
-    const showModal = () => {
-        setOpen(true);
-    };
-    const handleOk = () => {
-        setModalText('Processing your answers.');
-        setConfirmLoading(true);
-        setTimeout(() => {
-            setModalText('Sending your answers to the database.')
-        }, 2000);
-        setTimeout(() => {
-            setOpen(false);
-            setConfirmLoading(false);
-        }, 3000);
-        openNotificationwWithIcon('success')
-        setSuccess(true);
-    };
-    const handleCancel = () => {
-        console.log('Clicked cancel button');
-        setOpen(false);
-    };
-
-    // Notifications
-    const [api, contextHolder] = notification.useNotification();
-    const openNotificationwWithIcon = (type) => {
-        api[type]({
-            message: 'Answers Submitted',
-            description:
-                'Your answers have been submitted successfully! Thank you for your input.'
-        })
     }
 
     // Used for allergies dropdown, user can add an allergy that isn't there.
@@ -326,13 +234,70 @@ export default function Questions() {
     // Sending to database.
     const [sentToDatabase, setSentToDatabase] = useState(false);
 
-    if (sentToDatabase && success) {
+    // Call to API
+    const updatePreferences = async (data) => {
+        // if (data)
+        //     data.preventDefault();
+
+        const config = {
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json',
+                'X-CSRFToken': Cookies.get('csrftoken')
+            }
+        };
+
+        try{
+            const body = JSON.stringify({
+                'withCredentials': 'true',
+                'age': data['age'],
+                // dietary preferences are booleans
+                'isVegetarian': data['isVegetarian'],
+                'isVegan': data['isVegan'],
+                'isGluten': data['isGluten'],
+                'isPescatarian': data['isPesc'],
+                // no idea how you get your allergens; user profile only has fish and dairy allergen
+                'allergies': data['allergies'], 
+                // financial limitation is a boolean: should be true if money is greater than a given value
+                'financiallimitation': data['money'],
+                // transport preferences is a list of strings, converted to a single string with , delimiter
+                'transportpreferences': data['transport'],
+                // energy is a list of strings, converted to a single string with , delimiter
+                'energyavailability': data['energy'],
+                // again, waste management is a list of strings, converted to a single string with , delimiter
+                'wastemanagement': data['waste'],
+                // shopping preferences is a list of strings, converted to a single string with , delimiter
+                'shoppingpreferences': data['shopping'],
+                // water usage is a string, i.e low, medium, high
+                'waterusage': data['water'],
+                // household size is an integer
+                'householdsize': data['house'],
+                // time commitment is a integer
+                'timecommitment': data['time'],
+                // challenge enjoyment is an integer
+                'challengepreference': data['enjoy'],
+                // community bias is an integer
+                'communitybias': data['comm'],
+                // impact bias is an integer
+                'impactbias': data['impact'],
+                // learning bias is an integer
+                'learningbias': data['learn']
+            })
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
+            //console.log('Update successful', response.data);
+            setSentToDatabase(true);
+        } catch (error) {
+            console.error('Update failed', error);
+        }
+ 
+    }
+
+    if (sentToDatabase) {
         return <Navigate to="/home" replace={true} />;
     }
 
     return (
         <>
-            {contextHolder}
             <Form
                 labelCol={{
                     span: 4
@@ -633,98 +598,10 @@ export default function Questions() {
                 )
                 }
 
-
                 {currentStep === totalSteps && (
                     <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
                         <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
-                        </Form.Item>
-                    </>
-                )}
-
-
-                {currentStep === totalSteps && (
-                    <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
-                        <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
-                        </Form.Item>
-                    </>
-                )}
-
-
-                {currentStep === totalSteps && (
-                    <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
-                        <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
-                        </Form.Item>
-                    </>
-                )}
-
-
-                {currentStep === totalSteps && (
-                    <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
-                        <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                    onClick: () => {
-                                        console.log("Hi");
-                                    }
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
+                            <Button type="primary" htmlType="submit" className="button">Submit</Button>
                         </Form.Item>
                     </>
                 )}
@@ -736,7 +613,6 @@ export default function Questions() {
                     {currentStep < totalSteps && <Button type="primary" className="navigation-button" onClick={next}>Next</Button>}
                 </Stack>
             </Form>
-            <DevTool control={control} />
         </>
     )
 };

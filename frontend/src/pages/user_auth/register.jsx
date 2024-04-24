@@ -12,6 +12,8 @@ import { register as registerAction } from '../../actions/auth';
 import CSRFToken from '../../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Questions from '../user_only/questions';
+import Footer from '../footer';
+import {Button} from 'antd';
 
 
 export const PASSWORD_COMPLEX_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,20}$/);
@@ -74,8 +76,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
   }
 
   if (accountCreated) {
-    return <Questions />;
-    //return <Navigate to="/login" replace={true} />;
+    return <Navigate to="/login" replace={true} />;
   }
   if (isAuthenticated) {
     return <Navigate to="/" replace={true} />;
@@ -135,7 +136,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
             <div className="invalid-feedback">{errors.re_password?.message}</div>
           </div>
           <div className="form-group">
-            <button type="submit" className="custom-text btn button">Register</button>
+          <Button type="primary" htmlType="submit" className="button">Register</Button>
           </div>
           <p className="custom-text">Have an account?</p>
           <div className="form-group" >
@@ -145,7 +146,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
         </div>
       </div>
      
-      {/* <Footer/> */}
+      <Footer />
     </div>
   )
 };

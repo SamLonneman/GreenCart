@@ -10,6 +10,8 @@ import {login} from '../../actions/auth';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CSRFToken from '../../components/CSRFToken';
 import Cart from '../../icons/cart.png';
+import Footer from '../footer';
+import {Button} from 'antd';
 
 const messages = {
   missingUsername: "Please enter a username.",
@@ -45,10 +47,11 @@ const Login = ({login, isAuthenticated}) => {
     //console.log(data);
   };
   if (isAuthenticated) {
-    return <Navigate to="/home" replace = {true}/>;
+    return <Navigate to="/user-profile" replace = {true}/>;
   }
 
   return(
+    <>
     <div className="signin-form">
       <div className="center">
         <div className="custom-box center border-solid">
@@ -80,7 +83,7 @@ const Login = ({login, isAuthenticated}) => {
             <div className="invalid-feedback">{errors.password?.message}</div>
           </div>
           <div className="form-group">
-            <button type="submit" className="custom-text btn button">Sign In</button>
+           <Button type="primary" htmlType="submit" className="button">Sign In</Button>
           </div>
           <p className="custom-text">Don't have an account?</p>
           <div className="form-group">
@@ -90,8 +93,8 @@ const Login = ({login, isAuthenticated}) => {
           </div>
         </div>
       </div>
-      
-    
+      <Footer/>
+    </>
   )
 };
 const mapStateToProps = state => ({

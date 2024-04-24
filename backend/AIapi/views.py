@@ -57,8 +57,7 @@ class GenerateTextView(APIView):
             Vegan: {user_profile.isVegan}
             Gluten Free: {user_profile.isGlutenFree}
             Pescatarian: {user_profile.isPescatarian}
-            Fish Allergen: {user_profile.fishallergen}
-            Dairy Allergen: {user_profile.dairyallergen}
+            Allergies: {user_profile.allergies}
             Financial Limitation: {user_profile.financiallimitation}
             Transport Preferences: {user_profile.transportpreferences}
             Energy Availability: {user_profile.energyavailability}
@@ -66,7 +65,7 @@ class GenerateTextView(APIView):
             Shopping Preferences: {user_profile.shoppingpreferences}
             Water Usage: {user_profile.waterusage}
             Household Size: {user_profile.householdsize}
-            User Time Commitment (in minutes, daily): {user_profile.timecommitment}
+            User Time Commitment (weekly): {user_profile.timecommitment}
             User Challenge Preference (Larger = greater desire for challenging tasks): {user_profile.challengepreference}
             User Community Bias (Larger = greater desire for community tasks): {user_profile.communitybias}
             User Impact Bias (Larger = greater desire for high impact tasks): {user_profile.impactbias}
@@ -108,16 +107,14 @@ class GenerateTaskView(APIView):
         Vegan: {user_profile.isVegan}
         Gluten Free: {user_profile.isGlutenFree}
         Pescatarian: {user_profile.isPescatarian}
-        Fish Allergen: {user_profile.fishallergen}
-        Dairy Allergen: {user_profile.dairyallergen}
+        Allergies: {user_profile.allergies}
         Financial Limitation: {user_profile.financiallimitation}
         Transport Preferences: {user_profile.transportpreferences}
         Energy Availability: {user_profile.energyavailability}
         Waste Management: {user_profile.wastemanagement}
-        Shopping Preferences: {user_profile.shoppingpreferences}
         Water Usage: {user_profile.waterusage}
         Household Size: {user_profile.householdsize}
-        User Time Commitment (in minutes, daily): {user_profile.timecommitment}
+        User Time Commitment (weekly): {user_profile.timecommitment}
         User Challenge Preference (Larger = greater desire for challenging tasks): {user_profile.challengepreference}
         User Community Bias (Larger = greater desire for community tasks): {user_profile.communitybias}
         User Impact Bias (Larger = greater desire for high impact tasks): {user_profile.impactbias}
