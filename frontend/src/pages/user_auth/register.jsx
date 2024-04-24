@@ -12,6 +12,7 @@ import { register as registerAction } from '../../actions/auth';
 import CSRFToken from '../../components/CSRFToken';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Questions from '../user_only/questions';
+import Footer from '../footer';
 
 
 export const PASSWORD_COMPLEX_REGEX = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,20}$/);
@@ -144,7 +145,7 @@ const Register = ({ registerAction, isAuthenticated }) => {
         </div>
       </div>
      
-      {/* <Footer/> */}
+      <Footer />
     </div>
   )
 };

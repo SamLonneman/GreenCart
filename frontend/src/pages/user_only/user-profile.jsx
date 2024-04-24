@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import '../pages.css';
 import { EditOutlined, SettingOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
+import Footer from '../footer';
+
 // call to the backend to get the user profile
 // this is a simple get request to the backend
 // the backend will then return the user profile
@@ -65,6 +67,7 @@ const UserProfile = () => {
                     )}
                 </div>
             </div>
+            <Footer />
             </>
         );
     }

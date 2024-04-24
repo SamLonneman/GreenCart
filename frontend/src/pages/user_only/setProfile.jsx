@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import '../pages.css';
 import Cookies from 'js-cookie';
+import Footer from '../footer';
 
 const NewSchema = Yup.object().shape({
     new_email: Yup
@@ -103,7 +104,8 @@ const SetProfile = () => {
     });
 
     return (
-        <div className="center">
+        <>
+         <div className="center">
             <div className="questions-box">
                 <h1 className="text-center">Update Profile</h1>
                 <Divider />
@@ -133,6 +135,9 @@ const SetProfile = () => {
             </div>
             <Button type="primary" className="navigation-button" href="/user-profile" style={{position: 'relative', top:'25px', left: '175px'}}>Back</Button>
         </div>
+        <Footer />
+        </>
+       
 
     )
 }

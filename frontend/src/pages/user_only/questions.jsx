@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputNumber } from 'antd';
 import Stack from '@mui/material/Stack';
-import { DevTool } from "@hookform/devtools";
 import { Radio } from 'antd';
 import { Form, Select, Slider, Rate, Tooltip, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -614,7 +613,6 @@ export default function Questions() {
                     {currentStep < totalSteps && <Button type="primary" className="navigation-button" onClick={next}>Next</Button>}
                 </Stack>
             </Form>
-            <DevTool control={control} />
         </>
     )
 };

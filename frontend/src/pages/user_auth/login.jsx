@@ -10,6 +10,7 @@ import {login} from '../../actions/auth';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CSRFToken from '../../components/CSRFToken';
 import Cart from '../../icons/cart.png';
+import Footer from '../footer';
 
 const messages = {
   missingUsername: "Please enter a username.",
@@ -49,6 +50,7 @@ const Login = ({login, isAuthenticated}) => {
   }
 
   return(
+    <>
     <div className="signin-form">
       <div className="center">
         <div className="custom-box center border-solid">
@@ -90,8 +92,8 @@ const Login = ({login, isAuthenticated}) => {
           </div>
         </div>
       </div>
-      
-    
+      <Footer/>
+    </>
   )
 };
 const mapStateToProps = state => ({

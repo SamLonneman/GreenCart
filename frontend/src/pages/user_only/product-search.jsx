@@ -5,6 +5,7 @@ import { Container, TextField, IconButton, Grid, Box, ThemeProvider, createTheme
 import { green } from '@mui/material/colors';
 import SearchIcon from '@mui/icons-material/SearchRounded';
 import Typography from '@mui/material/Typography';
+import Footer from '../footer';
 
 import '../pages.css';
 
@@ -83,6 +84,7 @@ const ProductSearch = () => {
           </div>
         </Box>
       </div>
+      <Footer />
     </ThemeProvider>
   );
 };
