@@ -68,11 +68,8 @@ const Register = ({ registerAction, isAuthenticated }) => {
   const [accountCreated, setAccountCreated] = useState(false);
 
   const onSubmit = data => {
-    //data.preventDefault();
     registerAction(data['username'], data['password'], data['re_password'], data['email']);
     setAccountCreated(true);
-    // console.log(accountCreated);
-    // console.log(data);
   }
 
   if (accountCreated) {

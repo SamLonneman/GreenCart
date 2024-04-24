@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import axios from 'axios';
 import {
     LOAD_USER_PROFILE_SUCCESS,
@@ -33,5 +32,4 @@ export const load_user = () => async dispatch => {
             type: LOAD_USER_PROFILE_FAIL
         });
     }
-
 };

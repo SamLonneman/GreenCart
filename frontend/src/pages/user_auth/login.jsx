@@ -42,9 +42,7 @@ const Login = ({login, isAuthenticated}) => {
   });
   
   const onSubmit = data => {
-    //e.preventDefault();
     login(data['username'], data['password']);
-    //console.log(data);
   };
   if (isAuthenticated) {
     return <Navigate to="/user-profile" replace = {true}/>;
