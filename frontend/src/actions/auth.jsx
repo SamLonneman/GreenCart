@@ -119,11 +119,6 @@ export const preferences = (age, isVeg, isVegan, isGluten, isPesc, allergies, mo
         }
     };
     const body = JSON.stringify({age, isVeg, isVegan, isGluten, isPesc, allergies, money, transport, energy, waste, house, time, enjoy, comm, impact, learn});
-    console.log("Submitting.");
-    console.log(body);
-    // try {
-    //     const res = await axios.post(`$`)
-    // }
 }
 
 export const logout = () => async dispatch => {

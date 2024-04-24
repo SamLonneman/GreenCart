@@ -29,39 +29,28 @@ export default function App() {
      }, []);
 
     document.body.style.background = "#edf8f4";
-
+    
     return (
-        <ConfigProvider
-            // theme={{
-            //     token: {
-            //         colorPrimary :'#36c15b',
-            //         borderRadius: 5,
-            //         colorBgContainer: '#f6ffed',
-            //     },
-            // }}
-        >
-        <Provider store={store}>
-
-        <Router>
-            <Layout>
-            <Routes>
-                <Route index 
-                    element={<Home />}
-                />
-                <Route path="/login" element={<Login />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/Register" element={<Register />} />
-                <Route path="/user-profile" element={<Profile />} />
-                <Route path="/product-search" element={<ProductSearch />} />
-                <Route path="/questions" element={<Questions />} />
-                <Route path="/setprofile" element={<SetProfile />} />
-                <Route path ="/tasks" element={<Tasks />} />
-                <Route path ="/progress-tracking" element={<ProgressTracking />} />
-                <Route path="*" element={<h1>Page Not Found</h1>} />
-            </Routes>
-            </Layout>
-        </Router>
-        </Provider>
+        <ConfigProvider>
+            <Provider store={store}>
+                <Router>
+                    <Layout>
+                        <Routes>
+                            <Route index element={<Home />}/>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/Register" element={<Register />} />
+                            <Route path="/user-profile" element={<Profile />} />
+                            <Route path="/product-search" element={<ProductSearch />} />
+                            <Route path="/questions" element={<Questions />} />
+                            <Route path="/setprofile" element={<SetProfile />} />
+                            <Route path ="/tasks" element={<Tasks />} />
+                            <Route path ="/progress-tracking" element={<ProgressTracking />} />
+                            <Route path="*" element={<h1>Page Not Found</h1>} />
+                        </Routes>
+                    </Layout>
+                </Router>
+            </Provider>
         </ConfigProvider>
     );
 }

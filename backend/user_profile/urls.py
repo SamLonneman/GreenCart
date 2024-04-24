@@ -1,5 +1,6 @@
-from django.urls import path, include
-from .views import GetUserProfileView, UpdateUserProfileView, UpdateUserPreferenceView
+from django.urls import path
+
+from .views import (GetUserProfileView, UpdateUserPreferenceView, UpdateUserProfileView)
 
 urlpatterns = [
     path('user', GetUserProfileView.as_view()),

@@ -207,7 +207,6 @@ export default function Questions() {
     const inputRef = useRef(null);
     const onNameChange = (event) => {
         setName(event.target.value);
-        console.log(event.target.value);
     };
 
     const addItem = (e) => {
@@ -284,7 +283,6 @@ export default function Questions() {
                 'learningbias': data['learn']
             })
             const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
-            //console.log('Update successful', response.data);
             setSentToDatabase(true);
         } catch (error) {
             console.error('Update failed', error);
@@ -608,7 +606,6 @@ export default function Questions() {
 
                 {/*Next and Previous buttons*/}
                 <Stack direction="row" spacing={40} align='center'>
-                    {console.log(currentStep)}
                     {currentStep > 0 && <Button type="primary" className="navigation-button" onClick={prev}>Back</Button>}
                     {currentStep < totalSteps && <Button type="primary" className="navigation-button" onClick={next}>Next</Button>}
                 </Stack>

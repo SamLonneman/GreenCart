@@ -1,5 +1,8 @@
-from django.urls import path, include
-from .views import SignupView, GetCSRFToken, LoginView, LogoutView, CheckAuthenticatedView, DeleteAccountView #, GetUsersView
+from django.urls import path
+
+from .views import (CheckAuthenticatedView, DeleteAccountView, GetCSRFToken,
+                    LoginView, LogoutView, SignupView)
+
 urlpatterns = [
     path('authenticated', CheckAuthenticatedView.as_view()),
     path('login', LoginView.as_view()),
@@ -7,6 +10,4 @@ urlpatterns = [
     path('delete', DeleteAccountView.as_view()),
     path('register', SignupView.as_view()),
     path('csrf_cookie', GetCSRFToken.as_view())
-    #only for testing
-    # path('get_users', GetUsersView.as_view()),
 ]

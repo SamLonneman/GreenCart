@@ -1,15 +1,15 @@
+from django.contrib import auth
 from django.contrib.auth.models import User
-from rest_framework.views import APIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import (csrf_protect, ensure_csrf_cookie)
 from rest_framework import permissions
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from user_profile.models import UserProfile
-from .serializers import UserSerializer
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, csrf_exempt
-from django.utils.decorators import method_decorator
-from django.contrib import auth
 
+
+# Check if the user is authenticated
 class CheckAuthenticatedView(APIView):
-
     def get(self, request, format = None):
         user = self.request.user
         try:
@@ -21,17 +21,17 @@ class CheckAuthenticatedView(APIView):
         except:
             return Response({'error': 'Error checking authentication'})
 
+# Register a new user
 @method_decorator(csrf_protect, name='dispatch')
 class SignupView(APIView):
-    permission_classes = (permissions.AllowAny,)
-
+    permission_classes = (permissions.AllowAny)
     def post(self, request, format = None):
         data = self.request.data
         username = data['username']
         password = data['password']
         re_password = data['re_password']
         email_ = data['email']
-
+        # Check if the passwords match
         try:
             if password == re_password:
                 if User.objects.filter(username = username).exists():
@@ -48,25 +48,27 @@ class SignupView(APIView):
                 return Response({'error': 'Passwords do not match'})
         except:
             return Response({'error': 'Error creating user'})
-        
+
+# Login a user
 @method_decorator(csrf_protect, name='dispatch')
 class LoginView(APIView):
-   permission_classes = (permissions.AllowAny,)
-   def post(self, request, format = None):
-       data = self.request.data
-       username = data['username']
-       password = data['password']
-
-       try:
-          user = auth.authenticate(username = username, password = password)
-          if user is not None:
-              auth.login(request, user)
-              return Response({'success': 'User authenticated'})
-          else:
-              return Response({'error': 'Error Authenticating'})
-       except:
+    permission_classes = (permissions.AllowAny,)
+    def post(self, request, format = None):
+        data = self.request.data
+        username = data['username']
+        password = data['password']
+        # Authenticate the user
+        try:
+            user = auth.authenticate(username = username, password = password)
+            if user is not None:
+                auth.login(request, user)
+                return Response({'success': 'User authenticated'})
+            else:
+                return Response({'error': 'Error Authenticating'})
+        except:
             return Response({'error': 'Error during authentication'})
-       
+
+# Logout a user
 class LogoutView(APIView):
     def post(self, request, format = None):
         try:
@@ -75,29 +77,21 @@ class LogoutView(APIView):
         except:
             return Response({'error': 'Error logging out'})
         
-
+# Get the CSRF token
 @method_decorator(ensure_csrf_cookie, name='dispatch')     
 class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny,)
-
     def get(self, request, format = None):
         return Response({'success': 'CSRF cookie set'})
-    
+
+# Delete a user
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class DeleteAccountView(APIView):
     def delete(self, request, format = None):
         user = self.request.user
-
         try:
             user = User.objects.filter(id = user.id).delete()
             return Response({'success': 'User deleted successfully'})
 
         except:
             return Response({'error': 'Error deleting user'})
-# only for testing!
-'''class GetUsersView(APIView):
-    permission_classes = (permissions.AllowAny,)
-    def get(self, request, format = None):
-        users = User.objects.all()
-        users = UserSerializer(users, many = True)
-        return Response(users.data)'''

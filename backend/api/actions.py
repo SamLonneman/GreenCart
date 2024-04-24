@@ -3,9 +3,14 @@ from django.db.models.functions import Cast
 from django.db.models.fields import DurationField
 
 
+# Calculate progress tracking statistics for a user
 def calculate_stats(user):
+    
+    # Get the user's completed tasks
     tasks = user.task_set.all()
     completedTasks = tasks.filter(is_completed=True)
+
+    # Calculate the statistics
     num_tasks_accepted = tasks.filter(is_accepted=True).count()
     num_tasks_completed = completedTasks.count()
     average_turnaround_time = completedTasks.aggregate(
@@ -18,6 +23,8 @@ def calculate_stats(user):
     num_learning = completedTasks.filter(is_learning_task=True).count()
     num_impactful = completedTasks.filter(is_impactful=True).count()
     num_challenging = completedTasks.filter(is_challenging=True).count()
+
+    # Return the statistics
     return {
         "num_tasks_accepted": num_tasks_accepted,
         "num_tasks_completed": num_tasks_completed,

@@ -1,36 +1,35 @@
+import json
+
+import environ
 import google.generativeai as genai
-
-
+from api.models import Task
+from api.serializers import TaskSerializer
+from django.http import HttpResponse
 from django.shortcuts import render
-
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from django.http import HttpResponse
-import json
-from rest_framework import status
-
-
-# import /api/models.py to access the Task model
-from api.models import Task
-from api.serializers import TaskSerializer
-
 from user_profile.models import UserProfile
-import os
-import environ
+
+
+# Initialize the environment variables
 env = environ.Env()
 environ.Env.read_env()
-# Create your views here.
+
+# Initialize the AI API
 GEMINI_API_KEY= env('GOOGLE_API_KEY')
 genai.configure(api_key = GEMINI_API_KEY)
+
+# Generate a text using AI
 class GenerateTextView(APIView):
     def post(self, request, format=None):
+            
+            # Get the data from the request
             data = self.request.data
-            #text = data['text']
-            #print(text)
+
+            # Set the default prompt
             text = """ You are recommending a set of distinct tasks to a person.
             These tasks should provide actionable and specific targets/goals that an individual can accomplish within reasonable time (1 month or less). 
             These goals should help the individual live a more sustainable and healthy lifestyle. 
@@ -47,8 +46,8 @@ class GenerateTextView(APIView):
             Based on the following information, tailor these recommendations. Recommendations do not need to directly reference the user profile, 
             but the recommendations should not violate any of the user's preferences/allergens. Ignore empty fields in the user profile.: 
             """
-            # TODO: Based on the user profile, append the user's preferences to the text variable. not doing this makes the recommendations suck    
-            # Append user data
+
+            # Add user profile information to the text
             user = self.request.user
             user_profile = UserProfile.objects.get(user = user)
             text += f"""User Profile:
@@ -71,17 +70,20 @@ class GenerateTextView(APIView):
             User Impact Bias (Larger = greater desire for high impact tasks): {user_profile.impactbias}
             User Learning Bias (Larger = greater desire for learning): {user_profile.learningbias}
             """
+
+            # Generate the text using the AI model
             model = genai.GenerativeModel("gemini-pro")
             response = model.generate_content(text)
             
-            #user = request.user
-            #AIapi.objects.create(user=user, text_input=text, generated_text=response.text)
+            # Return the response
             return Response({'text': response.text})
 
-# Create a new task using AI generated data
+# Create 3 new personalized tasks for the user based on their profile using generative AI
 @permission_classes([IsAuthenticated])
 class GenerateTaskView(APIView):
     def get(self, request, format=None):
+
+        # Set the default prompt
         text = """ You are recommending a set of tasks to a person.
             These tasks should provide actionable and specific targets/goals that an individual can accomplish within reasonable time. 
             These goals should help the individual live a more sustainable and healthy lifestyle. 
@@ -99,6 +101,8 @@ class GenerateTaskView(APIView):
             Based on the following information, tailor these recommendations. 
             The recommendations should not violate any of the user's preferences/allergens. Ignore empty fields in the user profile.: 
             """
+        
+        # Add user profile information to the text
         user = self.request.user
         user_profile = UserProfile.objects.get(user = user)
         text += f"""User Profile:
@@ -120,33 +124,27 @@ class GenerateTaskView(APIView):
         User Impact Bias (Larger = greater desire for high impact tasks): {user_profile.impactbias}
         User Learning Bias (Larger = greater desire for learning): {user_profile.learningbias}
         """
+
+        # Use the AI model to generate the tasks
         model = genai.GenerativeModel("gemini-pro")
-        
         response = model.generate_content(text)
         while (response.text.count('#') != 8):
             response = model.generate_content(text)
-        #print(response.text)
         tasks = response.text.split('#')
-        #print(tasks)
         taskList = []
         for i in range(0, len(tasks), 3):
             task = Task()
             task.user = user
-            #print(tasks[i])
             task.title = tasks[i]
-            #print(tasks[i+1])
             task.description = tasks[i+1]
             flags = tasks[i+2].split(',')
-            #print(flags)
             task.expected_time_commitment = int(flags[0])
             task.is_challenging = True if flags[1] == '1' else False
             task.is_community_oriented = True if flags[2] == '1' else False
             task.is_impactful = True if flags[3] == '1' else False
             task.is_learning_task = True if flags[4] == '1' else False
-            #task.due_date = get_week_from_now()
-            #print(task)
             task.save()
             taskList.append(task)
-        response = HttpResponse(json.dumps({'task1': TaskSerializer(taskList[0]).data, 'task2': TaskSerializer(taskList[1]).data, 'task3': TaskSerializer(taskList[2]).data}), content_type="application/json")
-        return response
-        return Response({'task 1': TaskSerializer(taskList[0]).data},{'task 2': TaskSerializer(taskList[1]).data},{'task 3': TaskSerializer(taskList[2]).data}, status=status.HTTP_201_CREATED)
+
+        # Return the response
+        return HttpResponse(json.dumps({'task1': TaskSerializer(taskList[0]).data, 'task2': TaskSerializer(taskList[1]).data, 'task3': TaskSerializer(taskList[2]).data}), content_type="application/json")
