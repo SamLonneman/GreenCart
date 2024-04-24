@@ -15,6 +15,7 @@ import Footer from '../footer';
 
 const UserProfile = () => {
     const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [isVegan, setIsVegan] = useState(false);
     const getUserProfile = async (event) => {
@@ -38,6 +39,7 @@ const UserProfile = () => {
         console.log(response.data.profile.age);
         // set the user profile
         setUsername(response.data.username);
+        setName(response.data.profile.name);
         setEmail(response.data.profile.email);
         setIsVegan(response.data.profile.isVegan);
     }
@@ -47,10 +49,10 @@ const UserProfile = () => {
 
         return (
             <>
-            <h1 className="text-center">{username}'s Profile</h1>
+            <h1 className="text-center">{name}'s Profile</h1>
             <div class="profile-container">
                 <div class="profile-box">
-                    <Avatar className="profile-pic">{username[0]}</Avatar>
+                    <Avatar className="profile-pic">{name[0]}</Avatar>
                     <a href="/questions" className="button"><SettingOutlined className="menu-icon"/></a>
                     <a href="/setprofile" className="button"><EditOutlined className="edit-icon"/></a>
                     <h2>{username}</h2>
