@@ -1,0 +1,86 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.8",
+    "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^3.3.4",
+    "@mui/icons-material": "^5.15.11",
+    "@mui/material": "^5.15.11",
+    "@mui/x-data-grid": "^6.19.6",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "antd": "^5.16.1",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "framer-motion": "^6.5.1",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.368.0",
+    "react": "^17.0.0 || ^18.0.0",
+    "react-bootstrap": "^2.10.1",
+    "react-bootstrap-icons": "^1.11.3",
+    "react-dom": "^17.0.0 || ^18.0.0",
+    "react-hook-form": "^7.51.0",
+    "react-hook-form-antd": "^1.1.0",
+    "react-icons": "^4.3.1",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.22.3",
+    "react-scripts": "^5.0.1",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.5",
+    "styled-components": "^6.1.8",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7",
+    "web-vitals": "^2.1.4",
+    "yarn": "^1.22.22",
+    "yup": "^1.4.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "backend": "cd .. && ./venv/Scripts/activate && cd backend && python manage.py runserver",
+    "migrate": "cd .. && ./venv/Scripts/activate && cd backend && python manage.py makemigrations && python manage.py migrate"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:8000/",
+  "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
+    "daisyui": "^4.9.0",
+    "tailwindcss": "^3.4.1"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/SamLonneman/SWE-S24.git",
+  "license": "MIT"
+}

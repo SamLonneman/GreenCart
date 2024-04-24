@@ -1,0 +1,352 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/*Footer*/
+footer{
+    background-color: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+.footerContainer{
+    width:100%;
+    padding: 5px 30px 20px;
+}
+.footerNav{
+    margin: 30px 0;
+}
+.footerNav ul{
+    display: flex;
+    justify-content: center;
+}
+.footerNav ul li a{
+    color: black;
+    margin: 20px;
+    text-decoration: none;
+    font-size: 1.3em;
+    opacity: 0.7;
+    transition: 0.5s;
+}
+.footerNav ul li a:hover{
+    opacity: 1;
+}
+.footerBottom{
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+/*Support for mobile devices*/
+@media ((max-width: 700px)){
+    .footernav ul{
+        flex-direction: column;
+    }
+    .footerNav ul li{
+        width: 100%;
+        text-align: center;
+        margin: 10px;
+    }
+}
+
+/*Example comment*/
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+.center-middle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+}
+
+.profile-container{
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-box{
+    background: #DAF1EA;
+    text-align: center;
+    padding: 40px 90px;
+    color: #000;
+    position: relative;
+    bottom: 250px;
+    border-style: solid;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: #59A68E; 
+}
+
+.menu-icon{
+    width: 25px;
+    font-size: 30px;
+    position: absolute;
+    left: 40px;
+    top: 40px;
+}
+
+.edit-icon{
+    width: 25px;
+    font-size: 30px;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+}
+
+.profile-pic{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    font-size: 70px;
+    background-color: #fff;
+    color: #000;
+    padding: 6px;
+    margin-top: 40px;
+    margin-left: 30px;
+}
+
+a.button {
+    color: #000;
+}
+
+.profile-box h3{
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.profile-box h2{
+    font-size: 27px;
+    margin-top: 20px;
+    font-weight: 500;
+    color: #000;
+    font-style: italic;
+}
+
+.questions-container {
+    width: 1052px;
+    width: 766px;
+    flex-shrink: 0;
+    background: #85E458;
+}
+
+.center_text{
+    margin: auto;
+    width: 50%;
+}
+
+h1 {
+    color: #000;
+
+    font-family: "PT Serif";
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.italics {
+    font-size: 18px;
+    margin-bottom: 1rem;
+    color: black;
+    font-style: italic;
+}
+
+h2 {
+    font-size: 2rem;
+    margin: 1rem;
+    color: rgb(91, 91, 91);
+}
+
+.sh {
+    color: #000;
+
+    text-align: center;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.custom-text {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.green {
+    color: #00ff00;
+}
+
+.white {
+    color: white;
+}
+
+.grey {
+    color: grey;
+    background: rgb(255, 255, 255);
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 9%, rgba(236, 236, 236, 1) 89%);
+}
+
+.largetext {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.smalltext {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.025rem;
+}
+
+.textfield {
+    color: white;
+}
+
+.center_text
+
+.textfield__label {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.minimummargin {
+    font-size: 0.75rem;
+    margin-top: 0.01rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0.01rem;
+}
+
+.link{
+    color: #1AAA7D;
+}
+
+.custom-box {
+    padding: 10px;
+    width: 750px;
+    flex-shrink: 0;
+    margin: 0 auto; margin-top: 25px;
+    background: #DAF1EA;
+    border-style: solid;
+    border-radius: .5rem;
+    border-width: 1px;
+    border-color: #59A68E; 
+}
+
+.questions-box{
+    width: 620px;
+    padding: 20px;
+    flex-shrink:0;
+    margin: 0 auto; margin-top: 25px;
+    background: #DAF1EA;
+    border-style: solid;
+    border-radius: .5rem;
+    border-width: 1px;
+    border-color: #59A68E; 
+}
+
+.custom-input {
+    font-size: 16px !important;
+    margin: 0.5em 0em !important;
+    width: 45% !important;
+    color: black !important;
+}
+
+.radio-inpt {
+    font-size: 15px !important;
+    width: 45% !important;
+    color: black !important;
+}
+
+.radio-btn {
+    width: 100%;
+    margin-left: '250px';
+    position: absolute;
+    top:'-40px';
+}
+
+.navigation-button{
+    font-size: 16px !important;
+    background: #1aaa7d;
+    flex-shrink: 0;
+    color: white !important;
+    margin: 0 auto; 
+    text-align: center;
+    border-radius: .5rem;
+    height: 40px;
+    width: 200px;
+}
+
+.button {
+    font-size: 16px !important;
+    margin: 0.5em 0.5em !important;
+    border-radius: 14px;
+    background: #85E458;
+    width: 282px;
+    height: 41px;
+    flex-shrink: 0;
+    color: black !important;
+}
+
+.tablecell {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.form-item-spacing {
+    margin-bottom: 10px;
+    border-radius: 7px;
+    width: 282px;
+    height: 41px;
+    /* Adjust the value as needed */
+}
+
+.logout {
+    width: 75px;
+    height: 73.108px;
+    flex-shrink: 0;
+    fill: #FF737B;
+}
+
+.header-cell {
+    background-color: #f5f5f5;
+    color: #333;
+    font-weight: bold;
+  }
