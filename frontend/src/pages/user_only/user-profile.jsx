@@ -4,24 +4,19 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import '../pages.css';
-import Button from '@mui/material/Button';
-import { Row, Col, Card, Space, Divider } from 'antd';
 import { EditOutlined, SettingOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
-import { RandomColorAvatar } from './avatar';
-import Input from '@mui/material/Input';
-import { TextField } from '@mui/material';
 // call to the backend to get the user profile
 // this is a simple get request to the backend
 // the backend will then return the user profile
 // the user profile will be displayed on the page
-const { Meta } = Card;
 
 const UserProfile = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [name, setName] = useState('No Name Provided');
     const [age, setAge] = useState('18');
+    const [isVegan, setIsVegan] = useState(false);
     // const getUserProfile = async (event) => {
     //     if (event)
     //         event.preventDefault();
@@ -56,38 +51,34 @@ const UserProfile = () => {
         useEffect(() => {
             setUsername("@greencart");
             setEmail("greencart@gmail.com");
-            setName("Green Guy");
+            setName("Green");
             setAge("56");
+            setIsVegan(true);
         }, []);
 
 
         return (
             <>
-                <h1 className="text-center">{name}'s Profile</h1>
-                <Card className="center"
-                    style={{ marginTop: '10px', width: 300 }}
-                    //title={username}
-                    actions={[
-                        <Button href="/setprofile"><EditOutlined style={{ fontSize: '30px' }} key="edit" /></Button>
-                    ]}
-                >
-                    <Space>
-                        <Meta
-                            avatar={<RandomColorAvatar name={name}/>}
-                            style={{ position: 'relative', left: '100px' }}
-                        />
-                    </Space>
-                    <Divider />
-                    <Row>
-                        <MailOutlined style={{ fontSize: '22px' }} />
-                        <Col span={12} offset={2}><h3>{email}</h3></Col>
-                    </Row>
-                    <Divider />
-                    <Row>
-                        <UserOutlined style={{ fontSize: '22px' }} />
-                        <Col span={12} offset={2}><h3>{age} years</h3></Col>
-                    </Row>
-                </Card>
+            <h1 className="text-center">{name}'s Profile</h1>
+            <div class="profile-container">
+                <div class="profile-box">
+                    <Avatar className="profile-pic">{name[0]}</Avatar>
+                    <a href="/questions" className="button"><SettingOutlined className="menu-icon"/></a>
+                    <a href="/setprofile" className="button"><EditOutlined className="edit-icon"/></a>
+                    <h2>{username}</h2>
+                    <h3>{email}</h3>
+                    {isVegan === true && (
+                        <>
+                        <p>Prefers to eat plant-based products.</p>
+                        </>
+                    )}
+                    {isVegan === false && (
+                        <>
+                        <p>Prefers not to eat only plant-based products.</p>
+                        </>
+                    )}
+                </div>
+            </div>
             </>
         );
     }
