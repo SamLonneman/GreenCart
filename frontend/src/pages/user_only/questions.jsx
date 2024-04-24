@@ -293,7 +293,7 @@ export default function Questions() {
     }
 
     if (sentToDatabase) {
-        return <Navigate to="/home" replace={true} />;
+        return <Navigate to="/user-profile" replace={true} />;
     }
 
     return (
