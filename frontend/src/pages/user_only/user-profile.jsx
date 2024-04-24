@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import '../pages.css';
-import { EditOutlined, SettingOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { EditOutlined, SettingOutlined} from '@ant-design/icons';
 import { Avatar } from 'antd';
 import Footer from '../footer';
 
