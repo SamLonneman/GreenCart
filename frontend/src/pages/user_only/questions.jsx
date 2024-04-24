@@ -9,11 +9,11 @@ import { InputNumber } from 'antd';
 import Stack from '@mui/material/Stack';
 import { DevTool } from "@hookform/devtools";
 import { Radio } from 'antd';
-import { Form, Select, Slider, Rate, Modal, Tooltip, notification, Input } from 'antd';
+import { Form, Select, Slider, Rate, Tooltip, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Divider } from 'antd';
-import { Col, Row } from 'antd';
+import { Row } from 'antd';
 import { FormItem } from 'react-hook-form-antd';
 import { Space } from 'antd';
 import Cookies from 'js-cookie';
@@ -188,42 +188,6 @@ export default function Questions() {
         console.log(value);
     }
 
-    // Modal for confirmation.
-    const [open, setOpen] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState('Are you sure you want to submit?');
-    const showModal = () => {
-        setOpen(true);
-    };
-    const handleOk = () => {
-        setModalText('Processing your answers.');
-        setConfirmLoading(true);
-        setTimeout(() => {
-            setModalText('Sending your answers to the database.')
-        }, 2000);
-        setTimeout(() => {
-            setOpen(false);
-            setConfirmLoading(false);
-        }, 3000);
-        openNotificationwWithIcon('success')
-        setSuccess(true);
-    };
-    const handleCancel = () => {
-        console.log('Clicked cancel button');
-        setOpen(false);
-    };
-
-    // Notifications
-    const [api, contextHolder] = notification.useNotification();
-    const openNotificationwWithIcon = (type) => {
-        api[type]({
-            message: 'Answers Submitted',
-            description:
-                'Your answers have been submitted successfully! Thank you for your input.'
-        })
-    }
-
     // Used for allergies dropdown, user can add an allergy that isn't there.
     const [selectedALLERGENS, setSelectedALLERGENS] = useState([]);
     const [ALLERGENS, setALLERGENS] = useState([
@@ -284,8 +248,6 @@ export default function Questions() {
             }
         };
 
-        console.log(data['age']);
-
         try{
             const body = JSON.stringify({
                 'withCredentials': 'true',
@@ -323,22 +285,20 @@ export default function Questions() {
                 'learningbias': data['learn']
             })
             const response = await axios.put(`${process.env.REACT_APP_API_URL}/profile/updatepreference`, body, config);
-            console.log('Update successful', response.data);
+            //console.log('Update successful', response.data);
             setSentToDatabase(true);
-            setSuccess(true);
         } catch (error) {
             console.error('Update failed', error);
         }
  
     }
 
-    if (sentToDatabase && success) {
+    if (sentToDatabase) {
         return <Navigate to="/home" replace={true} />;
     }
 
     return (
         <>
-            {contextHolder}
             <Form
                 labelCol={{
                     span: 4
@@ -641,20 +601,8 @@ export default function Questions() {
 
                 {currentStep === totalSteps && (
                     <>
-                        <Button type="primary" htmlType="submit" onClick={showModal} className="button">Submit</Button>
                         <Form.Item>
-                            <Modal
-                                title="Confirmation"
-                                open={open}
-                                onOk={handleOk}
-                                confirmLoading={confirmLoading}
-                                onCancel={handleCancel}
-                                okButtonProps={{
-                                    style: { backgroundColor: '#85E458', color: 'black' },
-                                }}
-                            >
-                                <p>{modalText}</p>
-                            </Modal>
+                            <Button type="primary" htmlType="submit" className="button">Submit</Button>
                         </Form.Item>
                     </>
                 )}
