@@ -1,11 +1,14 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
-# Create your models here.
 
+# Model for storing user profile information
 class UserProfile(models.Model):
+
+    # Link to the user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # user information
+
+    # Static user preferences
     name = models.CharField(max_length=255, default='No name set.')
     email = models.EmailField(max_length=255, default='')
     age = models.IntegerField(default=18)
@@ -20,7 +23,8 @@ class UserProfile(models.Model):
     wastemanagement = models.CharField(max_length=255, default='')
     waterusage = models.CharField(max_length=255, default='')
     householdsize = models.IntegerField(default=1)
-    # Variable Preferences!
+
+    # Variable Preferences
     timecommitment = models.CharField(default='1-3 hours')
     time = models.IntegerField(default=90)
     challengepreference = models.IntegerField(default=1)
@@ -28,5 +32,6 @@ class UserProfile(models.Model):
     impactbias = models.IntegerField(default=1)
     learningbias = models.IntegerField(default=1)
 
+    # To string
     def __str__(self):
         return self.name

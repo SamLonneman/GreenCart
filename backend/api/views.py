@@ -1,6 +1,8 @@
 from datetime import datetime
-from django.utils import timezone
 
+from django.conf import settings
+from django.core.mail import send_mail
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListAPIView
@@ -9,12 +11,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.conf import settings
-from django.core.mail import send_mail
-
+from .actions import calculate_stats
 from .models import Products, Task
 from .serializers import ProductSerializer, TaskSerializer
-from .actions import calculate_stats
 
 
 # Pagination settings for product list
@@ -28,7 +27,6 @@ class StandardResultsSetPagination(PageNumberPagination):
 class ProductList(ListAPIView):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
-
     def get_queryset(self):
         query = self.request.GET.get('contains', '')
         return Products.objects.filter(name__contains=query).order_by('id')

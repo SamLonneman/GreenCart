@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+# Model for storing product information
 class Products(models.Model):
     name = models.CharField(max_length=1000)
     description = models.TextField(null=True, blank=True)
@@ -15,6 +16,7 @@ class Products(models.Model):
 def get_week_from_now():
     return datetime.now() + timedelta(weeks=1)
 
+# Model for storing user tasks
 class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=1000)
