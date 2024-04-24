@@ -17,6 +17,75 @@
     margin-left: -100px;
 }
 
+.profile-container{
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-box{
+    background: #DAF1EA;
+    text-align: center;
+    padding: 40px 90px;
+    color: #000;
+    position: relative;
+    bottom: 250px;
+    border-style: solid;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: #59A68E; 
+}
+
+.menu-icon{
+    width: 25px;
+    font-size: 30px;
+    position: absolute;
+    left: 40px;
+    top: 40px;
+}
+
+.edit-icon{
+    width: 25px;
+    font-size: 30px;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+}
+
+.profile-pic{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    font-size: 70px;
+    background-color: #fff;
+    color: #000;
+    padding: 6px;
+    margin-top: 40px;
+    margin-left: 30px;
+}
+
+a.button {
+    color: #000;
+}
+
+.profile-box h3{
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.profile-box h2{
+    font-size: 27px;
+    margin-top: 20px;
+    font-weight: 500;
+    color: #000;
+    font-style: italic;
+}
+
 .questions-container {
     width: 1052px;
     width: 766px;
