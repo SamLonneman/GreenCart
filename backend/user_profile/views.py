@@ -31,7 +31,31 @@ class UpdateUserProfileView(APIView):
 
             return Response({'profile': user_profile.data, 'username': str(username)})
         except:
-            return Response({'error': 'Error updating user profile'})
+            try:
+                data = self.request.data
+                email = data['email']
+
+                UserProfile.objects.filter(user = user).update(email = email)
+
+                user_profile = UserProfile.objects.get(user = user)
+
+                user_profile = UserProfileSerializer(user_profile)
+
+                return Response({'profile': user_profile.data, 'username': str(username)})
+            except:
+                try:
+                    data = self.request.data
+                    name = data['name']
+
+                    UserProfile.objects.filter(user = user).update(name=name)
+
+                    user_profile = UserProfile.objects.get(user = user)
+
+                    user_profile = UserProfileSerializer(user_profile)
+
+                    return Response({'profile': user_profile.data, 'username': str(username)})
+                except:
+                    return Response({'error': 'Error updating user profile'})
 
 
 class UpdateUserPreferenceView(APIView):

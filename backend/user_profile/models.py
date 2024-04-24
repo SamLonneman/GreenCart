@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # user information
-    name = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, default='No name set.')
     email = models.EmailField(max_length=255, default='')
     age = models.IntegerField(default=18)
     isVegetarian = models.BooleanField(default=False)
